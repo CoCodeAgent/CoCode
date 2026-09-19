@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>跨境数据传输协议 · CoCode</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#181E25;--faint:#8A92A0;--line:#E6E9EE;--paper:#FFFFFF}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Outfit',-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:var(--paper);color:var(--ink);line-height:1.75;font-size:15px}
+.wrap{max-width:820px;margin:0 auto;padding:0 24px}
+header{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.85);backdrop-filter:saturate(180%) blur(12px);border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:60px}
+.brand{font-weight:700;font-size:17px;letter-spacing:-.02em;color:var(--ink);text-decoration:none}
+.lang-switch{display:flex;gap:4px;background:#F3F5F8;border-radius:999px;padding:3px}
+.lang-btn{border:none;background:transparent;padding:5px 14px;border-radius:999px;font-size:12.5px;font-weight:500;cursor:pointer;color:var(--faint);transition:.2s}
+.lang-btn.active{background:var(--ink);color:#fff}
+.hero{padding:56px 0 40px;border-bottom:1px solid var(--line)}
+.hero h1{font-size:34px;font-weight:700;letter-spacing:-.03em;line-height:1.2}
+.hero .sub{margin-top:10px;color:var(--faint);font-size:14px}
+.legal{padding:48px 0 80px}
+.legal h2{font-size:20px;font-weight:600;margin:36px 0 14px;letter-spacing:-.01em}
+.legal h3{font-size:16px;font-weight:600;margin:22px 0 10px}
+.legal p,.legal li{margin-bottom:12px;color:#3A4250}
+.legal ol,.legal ul{padding-left:22px;margin-bottom:12px}
+.legal li{margin-bottom:8px}
+.legal strong{font-weight:600;color:var(--ink)}
+.legal .note{background:#F6F8FB;border-left:3px solid #EC4899;padding:14px 18px;border-radius:0 8px 8px 0;margin:18px 0;font-size:14px}
+.legal a{color:#7A27FF;text-decoration:none}
+.legal a:hover{text-decoration:underline}
+footer{border-top:1px solid var(--line);padding:32px 0;font-size:13px;color:var(--faint)}
+.ft{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.ft a{color:var(--faint);text-decoration:none;margin-right:18px}
+.ft a:hover{color:var(--ink)}
+[data-lang="en"]{display:none}
+html.en [data-lang="zh"]{display:none}
+html.en [data-lang="en"]{display:block}
+@media(max-width:640px){.hero h1{font-size:26px}.legal{padding:32px 0 60px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap nav">
+    <a href="index.html" class="brand">CoCode</a>
+    <div class="lang-switch">
+      <button class="lang-btn active" data-lang="zh">中文</button>
+      <button class="lang-btn" data-lang="en">EN</button>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <h1 data-lang="zh">跨境数据传输协议</h1>
+    <h1 data-lang="en">Cross-Border Data Transfer Agreement</h1>
+    <p class="sub" data-lang="zh">更新日期：2026 年 9 月 19 日 &nbsp;·&nbsp; 生效日期：2026 年 9 月 19 日</p>
+    <p class="sub" data-lang="en">Last updated: September 19, 2026 &nbsp;·&nbsp; Effective date: September 19, 2026</p>
+  </div>
+</section>
+
+<section class="legal wrap">
+
+  <!-- 导言 -->
+  <div class="note" data-lang="zh">
+    本协议旨在取得你的授权，同意 CoCode 运营团队（"我们"）为向你提供 AI 编程代理服务之目的，将你的部分个人信息传输至位于中华人民共和国境外的接收方。根据《中华人民共和国个人信息保护法》第三十八条、第三十九条及第四十条的规定，向境外提供个人信息的，应当向个人告知境外接收方的名称或者姓名、联系方式、处理目的、处理方式、个人信息的种类以及个人向境外接收方行使权利的方式和程序，并取得个人的单独同意。本协议与《用户协议》《隐私政策》共同构成我们与你之间关于个人信息保护的完整约定；本协议未尽事宜，适用《隐私政策》的相关规定；两者不一致的，就跨境传输相关事项以本协议为准。请你仔细阅读以下条款，特别以<strong>加粗</strong>方式提示的内容，在充分理解后作出是否同意的决定。<strong>当你勾选"我已阅读并同意跨境数据传输协议"或继续使用涉及跨境传输的相关服务时，我们将视为你已自愿同意我们基于本协议所述目的将你的个人信息传输至境外。</strong>
+  </div>
+  <div class="note" data-lang="en">
+    This Agreement aims to obtain your authorization to consent to the CoCode Team ("we", "us") transferring some of your personal information to recipients located outside the People's Republic of China for the purpose of providing you with AI programming agent services. Pursuant to Articles 38, 39, and 40 of the Personal Information Protection Law of the People's Republic of China, where personal information is provided across borders, the individual must be informed of the name and contact details of the overseas recipient, the purpose and method of the processing, the types of personal information involved, and the manner and procedure for the individual to exercise their rights against the overseas recipient, and separate consent must be obtained. This Agreement, together with the Terms of Service and the Privacy Policy, constitutes the complete agreement between us and you regarding personal information protection; matters not covered in this Agreement shall be governed by the Privacy Policy; in the event of any inconsistency, this Agreement shall prevail with respect to matters concerning cross-border transfer. Please read the following clauses carefully, especially those highlighted in <strong>bold</strong>, and make your decision after fully understanding them. <strong>When you check "I have read and agree to the Cross-Border Data Transfer Agreement" or continue to use the relevant services involving cross-border transfer, we will deem that you have voluntarily consented to our transfer of your personal information overseas for the purposes described in this Agreement.</strong>
+  </div>
+
+  <!-- 一、术语 -->
+  <h2 data-lang="zh">一、术语定义</h2>
+  <h2 data-lang="en">1. Definitions</h2>
+  <p data-lang="zh">为便于理解，本协议中的下列术语含义如下：</p>
+  <p data-lang="en">For ease of understanding, the following terms in this Agreement have the meanings set out below:</p>
+  <ul>
+    <li data-lang="zh"><strong>"本服务"：</strong>指 CoCode 桌面应用、命令行工具（CLI）、官方网站及相关配套服务；</li>
+    <li data-lang="en"><strong>"Service":</strong> refers to the CoCode desktop application, command-line interface (CLI), official website, and related supporting services;</li>
+    <li data-lang="zh"><strong>"个人信息"：</strong>指以电子或者其他方式记录的与已识别或者可识别的自然人有关的各种信息，不包括匿名化处理后的信息；</li>
+    <li data-lang="en"><strong>"Personal information":</strong> refers to various kinds of information, recorded electronically or otherwise, relating to identified or identifiable natural persons, excluding information after anonymization;</li>
+    <li data-lang="zh"><strong>"敏感个人信息"：</strong>指一旦泄露或者非法使用，容易导致自然人的人格尊严受到侵害或者人身、财产安全受到危害的个人信息，包括生物识别、宗教信仰、特定身份、医疗健康、金融账户、行踪轨迹等信息，以及不满十四周岁未成年人的个人信息；</li>
+    <li data-lang="en"><strong>"Sensitive personal information":</strong> refers to personal information that, once leaked or illegally used, could easily cause harm to a natural person's dignity or to the safety of his or her person or property, including biometric information, religious beliefs, specific identity, medical health, financial accounts, location tracks, and any personal information of minors under the age of fourteen;</li>
+    <li data-lang="zh"><strong>"个人信息主体"：</strong>指个人信息所识别或者关联的自然人，即本服务的用户（"你"）；</li>
+    <li data-lang="en"><strong>"Personal information subject":</strong> refers to the natural person identified by or associated with the personal information, i.e., the user of the Service ("you");</li>
+    <li data-lang="zh"><strong>"单独同意"：</strong>指个人信息处理者在作出处理行为的告知后，专门针对个人信息处理活动取得个人作出同意的意思表示，区别于概括同意或一揽子同意；</li>
+    <li data-lang="en"><strong>"Separate consent":</strong> refers to an expression of consent specifically given by the individual for a particular processing activity after being informed of such processing, as distinguished from general or bundled consent;</li>
+    <li data-lang="zh"><strong>"匿名化"：</strong>指个人信息经过处理无法识别特定自然人且不能复原的过程；</li>
+    <li data-lang="en"><strong>"Anonymization":</strong> refers to a process by which personal information cannot be used to identify a specific natural person and cannot be restored;</li>
+    <li data-lang="zh"><strong>"境内"：</strong>指中华人民共和国关境以内（不包含香港特别行政区、澳门特别行政区和台湾地区）；</li>
+    <li data-lang="en"><strong>"Onshore":</strong> refers to within the customs territory of the People's Republic of China (excluding the Hong Kong Special Administrative Region, the Macao Special Administrative Region, and the Taiwan region);</li>
+    <li data-lang="zh"><strong>"境外"：</strong>指中华人民共和国关境以外的国家和地区。</li>
+    <li data-lang="en"><strong>"Overseas":</strong> refers to countries and regions outside the customs territory of the People's Republic of China.</li>
+  </ul>
+
+  <!-- 二、接收方 -->
+  <h2 data-lang="zh">二、境外个人信息接收方</h2>
+  <h2 data-lang="en">2. Overseas Recipients of Personal Information</h2>
+  <p data-lang="zh">为向你提供稳定、可靠的本服务，我们会将你的部分个人信息传输至以下境外接收方：</p>
+  <p data-lang="en">To provide you with a stable and reliable Service, we transfer some of your personal information to the following overseas recipients:</p>
+  <ul>
+    <li data-lang="zh"><strong>Cloudflare, Inc.（美国）：</strong>提供服务器托管、内容分发（CDN）、域名解析与网络基础设施服务。我们的官方网站、身份验证与积分服务接口部分部署于 Cloudflare 全球网络，其数据中心分布在世界各地（包括境外节点），你的部分网络通信数据（如 IP 地址、请求时间、请求头信息）会在传输过程中经由其网络处理；</li>
+    <li data-lang="en"><strong>Cloudflare, Inc. (United States):</strong> Provides server hosting, content delivery (CDN), domain name resolution, and network infrastructure services. Our official website and parts of the interfaces for identity verification and credit services are deployed on Cloudflare's global network, whose data centers are located around the world (including overseas nodes). Some of your network communication data (such as IP address, request time, and request headers) will be processed through its network during transmission;</li>
+    <li data-lang="zh"><strong>你选择的第三方模型服务提供商（如适用）：</strong>当你在自带模型（BYOK）模式下选择调用境外可用的第三方模型服务时，你的请求内容将按照该提供商的服务条款直接传输至该提供商，该传输行为由你自主发起并受你与该提供商之间的协议约束。</li>
+    <li data-lang="en"><strong>Third-party model service providers selected by you (if applicable):</strong> When you choose to call an overseas-available third-party model service in Bring Your Own Key (BYOK) mode, your request content will be transmitted directly to that provider in accordance with its terms of service. Such transfer is initiated by you and governed by the agreement between you and that provider.</li>
+  </ul>
+  <p data-lang="zh">上述接收方处理个人信息的联系方式，可通过其官方网站公布的渠道查询。除上述接收方外，<strong>未经你的允许，我们不会将你的个人信息传输至境外任何其他个人信息接收方。</strong>如未来需要新增境外接收方，我们将通过协议修订、应用内通知等方式重新取得你的同意；新增传输活动在你作出同意之前不会实施。</p>
+  <p data-lang="en">The contact details of the above recipients for processing personal information can be found through the channels published on their official websites. Apart from the recipients listed above, <strong>we will not transfer your personal information to any other overseas recipient without your permission.</strong> If we need to add new overseas recipients in the future, we will obtain your consent again through agreement revisions, in-app notifications, and other means; the new transfer activities will not take place before you consent.</p>
+
+  <!-- 三、传输目的 -->
+  <h2 data-lang="zh">三、个人信息跨境传输与处理的目的</h2>
+  <h2 data-lang="en">3. Purposes of Cross-Border Transfer and Processing</h2>
+  <p data-lang="zh">我们进行个人信息跨境传输及处理的目的包括：</p>
+  <p data-lang="en">The purposes of cross-border transfer and processing of your personal information include:</p>
+  <ol>
+    <li data-lang="zh"><strong>网站与接口服务交付：</strong>通过部署于境外网络的 CDN 与基础设施，向你提供官方网站的访问、静态资源分发及服务接口响应；</li>
+    <li data-lang="en"><strong>Website and API delivery:</strong> Providing access to the official website, distribution of static resources, and responses from service interfaces through CDN and infrastructure deployed on overseas networks;</li>
+    <li data-lang="zh"><strong>身份验证与账号安全：</strong>支持账号登录、身份验证、会话保持，防范刷号、撞库、DDoS 攻击等安全威胁，确保系统及数据安全；</li>
+    <li data-lang="en"><strong>Identity verification and account security:</strong> Supporting account login, identity verification, and session persistence, and defending against security threats such as credential stuffing, brute-force attacks, and DDoS attacks to ensure system and data security;</li>
+    <li data-lang="zh"><strong>服务运行与维护：</strong>保障服务的稳定运行、性能优化、故障排查、容灾备份及服务质量监测；</li>
+    <li data-lang="en"><strong>Service operation and maintenance:</strong> Ensuring stable service operation, performance optimization, troubleshooting, disaster recovery and backup, and service quality monitoring;</li>
+    <li data-lang="zh"><strong>积分计费管理：</strong>记录模型调用的积分消耗，维护你的积分账户余额，向你出具积分账单记录；</li>
+    <li data-lang="en"><strong>Credit billing management:</strong> Recording credit consumption for model calls, maintaining your credit account balance, and providing you with credit billing records;</li>
+    <li data-lang="zh"><strong>反欺诈与滥用防控：</strong>识别和阻断自动化脚本、恶意注册、积分套利等滥用行为，保护你和平台的合法权益；</li>
+    <li data-lang="en"><strong>Anti-fraud and abuse prevention:</strong> Identifying and blocking abuse such as automated scripts, malicious registration, and credit arbitrage, to protect your legitimate rights and interests and those of the platform;</li>
+    <li data-lang="zh"><strong>安全审计与合规：</strong>满足法律法规、监管要求及安全审计之需要。</li>
+    <li data-lang="en"><strong>Security audit and compliance:</strong> Meeting the needs of laws and regulations, regulatory requirements, and security audits.</li>
+  </ol>
+  <p data-lang="zh">我们不会将你的个人信息用于上述目的之外的其他目的。如需变更处理目的，我们将重新取得你的单独同意。</p>
+  <p data-lang="en">We will not use your personal information for purposes other than those listed above. If we need to change the processing purpose, we will obtain your separate consent again.</p>
+
+  <!-- 四、传输信息类型 -->
+  <h2 data-lang="zh">四、跨境传输与处理的个人信息类型</h2>
+  <h2 data-lang="en">4. Types of Personal Information Transferred and Processed Cross-Border</h2>
+  <p data-lang="zh">我们跨境传输和处理的个人信息与处理目的直接相关，遵循最小必要原则，具体包括：</p>
+  <p data-lang="en">The personal information we transfer and process cross-border is directly related to the processing purposes and follows the principle of minimization, specifically including:</p>
+  <ol>
+    <li data-lang="zh"><strong>账号信息：</strong>你的账号标识（用户 ID）、电子邮箱地址（加密传输）、注册时间、账号状态；</li>
+    <li data-lang="en"><strong>Account information:</strong> Your account identifier (user ID), email address (transmitted in encrypted form), registration time, and account status;</li>
+    <li data-lang="zh"><strong>身份验证信息：</strong>登录凭证（如令牌、会话标识）、验证请求记录；</li>
+    <li data-lang="en"><strong>Authentication information:</strong> Login credentials (e.g., tokens, session identifiers) and verification request records;</li>
+    <li data-lang="zh"><strong>调用记录：</strong>模型名称、调用时间、消耗积分、请求状态码（<strong>不含你输入的明文内容</strong>）；</li>
+    <li data-lang="en"><strong>Call records:</strong> Model name, call time, credits consumed, and request status codes (<strong>excluding the plaintext of your input</strong>);</li>
+    <li data-lang="zh"><strong>积分信息：</strong>积分余额、积分变动记录、订单关联信息（不含支付敏感信息）；</li>
+    <li data-lang="en"><strong>Credit information:</strong> Credit balance, credit transaction records, and order-related information (excluding sensitive payment information);</li>
+    <li data-lang="zh"><strong>设备与网络信息：</strong>操作系统类型、设备型号、软件版本号、IP 地址、请求时间（用于安全防护、异常检测与流量调度）；</li>
+    <li data-lang="en"><strong>Device and network information:</strong> OS type, device model, software version, IP address, and request time (for security protection, anomaly detection, and traffic scheduling);</li>
+    <li data-lang="zh"><strong>BYOK 模式下的调用内容（如适用）：</strong>你在自带模型模式下使用境外第三方模型服务时输入的文本、代码片段、任务指令及上传的文件，此类内容由你自主选择传输至对应提供商。</li>
+    <li data-lang="en"><strong>Call content in BYOK mode (if applicable):</strong> The text, code snippets, task instructions, and uploaded files you input when using overseas third-party model services in BYOK mode. Such content is transmitted by you at your own discretion to the corresponding provider.</li>
+  </ol>
+  <p data-lang="zh">上述信息为跨境传输信息的全部类别。我们不会传输你的完整代码库、本地文件目录结构或与处理目的无关的其他信息，具体传输的类别以你实际使用服务的情况为准。</p>
+  <p data-lang="en">The above constitutes the full categories of information transferred cross-border. We will not transfer your entire codebase, local file directory structure, or other information unrelated to the processing purposes; the specific categories transferred depend on your actual use of the Service.</p>
+
+  <!-- 五、敏感个人信息专项说明 -->
+  <h2 data-lang="zh">五、敏感个人信息专项说明</h2>
+  <h2 data-lang="en">5. Special Statement on Sensitive Personal Information</h2>
+  <p data-lang="zh">我们深知敏感个人信息保护的重要性，并遵循以下原则处理可能涉及的敏感个人信息：</p>
+  <p data-lang="en">We are fully aware of the importance of protecting sensitive personal information and follow the principles below when handling any sensitive personal information that may be involved:</p>
+  <ol>
+    <li data-lang="zh"><strong>不主动收集：</strong>我们不主动收集你的生物识别信息、宗教信仰、特定身份、医疗健康、行踪轨迹等敏感个人信息；</li>
+    <li data-lang="en"><strong>No active collection:</strong> We do not actively collect your biometric information, religious beliefs, specific identity, medical health, location tracks, or other sensitive personal information;</li>
+    <li data-lang="zh"><strong>避免传输：</strong>在我们自行发起的跨境传输范围内，不包含敏感个人信息；本协议第四节所列信息类型均为一般个人信息；</li>
+    <li data-lang="en"><strong>Avoidance of transfer:</strong> The cross-border transfers initiated by us do not include sensitive personal information; the types of information listed in Section 4 of this Agreement are ordinary personal information;</li>
+    <li data-lang="zh"><strong>提示你自主判断：</strong>当你在 BYOK 模式下自主向境外第三方模型服务输入内容时，请你自行判断并避免在其中包含敏感个人信息，该等信息的传输由你自主决定并由你与该第三方之间的协议约束；</li>
+    <li data-lang="en"><strong>Your own judgment:</strong> When you input content to overseas third-party model services in BYOK mode, please judge for yourself and avoid including sensitive personal information therein; the transfer of such information is decided by you and governed by the agreement between you and such third party;</li>
+    <li data-lang="zh"><strong>未成年人保护：</strong>本服务面向成年人提供。如你是不满十四周岁未成年人的监护人，请勿让该未成年人使用本服务；如我们发现在未事先获得可证实的监护人同意的情况下收集了未成年人的个人信息，我们将设法尽快删除相关数据。</li>
+    <li data-lang="en"><strong>Protection of minors:</strong> The Service is intended for adults. If you are the guardian of a minor under the age of fourteen, please do not allow such minor to use the Service. If we discover that we have collected personal information of a minor without prior verifiable consent of a guardian, we will endeavor to delete the relevant data as soon as possible.</li>
+  </ol>
+
+  <!-- 六、法律依据 -->
+  <h2 data-lang="zh">六、跨境传输的法律依据</h2>
+  <h2 data-lang="en">6. Legal Basis for Cross-Border Transfer</h2>
+  <p data-lang="zh">我们依据《中华人民共和国个人信息保护法》第三十八条第一款第（一）项的规定，通过取得你的单独同意的方式开展本次个人信息跨境传输活动，并将持续评估以下合规路径的适用性：通过国家网信部门组织的数据出境安全评估；经专业机构进行的个人信息保护认证；按照国家网信部门制定的标准合同与境外接收方订立合同。</p>
+  <p data-lang="en">In accordance with Article 38(1)(i) of the Personal Information Protection Law of the People's Republic of China, we carry out this cross-border transfer of personal information on the basis of your separate consent, and we will continuously assess the applicability of the following compliance pathways: the security assessment organized by the national cyberspace administration; the personal information protection certification conducted by professional institutions; or the conclusion of a contract with the overseas recipient according to the standard contract formulated by the national cyberspace administration.</p>
+  <p data-lang="zh">在取得你的单独同意前，我们将依法履行告知义务，明确告知境外接收方的名称、联系方式、处理目的、处理方式、个人信息的种类以及你向境外接收方行使权利的方式和程序。如相关法律法规对个人信息出境提出新的要求，我们将及时调整本协议及数据传输安排，确保持续合规。</p>
+  <p data-lang="en">Before obtaining your separate consent, we will fulfill our obligation to inform, clearly informing you of the name of the overseas recipient, its contact details, the processing purpose and method, the types of personal information, and the manner and procedure for you to exercise your rights against the overseas recipient. If relevant laws and regulations impose new requirements on outbound transfer of personal information, we will promptly adjust this Agreement and the data transfer arrangements to ensure continued compliance.</p>
+
+  <!-- 七、存储与安全 -->
+  <h2 data-lang="zh">七、个人信息存储与安全保障</h2>
+  <h2 data-lang="en">7. Personal Information Storage and Security</h2>
+  <h3 data-lang="zh">7.1 存储地点与期限</h3>
+  <h3 data-lang="en">7.1 Storage Location and Retention</h3>
+  <p data-lang="zh">你的账号与积分数据以中华人民共和国境内服务器为主要存储地。经由境外网络（如 CDN、网关节点）处理的传输中数据，仅在实现处理目的所必需的期限内保留，境外接收方不会建立你个人信息的长期存储副本，除非其服务机制要求的最短缓存周期。当个人信息超出保存期限或达到你注销账户的条件时，我们将对个人信息进行删除或匿名化处理，法律另有规定的除外。</p>
+  <p data-lang="en">Your account and credit data are primarily stored on servers located within the People's Republic of China. Data in transit processed through overseas networks (such as CDN or gateway nodes) is retained only for the period necessary to achieve the processing purpose. The overseas recipients will not establish long-term storage copies of your personal information, except for the shortest caching period required by their service mechanisms. When personal information exceeds the retention period or when your account is deleted, we will delete or anonymize the personal information, except as otherwise provided by law.</p>
+  <h3 data-lang="zh">7.2 安全保障措施</h3>
+  <h3 data-lang="en">7.2 Security Safeguards</h3>
+  <p data-lang="zh">我们采取以下技术与管理措施保障你个人信息在跨境传输中的安全性：</p>
+  <p data-lang="en">We adopt the following technical and organizational measures to ensure the security of your personal information during cross-border transfer:</p>
+  <ul>
+    <li data-lang="zh"><strong>传输加密：</strong>所有数据传输均采用 TLS 加密通道，防止传输过程中被窃取或篡改；</li>
+    <li data-lang="en"><strong>Encryption in transit:</strong> All data transfers use TLS-encrypted channels to prevent interception or tampering during transmission;</li>
+    <li data-lang="zh"><strong>密码保护：</strong>你的登录密码使用单向加盐哈希算法存储，任何人员（包括我们内部员工）均无法查看你的明文密码；</li>
+    <li data-lang="en"><strong>Password protection:</strong> Your login password is stored using a one-way salted hashing algorithm; no one (including our internal staff) can view your plaintext password;</li>
+    <li data-lang="zh"><strong>密钥隔离：</strong>你的自定义模型 API 密钥仅存储在你本地设备，我们的服务器不保存、不备份你的密钥明文；</li>
+    <li data-lang="en"><strong>Key isolation:</strong> Your custom model API keys are stored only on your local device; our servers do not store or back up the plaintext of your keys;</li>
+    <li data-lang="zh"><strong>最小必要原则：</strong>仅传输实现服务目的所必需的信息，不传输与目的无关的个人信息；</li>
+    <li data-lang="en"><strong>Minimization principle:</strong> Only information necessary for the service purpose is transferred; personal information unrelated to the purpose is not transferred;</li>
+    <li data-lang="zh"><strong>脱敏处理：</strong>调用记录等日志信息中不包含你输入的明文内容；</li>
+    <li data-lang="en"><strong>De-identification:</strong> Log information such as call records does not contain the plaintext of your input;</li>
+    <li data-lang="zh"><strong>人机验证：</strong>在登录、注册等关键环节部署人机验证机制，防范自动化攻击；</li>
+    <li data-lang="en"><strong>Human verification:</strong> Human verification mechanisms are deployed at critical steps such as login and registration to defend against automated attacks;</li>
+    <li data-lang="zh"><strong>供应商合规：</strong>我们要求境外接收方采取符合行业标准的安全措施（如加密、访问控制、安全审计），并仅在授权范围内处理信息，不得转委托处理；</li>
+    <li data-lang="en"><strong>Vendor compliance:</strong> We require overseas recipients to adopt industry-standard security measures (such as encryption, access control, and security audits), process information only within the authorized scope, and refrain from further entrusting the processing;</li>
+    <li data-lang="zh"><strong>访问控制：</strong>我们内部对可访问相关数据的范围进行严格限制，并定期开展安全审查与应急演练。</li>
+    <li data-lang="en"><strong>Access control:</strong> We strictly limit the internal scope of access to relevant data and conduct regular security reviews and emergency drills.</li>
+  </ul>
+
+  <!-- 八、接收方义务 -->
+  <h2 data-lang="zh">八、境外接收方应履行的义务</h2>
+  <h2 data-lang="en">8. Obligations of Overseas Recipients</h2>
+  <p data-lang="zh">我们要求境外接收方承诺履行以下义务：</p>
+  <p data-lang="en">We require overseas recipients to undertake the following obligations:</p>
+  <ol>
+    <li data-lang="zh">按照本协议约定的处理目的、方式和信息类型处理个人信息，不得超出授权范围处理；</li>
+    <li data-lang="en">Process personal information in accordance with the purpose, method, and types of information agreed in this Agreement, and not process beyond the authorized scope;</li>
+    <li data-lang="zh">采取必要的技术与管理措施保障所处理个人信息的安全，达到不低于中国法律要求的保护水平；</li>
+    <li data-lang="en">Adopt necessary technical and organizational measures to safeguard the security of the personal information processed, achieving a level of protection no lower than that required by Chinese law;</li>
+    <li data-lang="zh">不得将你的输入内容用于模型训练或算法改进（如适用），除非法律法规另有要求；</li>
+    <li data-lang="en">Not use your input for model training or algorithm improvement (where applicable), unless otherwise required by law;</li>
+    <li data-lang="zh">未经我们及你的同意，不得将所处理的个人信息再转移至其他境外接收方，法律法规另有规定的除外；</li>
+    <li data-lang="en">Not further transfer the processed personal information to other overseas recipients without the consent of us and you, except as otherwise provided by law;</li>
+    <li data-lang="zh">协助我们响应你行使个人信息权利的请求；</li>
+    <li data-lang="en">Assist us in responding to your requests to exercise your personal information rights;</li>
+    <li data-lang="zh">发生个人信息安全事件时，及时向我们通报并配合处置；</li>
+    <li data-lang="en">Promptly notify us of and cooperate in handling personal information security incidents;</li>
+    <li data-lang="zh">在委托处理关系终止时，按照我们的要求删除或返还其所处理的个人信息。</li>
+    <li data-lang="en">Upon termination of the entrusted processing relationship, delete or return the personal information they have processed as required by us.</li>
+  </ol>
+
+  <!-- 九、应急处置 -->
+  <h2 data-lang="zh">九、应急处置与安全事件通知</h2>
+  <h2 data-lang="en">9. Emergency Response and Security Incident Notification</h2>
+  <p data-lang="zh">如发生或可能发生你的个人信息在跨境传输过程中泄露、篡改、丢失的安全事件，我们将采取以下措施：</p>
+  <p data-lang="en">If a security incident involving the leakage, tampering, or loss of your personal information occurs or may occur during cross-border transfer, we will take the following measures:</p>
+  <ol>
+    <li data-lang="zh"><strong>立即止损：</strong>第一时间启动应急预案，采取补救措施防止事件扩大，并要求境外接收方配合处置；</li>
+    <li data-lang="en"><strong>Immediate mitigation:</strong> Immediately activate the emergency response plan, take remedial measures to prevent the incident from escalating, and require overseas recipients to cooperate in handling;</li>
+    <li data-lang="zh"><strong>法定报告：</strong>按照《中华人民共和国个人信息保护法》第五十七条等规定，将事件情况报告履行个人信息保护职责的部门；</li>
+    <li data-lang="en"><strong>Statutory reporting:</strong> Report the incident to the department responsible for personal information protection in accordance with Article 57 and other provisions of the Personal Information Protection Law of the People's Republic of China;</li>
+    <li data-lang="zh"><strong>告知用户：</strong>如事件可能对你的人身、财产安全造成危害，我们将通过应用内通知、电子邮件、站内公告等方式及时告知你事件的概况、可能的影响、已采取的补救措施以及你可以采取的减轻危害的措施；</li>
+    <li data-lang="en"><strong>User notification:</strong> If the incident may cause harm to your personal or property safety, we will promptly notify you through in-app notifications, email, website announcements, and other means of the overview of the incident, the possible impact, the remedial measures taken, and the measures you can take to mitigate the harm;</li>
+    <li data-lang="zh"><strong>事后复盘：</strong>事件处置完成后，我们将开展复盘分析，完善相关安全措施，防止同类事件再次发生。</li>
+    <li data-lang="en"><strong>Post-incident review:</strong> After the incident is handled, we will conduct a review and analysis, improve relevant security measures, and prevent similar incidents from happening again.</li>
+  </ol>
+
+  <!-- 十、权利保证 -->
+  <h2 data-lang="zh">十、权利保证</h2>
+  <h2 data-lang="en">10. Rights Assurance</h2>
+  <p data-lang="zh">我们承诺：未经你的允许，不会将你的个人信息传输至本协议所述之外的境外任何个人信息接收方。</p>
+  <p data-lang="en">We undertake that, without your permission, we will not transfer your personal information to any overseas personal information recipient other than those described in this Agreement.</p>
+  <p data-lang="zh">你有权向境外接收方主张《中华人民共和国个人信息保护法》项下的各项权利，包括查阅、复制、更正、补充、删除其处理的个人信息，以及要求其说明个人信息处理规则。如你需要行使上述权利，可按照《隐私政策》中载明的路径向我们提出，我们将协调境外接收方在法律规定的期限内予以响应。</p>
+  <p data-lang="en">You have the right to assert against the overseas recipients all rights under the Personal Information Protection Law of the People's Republic of China, including access, copying, correction, supplementation, and deletion of the personal information they process, as well as the right to request an explanation of their personal information processing rules. To exercise these rights, you may submit your request through the channels specified in the Privacy Policy, and we will coordinate with the overseas recipients to respond within the statutory time limit.</p>
+  <p data-lang="zh">如你认为我们的跨境传输行为侵害了你的个人信息权益，你有权通过本协议第十三条载明的联系方式向我们投诉，也有权向履行个人信息保护职责的部门投诉、举报，或依法向人民法院提起诉讼。</p>
+  <p data-lang="en">If you believe that our cross-border transfer infringes upon your personal information rights and interests, you have the right to file a complaint with us through the contact information set out in Section 13 of this Agreement, to lodge a complaint or report to the department responsible for personal information protection, or to bring a lawsuit before the people's court in accordance with law.</p>
+
+  <!-- 十一、撤回同意 -->
+  <h2 data-lang="zh">十一、撤回同意</h2>
+  <h2 data-lang="en">11. Withdrawal of Consent</h2>
+  <p data-lang="zh">你亦可随时撤回对跨境传输的同意。撤回路径：应用「设置 → 隐私 → 管理我的同意」，或通过本协议第十三条载明的联系方式向我们提出书面申请。请你知悉：</p>
+  <p data-lang="en">You may also withdraw your consent to cross-border transfer at any time. Path: App "Settings → Privacy → Manage My Consent", or submit a written request to us via the contact information provided in Section 13 of this Agreement. Please note that:</p>
+  <ol>
+    <li data-lang="zh">如你撤回同意，我们将停止对你的个人信息的跨境传输，但不影响你撤回同意前基于你的同意已进行的个人信息处理活动的效力；</li>
+    <li data-lang="en">If you withdraw your consent, we will stop cross-border transfer of your personal information, but this does not affect the validity of personal information processing activities already carried out based on your consent before withdrawal;</li>
+    <li data-lang="zh">撤回同意后，依赖跨境传输的官方服务功能将无法使用，但自带模型（BYOK）模式及纯本地功能不受影响；</li>
+    <li data-lang="en">After withdrawal, official service features that rely on cross-border transfer will be unavailable, but the Bring Your Own Key (BYOK) mode and purely local features will not be affected;</li>
+    <li data-lang="zh">撤回同意不影响依法应当保留的数据的处理。</li>
+    <li data-lang="en">Withdrawal of consent does not affect the processing of data that must be retained pursuant to law.</li>
+  </ol>
+
+  <!-- 十二、协议变更 -->
+  <h2 data-lang="zh">十二、协议的变更</h2>
+  <h2 data-lang="en">12. Changes to This Agreement</h2>
+  <p data-lang="zh">我们可能适时修订本协议。修订后，我们将在本页面更新"更新日期"，并通过应用内通知、站内公告等方式提示你。如修订涉及新增境外接收方、新增传输信息类型或变更传输目的等重大事项，我们将重新取得你的单独同意；在你作出同意前，相关新增传输活动不会实施。</p>
+  <p data-lang="en">We may revise this Agreement from time to time. When we do, we will update the "Last updated" date on this page and notify you via in-app notifications, website announcements, and other means. If revisions involve material matters such as adding overseas recipients, adding types of transferred information, or changing the transfer purpose, we will obtain your separate consent again; before you consent, the relevant new transfer activities will not take place.</p>
+  <p data-lang="zh">如你在本协议修订后继续使用涉及跨境传输的相关服务，且未在合理期限内提出异议，我们将视为你同意修订后的协议；但对于需要重新取得单独同意的事项，仍以你重新作出的同意为准。</p>
+  <p data-lang="en">If you continue to use the relevant services involving cross-border transfer after this Agreement is revised without raising any objection within a reasonable period, we will deem that you agree to the revised Agreement; however, for matters requiring separate consent again, your renewed consent shall prevail.</p>
+
+  <!-- 十三、联络方式 -->
+  <h2 data-lang="zh">十三、联络方式</h2>
+  <h2 data-lang="en">13. Contact Information</h2>
+  <p data-lang="zh">如对本跨境数据传输协议有任何疑问、意见或建议，或需行使相关权利，可通过以下方式联系我们：</p>
+  <p data-lang="en">If you have any questions, comments, or suggestions about this Cross-Border Data Transfer Agreement, or wish to exercise your rights, you may contact us at:</p>
+  <p data-lang="zh">邮箱：<a href="mailto:2206674900@qq.com">2206674900@qq.com</a></p>
+  <p data-lang="en">Email: <a href="mailto:2206674900@qq.com">2206674900@qq.com</a></p>
+  <p data-lang="zh">我们将在收到你的请求后十五个工作日内予以回复。如你对我们的处理结果不满意，你也可以向履行个人信息保护职责的部门投诉、举报。</p>
+  <p data-lang="en">We will respond within fifteen (15) business days after receiving your request. If you are not satisfied with our handling, you may also file a complaint or report to the department responsible for personal information protection.</p>
+
+  <div class="note" data-lang="zh"><strong>如你同意上述内容，请在应用内勾选确认。</strong>上次修订于 2026 年 9 月 19 日。</div>
+  <div class="note" data-lang="en"><strong>If you agree to the above, please check the confirmation box in the app.</strong> Last revised on September 19, 2026.</div>
+
+</section>
+
+<footer>
+  <div class="wrap ft">
+    <span>© 2026 CoCode. <span data-lang="zh">保留所有权利。</span><span data-lang="en">All rights reserved.</span></span>
+    <span>
+      <a href="terms.html" data-lang="zh">用户协议</a><a href="terms.html" data-lang="en">Terms</a>
+      <a href="privacy.html" data-lang="zh">隐私政策</a><a href="privacy.html" data-lang="en">Privacy</a>
+      <a href="cross-border.html" data-lang="zh">跨境传输</a><a href="cross-border.html" data-lang="en">Cross-Border</a>
+    </span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var buttons=document.querySelectorAll('.lang-btn');
+  buttons.forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var lang=this.getAttribute('data-lang');
+      document.documentElement.classList.toggle('en',lang==='en');
+      buttons.forEach(function(b){b.classList.toggle('active',b===btn);});
+    });
+  });
+})();
+</script>
+</body>
+</html>

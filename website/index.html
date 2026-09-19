@@ -1,0 +1,1653 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>CoCode — 会干活的编程 Agent</title>
+<meta name="description" content="CoCode Desktop：自接入模型的编程 Agent 桌面端零依赖核心，18 个内置工具，低 token 多干活，每轮可回滚">
+<link rel="icon" type="image/png" href="logo.PNG">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+
+:root{
+    --ink:#181E25;
+    --sub:#5c6572;
+    --faint:#86909C;
+    --panel:#F7F8FA;
+    --line:#E4E7EB;
+    --white:#fff;
+    --grad-purple:linear-gradient(100deg,#7A27FF,#A36AFF);
+    --grad-pink:linear-gradient(100deg,#FF276F,#FF7038);
+    --grad-blue:linear-gradient(100deg,#1BA4FF,#38CDFF);
+    --outfit:"Outfit",-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    --sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    --mono:"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    --ease:cubic-bezier(.22,1,.36,1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--white);color:var(--ink);
+    font-family:var(--sans);font-size:16px;line-height:1.8;
+    -webkit-font-smoothing:antialiased;overflow-x:hidden;
+  }
+  ::selection{background:#7A27FF;color:#fff}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1200px;margin:0 auto;padding:0 40px}
+  .en{font-family:var(--outfit)}
+  .mono{font-family:var(--mono)}
+
+  /* ---------- reveal ---------- */
+  .rv{opacity:0;transform:translateY(28px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+  .rv.on{opacity:1;transform:none}
+  .rv-d1{transition-delay:.1s}.rv-d2{transition-delay:.2s}
+  @media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}}
+
+  /* ---------- header ---------- */
+  header{
+    position:fixed;top:0;left:0;right:0;z-index:60;
+    background:rgba(255,255,255,.82);backdrop-filter:blur(18px);
+    border-bottom:1px solid rgba(228,231,235,.6);
+  }
+  .hd{display:flex;align-items:center;justify-content:space-between;height:72px}
+  .brand{display:flex;align-items:center;gap:11px;font-family:var(--outfit);font-size:19px;font-weight:600;letter-spacing:.01em}
+  .brand svg{display:block}
+  nav{display:flex;align-items:center;gap:6px;font-size:15px;color:var(--ink)}
+  .pill{
+    padding:8px 20px;border-radius:32px;transition:background .3s var(--ease);font-weight:400;
+  }
+  .pill:hover{background:var(--panel)}
+  .hd-cta{
+    margin-left:12px;font-family:var(--outfit);font-weight:500;
+    background:var(--ink);color:#fff;font-size:14px;
+    padding:9px 24px;border-radius:32px;transition:all .3s var(--ease);
+  }
+  .hd-cta:hover{background:#2b323b;transform:translateY(-1px)}
+  @media(max-width:820px){nav .pill{display:none}}
+
+  /* ---------- hero ---------- */
+  .hero{padding:210px 0 90px;text-align:center;position:relative;overflow:hidden}
+  .hero::before{
+    content:"";position:absolute;top:-320px;left:50%;transform:translateX(-50%);
+    width:1100px;height:640px;border-radius:50%;
+    background:radial-gradient(closest-side,rgba(122,39,255,.07),rgba(27,164,255,.05) 55%,transparent);
+    pointer-events:none;
+  }
+  .hero-badge{
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:var(--outfit);font-size:13px;font-weight:500;color:var(--sub);
+    background:var(--panel);border:1px solid var(--line);
+    padding:7px 18px;border-radius:32px;margin-bottom:34px;
+  }
+  .hero-badge .dot{width:7px;height:7px;border-radius:50%;background:linear-gradient(100deg,#1BA4FF,#38CDFF)}
+  h1{
+    font-family:var(--outfit);font-weight:600;
+    font-size:clamp(52px,7.8vw,92px);line-height:1.12;letter-spacing:-.015em;
+  }
+  h1 .grad{
+    background:var(--grad-purple);-webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .hero-sub{
+    margin:26px auto 0;max-width:36em;font-size:18px;color:var(--sub);font-weight:300;
+  }
+  .hero-sub b{color:var(--ink);font-weight:500}
+  .hero-cta{margin-top:44px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:var(--outfit);font-size:15.5px;font-weight:500;
+    padding:14px 34px;border-radius:32px;transition:all .3s var(--ease);
+  }
+  .btn-ink{background:var(--ink);color:#fff;box-shadow:0 8px 24px -8px rgba(24,30,37,.35)}
+  .btn-ink:hover{transform:translateY(-2px);box-shadow:0 16px 40px -10px rgba(24,30,37,.4)}
+  .btn-ghost{border:1px solid var(--line);color:var(--ink)}
+  .btn-ghost:hover{border-color:var(--ink);transform:translateY(-2px)}
+
+  /* hero 特性点 */
+  .hero-feats{
+    margin-top:84px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px;text-align:left;
+  }
+  .hf{
+    background:var(--white);border:1px solid var(--line);border-radius:24px;
+    padding:30px 32px;transition:all .35s var(--ease);position:relative;overflow:hidden;
+  }
+  .hf:hover{transform:translateY(-4px);box-shadow:0 20px 48px -20px rgba(24,30,37,.14)}
+  .hf::before{content:"";position:absolute;top:0;left:32px;right:32px;height:2px;border-radius:2px;opacity:0;transition:opacity .35s}
+  .hf:nth-child(1)::before{background:var(--grad-purple)}
+  .hf:nth-child(2)::before{background:var(--grad-blue)}
+  .hf:nth-child(3)::before{background:var(--grad-pink)}
+  .hf:hover::before{opacity:1}
+  .hf .tag{
+    display:inline-block;font-family:var(--outfit);font-size:12px;font-weight:600;letter-spacing:.08em;
+    padding:5px 14px;border-radius:20px;margin-bottom:16px;
+  }
+  .hf:nth-child(1) .tag{background:rgba(122,39,255,.08);color:#7A27FF}
+  .hf:nth-child(2) .tag{background:rgba(27,164,255,.09);color:#1183d6}
+  .hf:nth-child(3) .tag{background:rgba(255,39,111,.08);color:#e63360}
+  .hf h3{font-size:17px;font-weight:600;margin-bottom:8px}
+  .hf p{font-size:14px;color:var(--sub);font-weight:300;line-height:1.75}
+  @media(max-width:820px){.hero{padding:150px 0 60px}.hero-feats{grid-template-columns:1fr}}
+
+  /* ---------- section ---------- */
+  section{padding:110px 0}
+  .sec-head{margin-bottom:56px}
+  .sec-no{
+    font-family:var(--outfit);font-size:13px;font-weight:600;letter-spacing:.14em;
+    color:var(--faint);text-transform:uppercase;margin-bottom:14px;
+  }
+  h2{
+    font-family:var(--outfit);font-weight:600;
+    font-size:clamp(30px,4vw,48px);letter-spacing:-.01em;line-height:1.25;
+  }
+  .sec-sub{margin-top:14px;color:var(--sub);font-size:16.5px;max-width:38em;font-weight:300}
+
+  /* ---------- 功能大卡（minimax 式大圆角区块） ---------- */
+  .feature-block{
+    border-radius:60px;background:var(--panel);
+    padding:80px 72px;margin-bottom:32px;position:relative;overflow:hidden;
+  }
+  .feature-block:nth-child(even){background:#fff;border:1px solid var(--line)}
+  .fb-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+  @media(max-width:960px){.feature-block{border-radius:36px;padding:56px 36px}.fb-grid{grid-template-columns:1fr;gap:36px}}
+  .fb-kicker{
+    display:inline-block;font-family:var(--outfit);font-size:13px;font-weight:600;letter-spacing:.1em;
+    padding:6px 16px;border-radius:20px;margin-bottom:22px;
+  }
+  .fb-purple .fb-kicker{background:rgba(122,39,255,.08);color:#7A27FF}
+  .fb-blue .fb-kicker{background:rgba(27,164,255,.1);color:#1183d6}
+  .fb-pink .fb-kicker{background:rgba(255,39,111,.08);color:#e63360}
+  .fb-title{
+    font-family:var(--outfit);font-weight:600;font-size:clamp(26px,3vw,38px);
+    letter-spacing:-.01em;line-height:1.28;margin-bottom:18px;
+  }
+  .fb-purple .fb-title em{font-style:normal;background:var(--grad-purple);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .fb-blue .fb-title em{font-style:normal;background:var(--grad-blue);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .fb-pink .fb-title em{font-style:normal;background:var(--grad-pink);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .fb-desc{color:var(--sub);font-size:16px;font-weight:300;max-width:32em}
+  .fb-desc b{color:var(--ink);font-weight:500}
+  .fb-points{margin-top:28px;display:flex;flex-direction:column;gap:12px}
+  .fb-points li{
+    list-style:none;display:flex;gap:12px;align-items:baseline;
+    font-size:14.5px;color:var(--sub);
+  }
+  .fb-points li::before{content:"";flex:none;width:6px;height:6px;border-radius:50%;transform:translateY(-2px)}
+  .fb-purple .fb-points li::before{background:#A36AFF}
+  .fb-blue .fb-points li::before{background:#38CDFF}
+  .fb-pink .fb-points li::before{background:#FF7038}
+  /* 视觉侧：终端演示卡 */
+  .fb-visual{position:relative}
+  .term{
+    border-radius:24px;background:#181E25;padding:0;overflow:hidden;
+    box-shadow:0 32px 72px -24px rgba(24,30,37,.35);
+    font-family:var(--mono);font-size:13px;line-height:2.15;color:#c9ced6;
+    transform:rotate(0);transition:transform .5s var(--ease);
+  }
+  .feature-block:hover .term{transform:translateY(-6px)}
+  .term-bar{
+    display:flex;align-items:center;gap:8px;padding:15px 20px;
+    border-bottom:1px solid rgba(255,255,255,.07);
+  }
+  .term-bar i{width:11px;height:11px;border-radius:50%}
+  .term-bar i:nth-child(1){background:#FF5F57}
+  .term-bar i:nth-child(2){background:#FEBC2E}
+  .term-bar i:nth-child(3){background:#28C840}
+  .term-bar span{margin-left:8px;font-size:11.5px;color:#7b828c}
+  .term-body{padding:24px 26px 28px}
+  .term-body .u{color:#A36AFF}
+  .term-body .b{color:#38CDFF}
+  .term-body .k{color:#fff}
+  .term-body .c{color:#7b828c}
+  .term-body .g{color:#4ade80}
+  .term-body .r{color:#FB7185}
+  .term-body .o{color:#FDBA74}
+
+  /* ---------- 双版本 ---------- */
+  .duo{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  @media(max-width:960px){.duo{grid-template-columns:1fr}}
+  .duo-card{
+    border:1px solid var(--line);border-radius:32px;padding:44px 44px 40px;
+    transition:all .4s var(--ease);position:relative;overflow:hidden;background:#fff;
+  }
+  .duo-card:hover{box-shadow:0 24px 64px -24px rgba(24,30,37,.16);transform:translateY(-4px)}
+  .duo-card .ico{
+    width:52px;height:52px;border-radius:16px;display:flex;align-items:center;justify-content:center;
+    margin-bottom:24px;font-family:var(--mono);font-size:20px;color:#fff;
+  }
+  .duo-card:nth-child(1) .ico{background:var(--grad-purple)}
+  .duo-card:nth-child(2) .ico{background:var(--grad-blue)}
+  .duo-card h3{font-family:var(--outfit);font-size:24px;font-weight:600;margin-bottom:6px}
+  .duo-card .dc-en{font-family:var(--outfit);font-size:12.5px;color:var(--faint);letter-spacing:.14em;margin-bottom:18px;text-transform:uppercase}
+  .duo-card p{font-size:14.5px;color:var(--sub);font-weight:300;margin-bottom:22px}
+  .duo-card ul{display:flex;flex-wrap:wrap;gap:8px}
+  .duo-card ul li{
+    list-style:none;font-family:var(--mono);font-size:12px;color:var(--sub);
+    background:var(--panel);border-radius:20px;padding:5px 14px;
+  }
+
+  /* ---------- 数字 ---------- */
+  .nums{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+  @media(max-width:820px){.nums{grid-template-columns:1fr 1fr}}
+  .num{
+    background:var(--panel);border-radius:32px;padding:40px 36px;
+    transition:transform .35s var(--ease);
+  }
+  .num:hover{transform:translateY(-4px)}
+  .num .v{
+    font-family:var(--outfit);font-weight:600;font-size:clamp(40px,4.4vw,56px);
+    letter-spacing:-.02em;line-height:1.1;
+  }
+  .num:nth-child(1) .v{background:var(--grad-purple);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .num:nth-child(2) .v{background:var(--grad-blue);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .num:nth-child(3) .v{background:var(--grad-pink);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .num:nth-child(4) .v{color:var(--ink)}
+  .num .l{margin-top:10px;font-size:14px;color:var(--sub);font-weight:300}
+
+  /* ---------- 下载 ---------- */
+  .dl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  @media(max-width:900px){.dl-grid{grid-template-columns:1fr}}
+  .dl-card{
+    border:1px solid var(--line);border-radius:32px;padding:38px 36px;background:#fff;
+    transition:all .35s var(--ease);display:flex;flex-direction:column;gap:4px;
+  }
+  .dl-card:hover{box-shadow:0 20px 56px -24px rgba(24,30,37,.18);transform:translateY(-4px);border-color:rgba(122,39,255,.35)}
+  .dl-os{font-family:var(--outfit);font-size:22px;font-weight:600}
+  .dl-note{font-size:13.5px;color:var(--sub);font-weight:300}
+  .dl-soon{
+    margin-top:24px;align-self:flex-start;font-size:14px;font-weight:500;
+    color:var(--faint);background:var(--panel);padding:10px 26px;border-radius:32px;
+  }
+
+  /* ---------- 关于/CTA ---------- */
+  .about-cta{
+    border-radius:60px;background:#181E25;color:#fff;
+    padding:110px 72px;text-align:center;position:relative;overflow:hidden;
+  }
+  .about-cta::before{
+    content:"";position:absolute;bottom:-260px;left:50%;transform:translateX(-50%);
+    width:900px;height:480px;border-radius:50%;
+    background:radial-gradient(closest-side,rgba(122,39,255,.28),rgba(27,164,255,.14) 55%,transparent);
+    pointer-events:none;
+  }
+  .about-cta h2{
+    color:#fff;position:relative;
+    font-size:clamp(30px,4.4vw,52px);max-width:16em;margin:0 auto;
+  }
+  .about-cta h2 .grad{background:linear-gradient(100deg,#A36AFF,#38CDFF);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .about-cta p{margin:20px auto 0;color:rgba(255,255,255,.66);max-width:32em;font-weight:300;position:relative}
+  .about-cta .hero-cta{position:relative}
+  .about-cta .btn-ink{background:#fff;color:var(--ink);box-shadow:0 8px 32px -8px rgba(163,106,255,.5)}
+  .about-cta .btn-ghost{border-color:rgba(255,255,255,.24);color:#fff}
+  .about-cta .btn-ghost:hover{border-color:#fff}
+  @media(max-width:960px){.about-cta{border-radius:36px;padding:80px 36px}}
+
+  footer{padding:48px 0;font-size:13.5px;color:var(--faint)}
+  .ft{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center}
+  .ft .en{letter-spacing:.06em}
+
+/* ===== 定价页样式（已限定作用域） ===== */
+:root{
+    --ink:#181E25;
+    --sub:#5c6572;
+    --faint:#86909C;
+    --panel:#F7F8FA;
+    --line:#E4E7EB;
+    --white:#fff;
+    --grad-purple:linear-gradient(100deg,#7A27FF,#A36AFF);
+    --grad-pink:linear-gradient(100deg,#FF276F,#FF7038);
+    --grad-blue:linear-gradient(100deg,#1BA4FF,#38CDFF);
+    --grad-tri:linear-gradient(100deg,#7A27FF,#1BA4FF 55%,#FF276F);
+    --outfit:"Outfit",-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    --sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    --mono:"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    --ease:cubic-bezier(.22,1,.36,1);
+  }*{margin:0;padding:0;box-sizing:border-box}#view-pricing ::selection{background:#7A27FF;color:#fff}#view-pricing a{color:inherit;text-decoration:none}#view-pricing .wrap{max-width:1200px;margin:0 auto;padding:0 40px}#view-pricing .en{font-family:var(--outfit)}#view-pricing .mono{font-family:var(--mono)}#view-pricing .rv{opacity:0;transform:translateY(28px);transition:opacity .8s var(--ease),transform .8s var(--ease)}#view-pricing .rv.on{opacity:1;transform:none}#view-pricing .rv-d1{transition-delay:.1s}#view-pricing .rv-d2{transition-delay:.2s}#view-pricing .rv-d3{transition-delay:.3s}@media (prefers-reduced-motion:reduce){#view-pricing .rv{opacity:1;transform:none;transition:none}}#view-pricing header{
+    position:fixed;top:0;left:0;right:0;z-index:60;
+    background:rgba(255,255,255,.82);backdrop-filter:blur(18px);
+    border-bottom:1px solid rgba(228,231,235,.6);
+  }#view-pricing .hd{display:flex;align-items:center;justify-content:space-between;height:72px}#view-pricing .brand{display:flex;align-items:center;gap:11px;font-family:var(--outfit);font-size:19px;font-weight:600;letter-spacing:.01em}#view-pricing .brand svg{display:block}#view-pricing nav{display:flex;align-items:center;gap:6px;font-size:15px;color:var(--ink)}#view-pricing .pill{padding:8px 20px;border-radius:32px;transition:background .3s var(--ease);font-weight:400}#view-pricing .pill:hover{background:var(--panel)}#view-pricing .pill.active{background:var(--ink);color:#fff}#view-pricing .hd-cta{
+    margin-left:12px;font-family:var(--outfit);font-weight:500;
+    background:var(--ink);color:#fff;font-size:14px;
+    padding:9px 24px;border-radius:32px;transition:all .3s var(--ease);
+  }#view-pricing .hd-cta:hover{background:#2b323b;transform:translateY(-1px)}@media(max-width:820px){#view-pricing nav .pill{display:none}}#view-pricing .hero{padding:200px 0 70px;text-align:center;position:relative;overflow:hidden}#view-pricing .hero::before{
+    content:"";position:absolute;top:-320px;left:50%;transform:translateX(-50%);
+    width:1100px;height:640px;border-radius:50%;
+    background:radial-gradient(closest-side,rgba(122,39,255,.08),rgba(27,164,255,.05) 55%,transparent);
+    pointer-events:none;
+  }#view-pricing .hero-badge{
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:var(--outfit);font-size:13px;font-weight:500;color:var(--sub);
+    background:var(--panel);border:1px solid var(--line);
+    padding:7px 18px;border-radius:32px;margin-bottom:34px;position:relative;
+  }#view-pricing .hero-badge .dot{width:7px;height:7px;border-radius:50%;background:var(--grad-tri)}#view-pricing h1{
+    font-family:var(--outfit);font-weight:600;position:relative;
+    font-size:clamp(42px,6vw,70px);line-height:1.14;letter-spacing:-.015em;
+  }#view-pricing h1 .grad{background:var(--grad-purple);-webkit-background-clip:text;background-clip:text;color:transparent}#view-pricing .hero-sub{margin:24px auto 0;max-width:38em;font-size:18px;color:var(--sub);font-weight:300;position:relative}#view-pricing .hero-sub b{color:var(--ink);font-weight:500}#view-pricing .plans{padding:30px 0 40px}#view-pricing .plan-grid{display:grid;grid-template-columns:1fr 1.12fr 1fr;gap:22px;align-items:stretch}@media(max-width:960px){#view-pricing .plan-grid{grid-template-columns:1fr;max-width:520px;margin:0 auto}}#view-pricing .plan{
+    background:#fff;border:1px solid var(--line);border-radius:36px;
+    padding:44px 40px 40px;display:flex;flex-direction:column;position:relative;
+    transition:transform .4s var(--ease),box-shadow .4s var(--ease);
+  }#view-pricing .plan:hover{transform:translateY(-6px);box-shadow:0 28px 64px -28px rgba(24,30,37,.2)}#view-pricing .plan-name{font-family:var(--outfit);font-size:21px;font-weight:600;display:flex;align-items:center;gap:10px}#view-pricing .plan-tone{width:11px;height:11px;border-radius:50%;flex:none}#view-pricing .plan-lite .plan-tone{background:var(--grad-blue)}#view-pricing .plan-pro .plan-tone{background:var(--grad-purple)}#view-pricing .plan-max .plan-tone{background:var(--grad-pink)}#view-pricing .plan-tagline{font-size:13.5px;color:var(--faint);margin-top:2px;font-weight:300}#view-pricing .price{margin:30px 0 6px;display:flex;align-items:baseline;gap:4px;font-family:var(--outfit)}#view-pricing .price .cur{font-size:22px;font-weight:500;color:var(--sub)}#view-pricing .price .num{font-size:clamp(52px,4.6vw,64px);font-weight:700;letter-spacing:-.03em;line-height:1}#view-pricing .price .per{font-size:15px;color:var(--faint);font-weight:400}#view-pricing .plan-lite .price .num,#view-pricing .plan-max .price .num{color:var(--ink)}#view-pricing .credits{font-size:14.5px;color:var(--sub);font-weight:300}#view-pricing .credits b{color:var(--ink);font-weight:600;font-family:var(--outfit)}#view-pricing .unit-price{
+    display:inline-block;margin-top:10px;font-family:var(--mono);font-size:12px;color:var(--faint);
+    background:var(--panel);border-radius:20px;padding:4px 13px;
+  }#view-pricing .plan ul{margin:28px 0 34px;display:flex;flex-direction:column;gap:13px;flex:1}#view-pricing .plan ul li{list-style:none;position:relative;padding-left:17px;font-size:14.5px;color:var(--sub);font-weight:300}#view-pricing .plan ul li b{color:var(--ink);font-weight:500}#view-pricing .plan ul li::before{content:"";position:absolute;left:0;top:.52em;width:6px;height:6px;border-radius:50%}#view-pricing .plan-lite ul li::before{background:#38CDFF}#view-pricing .plan-max ul li::before{background:#FF7038}#view-pricing .plan .btn{justify-content:center}#view-pricing .btn{
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:var(--outfit);font-size:15px;font-weight:500;
+    padding:13px 32px;border-radius:32px;transition:all .3s var(--ease);
+  }#view-pricing .btn-ink{background:var(--ink);color:#fff;box-shadow:0 8px 24px -8px rgba(24,30,37,.35)}#view-pricing .btn-ink:hover{transform:translateY(-2px);box-shadow:0 16px 40px -10px rgba(24,30,37,.4)}#view-pricing .btn-ghost{border:1px solid var(--line);color:var(--ink)}#view-pricing .btn-ghost:hover{border-color:var(--ink);transform:translateY(-2px)}#view-pricing .plan-pro{
+    background:#181E25;color:#fff;border:none;
+    box-shadow:0 36px 88px -32px rgba(24,30,37,.5);
+  }@media(min-width:961px){#view-pricing .plan-pro{transform:translateY(-14px)}#view-pricing .plan-pro:hover{transform:translateY(-20px)}}#view-pricing .plan-pro::before{
+    content:"";position:absolute;top:0;left:36px;right:36px;height:3px;border-radius:3px;
+    background:var(--grad-tri);
+  }#view-pricing .plan-pro .plan-tagline{color:rgba(255,255,255,.45)}#view-pricing .plan-pro .price .cur,#view-pricing .plan-pro .credits{color:rgba(255,255,255,.6)}#view-pricing .plan-pro .credits b{color:#fff}#view-pricing .plan-pro .price .num{
+    background:linear-gradient(100deg,#A36AFF,#38CDFF);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }#view-pricing .plan-pro .unit-price{background:rgba(255,255,255,.08);color:rgba(255,255,255,.55)}#view-pricing .plan-pro ul li{color:rgba(255,255,255,.62)}#view-pricing .plan-pro ul li b{color:#fff}#view-pricing .plan-pro ul li::before{background:#A36AFF}#view-pricing .plan-pro .btn{background:#fff;color:var(--ink);box-shadow:0 8px 32px -8px rgba(163,106,255,.55)}#view-pricing .plan-pro .btn:hover{transform:translateY(-2px);box-shadow:0 16px 44px -10px rgba(163,106,255,.6)}#view-pricing .pop-badge{
+    position:absolute;top:-15px;left:50%;transform:translateX(-50%);
+    font-family:var(--outfit);font-size:12.5px;font-weight:600;letter-spacing:.06em;
+    background:var(--grad-purple);color:#fff;padding:7px 22px;border-radius:32px;
+    box-shadow:0 8px 22px -6px rgba(122,39,255,.5);white-space:nowrap;
+  }#view-pricing .plans-note{margin-top:30px;text-align:center;font-size:13.5px;color:var(--faint);font-weight:300}#view-pricing .plans-note b{color:var(--sub);font-weight:500}#view-pricing section{padding:90px 0}#view-pricing .sec-head{margin-bottom:44px}#view-pricing .sec-no{font-family:var(--outfit);font-size:13px;font-weight:600;letter-spacing:.14em;color:var(--faint);text-transform:uppercase;margin-bottom:14px}#view-pricing h2{font-family:var(--outfit);font-weight:600;font-size:clamp(28px,3.6vw,42px);letter-spacing:-.01em;line-height:1.25}#view-pricing .sec-sub{margin-top:12px;color:var(--sub);font-size:16px;max-width:38em;font-weight:300}#view-pricing .table-shell{
+    border:1px solid var(--line);border-radius:32px;overflow:hidden;background:#fff;
+  }#view-pricing .table-scroll{overflow-x:auto}#view-pricing table{width:100%;border-collapse:collapse;min-width:640px;font-size:14.5px}#view-pricing thead th{
+    font-family:var(--outfit);font-weight:600;font-size:15px;text-align:left;
+    padding:20px 26px;background:var(--panel);border-bottom:1px solid var(--line);
+  }#view-pricing thead th.dim{width:150px;color:var(--faint);font-size:13px;letter-spacing:.06em;font-weight:500}#view-pricing thead th .th-tag{
+    display:inline-block;margin-left:9px;font-size:11px;font-weight:600;letter-spacing:.05em;
+    background:var(--grad-purple);color:#fff;border-radius:20px;padding:3px 11px;vertical-align:2px;
+  }#view-pricing tbody th{
+    text-align:left;font-weight:500;color:var(--ink);font-size:14px;white-space:nowrap;
+    padding:17px 26px;background:var(--panel);border-bottom:1px solid rgba(228,231,235,.55);width:150px;
+  }#view-pricing tbody td{
+    padding:17px 26px;border-bottom:1px solid rgba(228,231,235,.55);
+    color:var(--sub);font-weight:300;transition:background .25s var(--ease);
+  }#view-pricing tbody tr:last-child th,#view-pricing tbody tr:last-child td{border-bottom:none}#view-pricing tbody td.hot{background:rgba(122,39,255,.035);color:var(--ink);font-weight:400}#view-pricing tbody tr:hover td{background:rgba(122,39,255,.045)}#view-pricing tbody tr:hover td.hot{background:rgba(122,39,255,.08)}#view-pricing td .big{font-family:var(--outfit);font-weight:600;font-size:17px;color:var(--ink)}#view-pricing td .sm{display:block;font-size:12px;color:var(--faint);font-weight:300;margin-top:1px}#view-pricing .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}@media(max-width:820px){#view-pricing .steps{grid-template-columns:1fr}}#view-pricing .step{
+    background:var(--panel);border-radius:32px;padding:36px 34px;position:relative;
+    transition:transform .35s var(--ease);
+  }#view-pricing .step:hover{transform:translateY(-4px)}#view-pricing .step .no{
+    font-family:var(--outfit);font-weight:700;font-size:15px;width:38px;height:38px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;color:#fff;margin-bottom:18px;
+  }#view-pricing .step:nth-child(1) .no{background:var(--grad-purple)}#view-pricing .step:nth-child(2) .no{background:var(--grad-blue)}#view-pricing .step:nth-child(3) .no{background:var(--grad-pink)}#view-pricing .step h3{font-size:16.5px;font-weight:600;margin-bottom:8px}#view-pricing .step p{font-size:14px;color:var(--sub);font-weight:300}#view-pricing .step p b{color:var(--ink);font-weight:500}#view-pricing .faq{max-width:760px;margin:0 auto}#view-pricing .faq details{
+    border:1px solid var(--line);border-radius:24px;background:#fff;
+    padding:22px 30px;margin-bottom:14px;transition:border-color .3s var(--ease);
+  }#view-pricing .faq details:hover{border-color:rgba(122,39,255,.35)}#view-pricing .faq summary{
+    cursor:pointer;list-style:none;font-weight:500;font-size:15.5px;
+    display:flex;justify-content:space-between;align-items:center;gap:16px;
+  }#view-pricing .faq summary::-webkit-details-marker{display:none}#view-pricing .faq summary::after{
+    content:"+";font-family:var(--outfit);font-size:20px;color:var(--faint);
+    transition:transform .3s var(--ease);flex:none;
+  }#view-pricing .faq details[open] summary::after{transform:rotate(45deg)}#view-pricing .faq details p{margin-top:12px;font-size:14.5px;color:var(--sub);font-weight:300}#view-pricing .faq details p b{color:var(--ink);font-weight:500}#view-pricing .cta-block{
+    border-radius:60px;background:#181E25;color:#fff;
+    padding:96px 72px;text-align:center;position:relative;overflow:hidden;
+  }#view-pricing .cta-block::before{
+    content:"";position:absolute;bottom:-260px;left:50%;transform:translateX(-50%);
+    width:900px;height:480px;border-radius:50%;
+    background:radial-gradient(closest-side,rgba(122,39,255,.3),rgba(27,164,255,.14) 55%,transparent);
+    pointer-events:none;
+  }#view-pricing .cta-block h2{color:#fff;position:relative;font-size:clamp(28px,4.2vw,50px);max-width:16em;margin:0 auto}#view-pricing .cta-block h2 .grad{background:linear-gradient(100deg,#A36AFF,#38CDFF);-webkit-background-clip:text;background-clip:text;color:transparent}#view-pricing .cta-block p{margin:18px auto 0;color:rgba(255,255,255,.66);max-width:34em;font-weight:300;position:relative}#view-pricing .cta-block .hero-cta{margin-top:38px;position:relative;display:flex;gap:14px;justify-content:center;flex-wrap:wrap}#view-pricing .cta-block .btn-light{background:#fff;color:var(--ink);box-shadow:0 8px 32px -8px rgba(163,106,255,.5)}#view-pricing .cta-block .btn-light:hover{transform:translateY(-2px);box-shadow:0 16px 44px -10px rgba(163,106,255,.6)}#view-pricing .cta-block .btn-dark-g{border:1px solid rgba(255,255,255,.24);color:#fff}#view-pricing .cta-block .btn-dark-g:hover{border-color:#fff;transform:translateY(-2px)}@media(max-width:960px){#view-pricing .cta-block{border-radius:36px;padding:72px 32px}}#view-pricing footer{padding:48px 0;font-size:13.5px;color:var(--faint)}#view-pricing .ft{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center}#view-pricing .ft .en{letter-spacing:.06em}
+
+/* ===== 协议页样式（已限定作用域） ===== */
+:root{--ink:#181E25;--faint:#8A92A0;--line:#E6E9EE;--paper:#FFFFFF;--grad:linear-gradient(100deg,#7A27FF 0%,#1BA4FF 50%,#EC4899 100%)}*{margin:0;padding:0;box-sizing:border-box}#view-terms .wrap,#view-privacy .wrap,#view-cross-border .wrap{max-width:820px;margin:0 auto;padding:0 24px}#view-terms header,#view-privacy header,#view-cross-border header{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.85);backdrop-filter:saturate(180%) blur(12px);border-bottom:1px solid var(--line)}#view-terms .nav,#view-privacy .nav,#view-cross-border .nav{display:flex;align-items:center;justify-content:space-between;height:60px}#view-terms .brand,#view-privacy .brand,#view-cross-border .brand{font-weight:700;font-size:17px;letter-spacing:-.02em;color:var(--ink);text-decoration:none}#view-terms .lang-switch,#view-privacy .lang-switch,#view-cross-border .lang-switch{display:flex;gap:4px;background:#F3F5F8;border-radius:999px;padding:3px}#view-terms .lang-btn,#view-privacy .lang-btn,#view-cross-border .lang-btn{border:none;background:transparent;padding:5px 14px;border-radius:999px;font-size:12.5px;font-weight:500;cursor:pointer;color:var(--faint);transition:.2s}#view-terms .lang-btn.active,#view-privacy .lang-btn.active,#view-cross-border .lang-btn.active{background:var(--ink);color:#fff}#view-terms .hero,#view-privacy .hero,#view-cross-border .hero{padding:56px 0 40px;border-bottom:1px solid var(--line)}#view-terms .hero h1,#view-privacy .hero h1,#view-cross-border .hero h1{font-size:34px;font-weight:700;letter-spacing:-.03em;line-height:1.2}#view-terms .hero .sub,#view-privacy .hero .sub,#view-cross-border .hero .sub{margin-top:10px;color:var(--faint);font-size:14px}#view-terms .legal,#view-privacy .legal,#view-cross-border .legal{padding:48px 0 80px}#view-terms .legal h2,#view-privacy .legal h2,#view-cross-border .legal h2{font-size:20px;font-weight:600;margin:36px 0 14px;letter-spacing:-.01em}#view-terms .legal h3,#view-privacy .legal h3,#view-cross-border .legal h3{font-size:16px;font-weight:600;margin:22px 0 10px}#view-terms .legal p,#view-privacy .legal p,#view-cross-border .legal p,#view-terms .legal li,#view-privacy .legal li,#view-cross-border .legal li{margin-bottom:12px;color:#3A4250}#view-terms .legal ol,#view-privacy .legal ol,#view-cross-border .legal ol,#view-terms .legal ul,#view-privacy .legal ul,#view-cross-border .legal ul{padding-left:22px;margin-bottom:12px}#view-terms .legal li,#view-privacy .legal li,#view-cross-border .legal li{margin-bottom:8px}#view-terms .legal strong,#view-privacy .legal strong,#view-cross-border .legal strong{font-weight:600;color:var(--ink)}#view-terms .legal .note,#view-privacy .legal .note,#view-cross-border .legal .note{background:#F6F8FB;border-left:3px solid #7A27FF;padding:14px 18px;border-radius:0 8px 8px 0;margin:18px 0;font-size:14px}#view-terms .legal a,#view-privacy .legal a,#view-cross-border .legal a{color:#7A27FF;text-decoration:none}#view-terms .legal a:hover,#view-privacy .legal a:hover,#view-cross-border .legal a:hover{text-decoration:underline}#view-terms footer,#view-privacy footer,#view-cross-border footer{border-top:1px solid var(--line);padding:32px 0;font-size:13px;color:var(--faint)}#view-terms .ft,#view-privacy .ft,#view-cross-border .ft{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}#view-terms .ft a,#view-privacy .ft a,#view-cross-border .ft a{color:var(--faint);text-decoration:none;margin-right:18px}#view-terms .ft a:hover,#view-privacy .ft a:hover,#view-cross-border .ft a:hover{color:var(--ink)}[data-lang="en"]{display:none}html.en [data-lang="zh"]{display:none}html.en [data-lang="en"]{display:block}@media(max-width:640px){#view-terms .hero h1,#view-privacy .hero h1,#view-cross-border .hero h1{font-size:26px}#view-terms .legal,#view-privacy .legal,#view-cross-border .legal{padding:32px 0 60px}}
+
+
+/* ===== 视图切换 ===== */
+.view{display:none}
+.view.active{display:block}
+.pill.active{background:var(--ink);color:#fff}
+.lang-btn{border:none;background:transparent;padding:5px 14px;border-radius:999px;font-size:12.5px;font-weight:500;cursor:pointer;color:var(--faint);transition:.2s}
+.lang-btn.active{background:var(--ink);color:#fff}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap hd">
+    <a class="brand" href="#home" data-route="home">
+      <img src="logo.PNG" alt="CoCode logo" width="34" height="34"
+        style="display:block;border-radius:9px;object-fit:cover;box-shadow:0 2px 8px -2px rgba(24,30,37,.25)">
+      CoCode
+    </a>
+    <nav>
+      <a class="pill" href="#home" data-route="home">首页</a>
+      <a class="pill" href="#features" data-scroll="features">功能</a>
+      <a class="pill" href="#versions" data-scroll="versions">双版本</a>
+      <a class="pill" href="#pricing" data-route="pricing">定价</a>
+      <a class="pill" href="#download" data-scroll="download">下载</a>
+      <a class="hd-cta" href="https://github.com/CoCodeAgent/CoCode" target="_blank" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ============ 首页 ============ -->
+<div id="view-home" class="view active">
+<!-- ================= HERO ================= -->
+<div class="hero">
+  <div class="wrap">
+    <h1 class="rv">会干活的<br>编程 <span class="grad">Agent</span></h1>
+    <p class="hero-sub rv rv-d1">CoCode Desktop 替你<b>读代码、改文件、跑命令、开检查点</b>——每一步摆在眼前，每一处改动可回滚</p>
+    <div class="hero-cta rv rv-d2">
+      <a class="btn btn-ink" href="#download">下载 CoCode Desktop</a>
+      <a class="btn btn-ghost" href="#features">了解功能</a>
+    </div>
+    <div class="hero-feats rv rv-d2">
+      <div class="hf">
+        <span class="tag en">BRING YOUR OWN MODEL</span>
+        <h3>自接入模型</h3>
+        <p>DeepSeek、智谱、Moonshot、本地 Ollama、自建 vLLM——任何 OpenAI 兼容接口都能接，模型不支持工具调用时自动降级，不会整个失效</p>
+      </div>
+      <div class="hf">
+        <span class="tag en">TOKEN EFFICIENT</span>
+        <h3>低 token 多干活</h3>
+        <p>repo map 替掉几十轮搜索，本地索引增量落盘，上下文自动压缩，prompt cache 全程透传——同样的任务，账单少一截</p>
+      </div>
+      <div class="hf">
+        <span class="tag en">CHECKPOINT</span>
+        <h3>每轮可回滚</h3>
+        <p>涉及写入和执行的轮次，动手前自动快照改砸了一键回滚到任意一轮——这也是敢开全自动模式的前提</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= 功能三大块 ================= -->
+<section id="features">
+  <div class="wrap">
+
+    <div class="sec-head rv">
+      <div class="sec-no">01 — FEATURES</div>
+      <h2>真实工程级，<br>不止生成代码，更懂干活</h2>
+    </div>
+
+    <!-- 块 1：工具 -->
+    <div class="feature-block fb-purple rv">
+      <div class="fb-grid">
+        <div>
+          <span class="fb-kicker en">18 BUILT-IN TOOLS</span>
+          <div class="fb-title">十八个内置工具，<br>从 <em>读写执行</em> 到浏览器</div>
+          <p class="fb-desc">Bash、Read、Write、Edit、Git、WebFetch、LSP、语义检索一应俱全，还有<b>能截图给模型看的内置浏览器</b>和并行调研的子代理</p>
+          <ul class="fb-points">
+            <li>结构化任务面板，计划实时可见</li>
+            <li>Subagent 派发并行调研，权限只降不升</li>
+            <li>MCP 服务器接入，与 Claude Desktop 同形</li>
+          </ul>
+        </div>
+        <div class="fb-visual">
+          <div class="term">
+            <div class="term-bar"><i></i><i></i><i></i><span>cocode — session</span></div>
+            <div class="term-body">
+              <div><span class="u">›</span> <span class="c">RepoMap</span> <span class="c">加载仓库符号骨架（省 token）</span></div>
+              <div><span class="u">›</span> <span class="c">Search</span> <span class="c">"权限决策"</span> → <span class="g">agent.js:1204</span></div>
+              <div><span class="u">›</span> <span class="c">Browser</span> <span class="c">打开登录页</span> → <span class="b">screenshot ✓</span></div>
+              <div><span class="u">›</span> <span class="c">Subagent ×3</span> <span class="c">并行调研三个模块</span> <span class="g">✓</span></div>
+              <div><span class="k">18 tools ready</span> <span class="c">— 0 npm dependencies</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 块 2：权限 -->
+    <div class="feature-block fb-blue rv">
+      <div class="fb-grid">
+        <div class="fb-visual">
+          <div class="term">
+            <div class="term-bar"><i></i><i></i><i></i><span>permission — confirm</span></div>
+            <div class="term-body">
+              <div><span class="c">Bash</span> <span class="o">npm install left-pad</span></div>
+              <div><span class="c">┌─────────────────────────────┐</span></div>
+              <div><span class="c">│</span> 允许本次执行 &nbsp;&nbsp;<span class="c">↑↓ 选择</span></div>
+              <div><span class="c">│</span> <span class="b">以后都允许</span> <span class="c">— 写入允许清单</span></div>
+              <div><span class="c">│</span> 拒绝本次</div>
+              <div><span class="c">└─────────────────────────────┘</span></div>
+              <div><span class="g">✓ sandbox:</span> <span class="c">路径沙箱 · 环境净化 · 密钥脱敏</span></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <span class="fb-kicker en">HUMAN IN THE LOOP</span>
+          <div class="fb-title">五档权限，<br><em>控制权</em>一直在你手里</div>
+          <p class="fb-desc">从「只读契约」到「全自动」逐级放开每次执行前弹确认卡，选一次「以后都允许」，同类操作<b>永久免打扰</b>——不是处处问你，也不是处处瞒你</p>
+          <ul class="fb-points">
+            <li>路径沙箱：符号链接越界一律拦下</li>
+            <li>子进程环境净化：API_KEY、TOKEN 一律剥离</li>
+            <li>密钥脱敏：工具输出与日志全量过 redact()</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 块 3：可观测 -->
+    <div class="feature-block fb-pink rv">
+      <div class="fb-grid">
+        <div>
+          <span class="fb-kicker en">TRACE &amp; REPLAY</span>
+          <div class="fb-title">跑过就留痕，<br>每个决策<em>可回放</em></div>
+          <p class="fb-desc">每次运行写一份完整时间线：请求、工具调用、权限决策、上下文压缩出问题时你看到的是<b>它为什么这么做</b>，而不是一团黑箱</p>
+          <ul class="fb-points">
+            <li>「运行记录」面板随时回放任意一次运行</li>
+            <li>检查点内容寻址快照，自动保留最近 10 轮</li>
+            <li>默认不记对话正文，开全文也先过脱敏</li>
+          </ul>
+        </div>
+        <div class="fb-visual">
+          <div class="term">
+            <div class="term-bar"><i></i><i></i><i></i><span>trace — timeline</span></div>
+            <div class="term-body">
+              <div><span class="c">10:24:01</span> <span class="k">POST /chat</span> <span class="c">glm-4.7</span></div>
+              <div><span class="c">10:24:03</span> <span class="u">Edit</span> login.tsx <span class="g">+12</span> <span class="r">−3</span></div>
+              <div><span class="c">10:24:05</span> <span class="u">Bash</span> npm run build <span class="g">✓ 4.2s</span></div>
+              <div><span class="c">10:24:07</span> <span class="o">checkpoint #3</span> <span class="c">→ snapshot 1.8MB</span></div>
+              <div><span class="c">10:24:09</span> <span class="b">context compact</span> <span class="c">18.2k → 9.6k tok</span></div>
+              <div><span class="c">10:24:10</span> <span class="g">✓ finished</span> <span class="c">— 可回放 · 可回滚</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ================= CoCode Desktop ================= -->
+<section id="versions" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="sec-no">02 — SURFACES</div>
+      <h2>CoCode Desktop，<br>Agent 的每一步<em style="font-style:normal;background:var(--grad-blue);-webkit-background-clip:text;background-clip:text;color:transparent">摆在眼前</em></h2>
+      <p class="sec-sub">不必盯终端、不必记命令桌面版把整个 Agent 装进一个清爽的窗口，会话、配置、工具全部开箱即用</p>
+    </div>
+    <div class="duo rv">
+      <div class="duo-card">
+        <div class="ico en" style="font-family:var(--outfit);font-size:15px;font-weight:600">GUI</div>
+        <h3>看得见的工作台</h3>
+        <div class="dc-en">Everything On Screen</div>
+        <p>聊天即协作：Agent 的每次读写、每条命令都以卡片流式呈现，支持什么、反对什么，一键决定</p>
+        <ul><li>会话侧栏</li><li>工具调用卡片</li><li>权限确认卡</li><li>计划面板</li></ul>
+      </div>
+      <div class="duo-card">
+        <div class="ico" style="font-size:14px;font-weight:700">⌘</div>
+        <h3>改了什么，一目了然</h3>
+        <div class="dc-en">Diff · Checkpoint · Trace</div>
+        <p>内置变更预览逐行着色展示未提交改动；每轮自动快照，不满意就地回滚；运行记录随时回放</p>
+        <ul><li>变更预览</li><li>检查点回滚</li><li>运行记录</li><li>内置浏览器</li></ul>
+      </div>
+    </div>
+    <p class="rv" style="margin-top:28px;font-size:14px;color:var(--faint);text-align:center">也提供 CLI 版本（终端 REPL），供偏好在命令行工作的用户使用</p>
+  </div>
+</section>
+
+<!-- ================= 数字 ================= -->
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="sec-no">03 — IN NUMBERS</div>
+      <h2>几个实在的数字</h2>
+    </div>
+    <div class="nums rv">
+      <div class="num"><div class="v">0</div><div class="l">核心包 npm 依赖——纯 Node.js + fetch</div></div>
+      <div class="num"><div class="v">18</div><div class="l">内置工具，覆盖读写执行到浏览</div></div>
+      <div class="num"><div class="v">5</div><div class="l">档权限模式，从只读到全自动</div></div>
+      <div class="num"><div class="v">140+</div><div class="l">全链路集成测试用例守住行为</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 下载 ================= -->
+<section id="download" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="sec-no">04 — DOWNLOAD</div>
+      <h2>下载 CoCode Desktop</h2>
+      <p class="sec-sub">下载 CoCode Desktop，让 AI 接管你的电脑，助你完成工作，与你编辑作品</p>
+    </div>
+    <div class="dl-grid rv">
+      <div class="dl-card">
+        <div class="dl-os">macOS</div>
+        <div class="dl-note">Apple Silicon / Intel</div>
+        <div class="dl-soon">敬请期待</div>
+      </div>
+      <div class="dl-card">
+        <div class="dl-os">Windows</div>
+        <div class="dl-note">64-bit Installer</div>
+        <div class="dl-soon">敬请期待</div>
+      </div>
+      <div class="dl-card">
+        <div class="dl-os">源码构建</div>
+        <div class="dl-note">Node 18+ · Electron</div>
+        <div class="dl-soon">敬请期待</div>
+      </div>
+    </div>
+    <p class="rv" style="margin-top:26px;font-size:13.5px;color:var(--faint);text-align:center">
+      首次启动后，在设置里填入任意 OpenAI 兼容模型的地址与 Key（DeepSeek、智谱、Moonshot、本地 Ollama…），即可开始使用
+    </p>
+  </div>
+</section>
+
+<!-- ================= CTA ================= -->
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="about-cta rv">
+      <h2>下次改代码，<br>让 CoCode <span class="grad">动手</span></h2>
+      <p>AGPL-3.0 开源 · 本地运行 · 数据不出你的机器</p>
+      <div class="hero-cta">
+        <a class="btn btn-ink" href="https://github.com/CoCodeAgent/CoCode" target="_blank" rel="noopener">GitHub 仓库</a>
+        <a class="btn btn-ghost" href="#download">下载</a>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ============ 定价 ============ -->
+<div id="view-pricing" class="view">
+<!-- ================= HERO ================= -->
+<div class="hero">
+  <div class="wrap">
+    <span class="hero-badge rv"><span class="dot"></span>官方模型订阅 · 月付积分制</span>
+    <h1 class="rv rv-d1">不想管 Key？<br>用<span class="grad">官方模型</span>就好</h1>
+    <p class="hero-sub rv rv-d2">三档月订套餐，每月到账<b>积分</b>——官方模型调用、语音识别都按积分扣，<b>开箱即用，无需自备 API Key</b>。自带 Key 的 BYOK 模式依旧永久免费。</p>
+  </div>
+</div>
+
+<!-- ================= 三档套餐 ================= -->
+<div class="plans">
+  <div class="wrap">
+    <div class="plan-grid">
+
+      <div class="plan plan-lite rv">
+        <div class="plan-name"><span class="plan-tone"></span>Lite</div>
+        <div class="plan-tagline">轻量尝鲜</div>
+        <div class="price"><span class="cur">¥</span><span class="num">39</span><span class="per">/ 月</span></div>
+        <div class="credits">每月 <b>2,000</b> 积分</div>
+        <span class="unit-price">折合 ¥0.0195 / 积分</span>
+        <ul>
+          <li><b>Flash 全系</b>基础档模型</li>
+          <li><b>1 路</b>并发任务</li>
+          <li>语音识别 <b>含</b>（按积分扣）</li>
+          <li>Desktop 与 CLI 全功能</li>
+        </ul>
+        <a class="btn btn-ghost" href="https://ifdian.net/a/zhenxun111" target="_blank" rel="noopener">订阅 Lite</a>
+      </div>
+
+      <div class="plan plan-pro rv rv-d1">
+        <span class="pop-badge">推荐 · 主力之选</span>
+        <div class="plan-name"><span class="plan-tone"></span>Pro</div>
+        <div class="plan-tagline">日常开发的主力档</div>
+        <div class="price"><span class="cur">¥</span><span class="num">99</span><span class="per">/ 月</span></div>
+        <div class="credits">每月 <b>6,000</b> 积分</div>
+        <span class="unit-price">折合 ¥0.0165 / 积分</span>
+        <ul>
+          <li><b>全模型</b>不限档位</li>
+          <li><b>3 路</b>并发任务</li>
+          <li>语音识别 <b>含</b>（按积分扣）</li>
+          <li>Desktop 与 CLI 全功能</li>
+        </ul>
+        <a class="btn" href="https://ifdian.net/a/zhenxun111" target="_blank" rel="noopener">订阅 Pro</a>
+      </div>
+
+      <div class="plan plan-max rv rv-d2">
+        <div class="plan-name"><span class="plan-tone"></span>Max</div>
+        <div class="plan-tagline">重度专业</div>
+        <div class="price"><span class="cur">¥</span><span class="num">299</span><span class="per">/ 月</span></div>
+        <div class="credits">每月 <b>25,000</b> 积分</div>
+        <span class="unit-price">折合 ¥0.012 / 积分</span>
+        <ul>
+          <li><b>全模型</b>不限档位</li>
+          <li><b>10 路</b>并发任务</li>
+          <li>语音识别 <b>含</b>，每月另赠 <b>1,000 积分</b>语音额度</li>
+          <li>Desktop 与 CLI 全功能</li>
+        </ul>
+        <a class="btn btn-ghost" href="https://ifdian.net/a/zhenxun111" target="_blank" rel="noopener">订阅 Max</a>
+      </div>
+
+    </div>
+    <p class="plans-note rv rv-d2">三档均为月订，<b>按月付费、随时可停</b>；积分到账后当月有效，模型调用与语音识别统一按积分扣减</p>
+  </div>
+</div>
+
+<!-- ================= 权益对比 ================= -->
+<section style="padding-top:50px">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="sec-no">COMPARE — 权益明细</div>
+      <h2>三档权益，一表看清</h2>
+      <p class="sec-sub">积分单价随档位递减，重度使用更划算；并发任务指同时运行的 Agent 会话数</p>
+    </div>
+    <div class="table-shell rv rv-d1">
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th class="dim">维度</th>
+              <th>Lite</th>
+              <th>Pro<span class="th-tag">推荐</span></th>
+              <th>Max</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>月价</th>
+              <td><span class="big">¥39</span></td>
+              <td class="hot"><span class="big">¥99</span></td>
+              <td><span class="big">¥299</span></td>
+            </tr>
+            <tr>
+              <th>月积分</th>
+              <td>2,000</td>
+              <td class="hot">6,000</td>
+              <td>25,000</td>
+            </tr>
+            <tr>
+              <th>积分单价</th>
+              <td>¥0.0195</td>
+              <td class="hot">¥0.0165</td>
+              <td>¥0.012</td>
+            </tr>
+            <tr>
+              <th>模型范围</th>
+              <td>基础档（Flash 全系）</td>
+              <td class="hot">全模型</td>
+              <td>全模型</td>
+            </tr>
+            <tr>
+              <th>并发任务</th>
+              <td>1 路</td>
+              <td class="hot">3 路</td>
+              <td>10 路</td>
+            </tr>
+            <tr>
+              <th>语音识别</th>
+              <td>含（扣积分）</td>
+              <td class="hot">含（扣积分）</td>
+              <td>含 + 每月赠 1,000 积分语音额度</td>
+            </tr>
+            <tr>
+              <th>定位</th>
+              <td>轻量尝鲜</td>
+              <td class="hot">主力之选</td>
+              <td>重度专业</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 三步上手 ================= -->
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="sec-no">HOW IT WORKS</div>
+      <h2>三步开跑</h2>
+    </div>
+    <div class="steps rv rv-d1">
+      <div class="step">
+        <div class="no">1</div>
+        <h3>订阅套餐</h3>
+        <p>在爱发电选择 <b>Lite / Pro / Max</b> 月订档位完成支付</p>
+      </div>
+      <div class="step">
+        <div class="no">2</div>
+        <h3>订单号兑换</h3>
+        <p>打开 CoCode → 设置 → 官方模型，输入订单号一键兑换<b>当月积分</b></p>
+      </div>
+      <div class="step">
+        <div class="no">3</div>
+        <h3>开箱即用</h3>
+        <p>会话里直接选用官方模型，调用与语音识别<b>按积分自动扣减</b></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FAQ ================= -->
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="sec-no">FAQ</div>
+      <h2>常见问题</h2>
+    </div>
+    <div class="faq rv rv-d1">
+      <details>
+        <summary>什么是积分？</summary>
+        <p>积分是官方模型订阅的计量单位。<b>模型调用</b>与<b>语音识别</b>都按用量扣减积分，用多少扣多少，月积分用完当月不再扣减。</p>
+      </details>
+      <details>
+        <summary>订阅后怎么兑换积分？</summary>
+        <p>在爱发电完成套餐购买后，复制<b>订单号</b>，打开 CoCode → 设置 → 官方模型 → 输入订单号兑换，积分即时到账。</p>
+      </details>
+      <details>
+        <summary>不用订阅，CoCode 还能用吗？</summary>
+        <p>能。CoCode 本身 <b>AGPL-3.0 开源、本地运行、永久免费</b>，随时填入任意 OpenAI 兼容模型的 Key（DeepSeek、智谱、Moonshot、本地 Ollama…）即可使用。官方模型订阅只是给「不想管理 Key」的用户提供的开箱即用选项。</p>
+      </details>
+      <details>
+        <summary>并发任务是什么意思？</summary>
+        <p>指<b>同时运行的 Agent 会话数</b>。Lite 可同时跑 1 个任务，Pro 3 个，Max 10 个——适合并行调研多个模块或同时推进多个仓库。</p>
+      </details>
+      <details>
+        <summary>Flash 全系和全模型有什么区别？</summary>
+        <p>Lite 档可用<b>基础档（Flash 全系）</b>模型，速度快、适合日常轻量任务；Pro / Max 档解锁<b>全部官方模型</b>，复杂工程任务不受限。</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CTA ================= -->
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="cta-block rv">
+      <h2>选一档套餐，<br>让官方模型马上<span class="grad">开工</span></h2>
+      <p>月付积分制 · 订单号即时兑换 · 也可以永远自带 Key 免费用 CoCode</p>
+      <div class="hero-cta">
+        <a class="btn btn-light" href="https://ifdian.net/a/zhenxun111" target="_blank" rel="noopener">去爱发电订阅</a>
+        <a class="btn btn-dark-g" href="index.html#download">下载 CoCode Desktop</a>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ============ 用户协议 ============ -->
+<div id="view-terms" class="view">
+<header>
+  <div class="wrap nav">
+    <a href="index.html" class="brand">CoCode</a>
+    <div class="lang-switch">
+      <button class="lang-btn active" data-lang="zh">中文</button>
+      <button class="lang-btn" data-lang="en">EN</button>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <h1 data-lang="zh">用户协议</h1>
+    <h1 data-lang="en">Terms of Service</h1>
+    <p class="sub" data-lang="zh">更新日期：2026 年 9 月 19 日 &nbsp;·&nbsp; 生效日期：2026 年 9 月 19 日</p>
+    <p class="sub" data-lang="en">Last updated: September 19, 2026 &nbsp;·&nbsp; Effective date: September 19, 2026</p>
+  </div>
+</section>
+
+<section class="legal wrap">
+
+  <!-- 1. 导言 -->
+  <h2 data-lang="zh">一、导言</h2>
+  <h2 data-lang="en">1. Introduction</h2>
+  <p data-lang="zh">欢迎使用 CoCode。CoCode 是一款由 CoCode 运营团队（以下简称"我们"）开发的 AI 编程代理工具，以桌面应用程序、命令行工具（CLI）、网站及相关服务（以下统称"本服务"）的形式向你提供。CoCode 旨在帮助你更高效地完成编码、调试、重构、文档撰写等软件工程任务，支持你使用自己配置的第三方模型，也提供由我们运营的官方模型订阅服务。</p>
+  <p data-lang="en">Welcome to CoCode. CoCode is an AI programming agent tool developed and operated by the CoCode Team (hereinafter "we", "us", or "our"), provided to you in the form of a desktop application, command-line interface (CLI), website, and related services (collectively, the "Service"). CoCode is designed to help you complete software engineering tasks such as coding, debugging, refactoring, and documentation more efficiently. It supports third-party models configured with your own credentials, as well as an official model subscription service operated by us.</p>
+  <p data-lang="zh">本用户协议（以下简称"本协议"）是你与我们之间就注册、登录、使用本服务所订立的协议，与你勾选确认的《隐私政策》《跨境数据传输协议》共同构成完整的约定。请你在使用本服务前认真阅读并充分理解本协议，特别是以加粗形式提示的免除或减轻我们责任、限制你权利的条款。你勾选"我已阅读并同意用户协议"即表示你已完整阅读并理解本协议。</p>
+  <p data-lang="en">These Terms of Service (the "Agreement") constitute an agreement between you and us regarding your registration, login, and use of the Service, and together with the Privacy Policy and the Cross-Border Data Transfer Agreement that you confirm by checking the corresponding boxes, they form a complete set of agreements. Please read this Agreement carefully before using the Service, especially the clauses highlighted in bold that exempt or reduce our liability or limit your rights. By checking "I have read and agree to the Terms of Service", you represent that you have fully read and understood this Agreement.</p>
+  <div class="note" data-lang="zh"><strong>如你不同意本协议，请勿注册账号或使用本服务。你注册、登录或使用本服务，即视为你已阅读、理解并同意接受本协议的全部条款。如你是未成年人，请在监护人陪同下阅读本协议，并在取得监护人同意后使用本服务。</strong></div>
+  <div class="note" data-lang="en"><strong>If you do not agree to this Agreement, please do not register an account or use the Service. By registering, logging in, or using the Service, you are deemed to have read, understood, and agreed to all terms of this Agreement. If you are a minor, please read this Agreement under the supervision of a guardian and use the Service with the guardian's consent.</strong></div>
+
+  <!-- 2. 定义 -->
+  <h2 data-lang="zh">二、定义</h2>
+  <h2 data-lang="en">2. Definitions</h2>
+  <p data-lang="zh">为便于理解，本协议中的下列术语含义如下：</p>
+  <p data-lang="en">For ease of understanding, the following terms in this Agreement have the meanings set out below:</p>
+  <ul>
+    <li data-lang="zh"><strong>"本服务"：</strong>指 CoCode 桌面应用、命令行工具（CLI）、官方网站、官方模型服务及我们提供的其他相关功能与服务；</li>
+    <li data-lang="en"><strong>"Service":</strong> refers to the CoCode desktop application, command-line interface (CLI), official website, official model service, and other related features and services provided by us;</li>
+    <li data-lang="zh"><strong>"你"：</strong>指注册、登录或使用本服务的个人或实体；</li>
+    <li data-lang="en"><strong>"You":</strong> refers to the individual or entity who registers, logs in to, or uses the Service;</li>
+    <li data-lang="zh"><strong>"官方模型"：</strong>指由我们统一运营、通过积分计费的内置模型服务，你无需自行配置模型服务提供商的凭证即可使用；</li>
+    <li data-lang="en"><strong>"Official models":</strong> refer to built-in model services uniformly operated by us and billed by credits, which you can use without configuring credentials of model service providers yourself;</li>
+    <li data-lang="zh"><strong>"自带模型（BYOK）"：</strong>指你使用自己的模型服务凭证接入第三方模型服务的使用方式；</li>
+    <li data-lang="en"><strong>"Bring Your Own Key (BYOK)":</strong> refers to the mode in which you connect third-party model services using your own model service credentials;</li>
+    <li data-lang="zh"><strong>"积分"：</strong>指用于计量官方模型调用量的虚拟凭证，不可兑换法定货币，不可转让；</li>
+    <li data-lang="en"><strong>"Credits":</strong> refer to virtual units used to measure the usage of official models; they cannot be exchanged for legal tender and are non-transferable;</li>
+    <li data-lang="zh"><strong>"输入"与"输出"：</strong>"输入"指你提交给本服务的内容（如指令、代码、文件）；"输出"指本服务（含模型）响应你的输入而生成的内容。</li>
+    <li data-lang="en"><strong>"Input" and "Output":</strong> "Input" refers to the content you submit to the Service (such as instructions, code, and files); "Output" refers to the content generated by the Service (including models) in response to your Input.</li>
+  </ul>
+
+  <!-- 3. 接受协议 -->
+  <h2 data-lang="zh">三、接受本协议</h2>
+  <h2 data-lang="en">3. Acceptance of Terms</h2>
+  <p data-lang="zh">通过访问或使用本服务，你确认你具备与我们订立合同所必需的民事行为能力，并同意遵守本协议。如你代表企业或其他实体使用本服务，你声明并保证你已获得该实体的有效授权，且该实体受本协议约束；在此情形下，"你"同时指该实体。</p>
+  <p data-lang="en">By accessing or using the Service, you confirm that you have the legal capacity necessary to enter into a contract with us and agree to be bound by this Agreement. If you use the Service on behalf of a company or other entity, you represent and warrant that you are validly authorized to do so and that such entity is bound by this Agreement; in such case, "you" refers to both you and such entity.</p>
+  <p data-lang="zh">本协议的部分条款可能以单独页面、弹窗、说明文档等形式呈现，除非另有说明，该等条款同样构成本协议的组成部分。本协议不同文本之间就同一事项约定不一致的，以更新日期更近者为准。</p>
+  <p data-lang="en">Some terms of this Agreement may be presented in separate pages, pop-ups, or documentation; unless otherwise stated, such terms also form an integral part of this Agreement. In the event of any inconsistency between different documents of this Agreement regarding the same matter, the document with a more recent "Last updated" date shall prevail.</p>
+
+  <!-- 4. 协议变更 -->
+  <h2 data-lang="zh">四、协议的变更</h2>
+  <h2 data-lang="en">4. Changes to Terms</h2>
+  <p data-lang="zh">我们可能根据法律法规变化、业务调整或产品演进的需要，适时修改本协议。协议变更后，我们将在本页面更新"更新日期"，并通过应用内通知、站内公告等方式提示你变更内容。对于重大变更（如收费方式变化、责任条款调整），我们将在变更生效前给予合理的提示期。</p>
+  <p data-lang="en">We may modify this Agreement from time to time in light of changes in laws and regulations, business adjustments, or product evolution. When we do, we will update the "Last updated" date on this page and notify you of the changes via in-app notifications and website announcements. For material changes (such as changes to billing methods or adjustments to liability clauses), we will provide reasonable advance notice before the changes take effect.</p>
+  <p data-lang="zh"><strong>变更生效后你继续使用本服务，即视为你接受修改后的协议；如你不接受变更内容，应停止使用本服务。</strong>若变更内容导致你已购买且未消耗的服务权益受到重大不利影响，你可按第九条的约定与我们协商处理。</p>
+  <p data-lang="en"><strong>If you continue to use the Service after the changes take effect, you are deemed to have accepted the revised Agreement; if you do not accept the changes, you should stop using the Service.</strong> If a change materially and adversely affects your purchased and unconsumed service benefits, you may negotiate with us in accordance with Section 9.</p>
+
+  <!-- 5. 账号注册 -->
+  <h2 data-lang="zh">五、账号注册与安全</h2>
+  <h2 data-lang="en">5. Account Registration and Security</h2>
+  <p data-lang="zh"><strong>5.1</strong> 你可通过电子邮箱或我们支持的其他方式注册账号。你应保证注册信息（尤其是电子邮箱地址）真实、准确、合法、有效，并及时更新。因你提供虚假信息或未及时更新信息导致的相关后果，由你自行承担。</p>
+  <p data-lang="en"><strong>5.1</strong> You may register an account using your email address or other methods we support. You must ensure that your registration information (especially your email address) is true, accurate, legal, and valid, and keep it up to date. Any consequences arising from false information or failure to update information shall be borne by you.</p>
+  <p data-lang="zh"><strong>5.2</strong> 你应妥善保管账号、密码及验证码，不应将其透露给任何第三方。账号下的所有操作（包括模型调用、积分消耗、配置修改等）均视为你本人的行为。如发现账号被盗用、密码泄露或存在其他安全漏洞，应立即通知我们，我们将协助你采取冻结、重置等措施。</p>
+  <p data-lang="en"><strong>5.2</strong> You are responsible for safeguarding your account, password, and verification codes, and should not disclose them to any third party. All activities under your account (including model calls, credit consumption, and configuration changes) are deemed to be your actions. If you discover unauthorized use, password leakage, or other security breaches, notify us immediately, and we will assist you in taking measures such as freezing and resetting.</p>
+  <p data-lang="zh"><strong>5.3</strong> 为保障账号安全，我们在登录、注册等关键环节部署了人机验证与异常行为检测机制。对于存在异常登录、批量注册、撞库尝试等风险的账号，我们有权采取验证升级、临时锁定等保护性措施，并在核实后解除。</p>
+  <p data-lang="en"><strong>5.3</strong> To safeguard account security, we deploy human verification and anomalous behavior detection at critical steps such as login and registration. For accounts with abnormal logins, bulk registration, or credential-stuffing attempts, we may take protective measures such as enhanced verification or temporary locking, and lift them after verification.</p>
+
+  <!-- 6. 账号管理 -->
+  <h2 data-lang="zh">六、账号管理与注销</h2>
+  <h2 data-lang="en">6. Account Management and Deletion</h2>
+  <p data-lang="zh"><strong>6.1</strong> 未经我们书面同意，你不得将账号赠与、借用、出租、转让或出售给他人。如我们有合理理由认为账号的实际使用者并非注册人，为保护账号及数据安全，有权暂停或终止相应服务。</p>
+  <p data-lang="en"><strong>6.1</strong> Without our prior written consent, you may not gift, lend, rent, transfer, or sell your account to others. If we have reasonable grounds to believe the actual user of the account is not the registrant, we may suspend or terminate the Service to protect the account and data security.</p>
+  <p data-lang="zh"><strong>6.2</strong> 你有权注销账号。注销账号后，我们将停止为你提供服务，并按照《隐私政策》的约定删除或匿名化处理你的个人信息（法律法规另有规定的除外）。<strong>请你知悉：注销账号将导致账号内的积分余额、订阅权益及未消费的服务权益全部清零且无法恢复，请你在注销前谨慎确认。</strong></p>
+  <p data-lang="en"><strong>6.2</strong> You have the right to delete your account. Upon account deletion, we will stop providing the Service to you and delete or anonymize your personal information in accordance with the Privacy Policy (except as otherwise provided by law). <strong>Please note that account deletion will clear your credit balance, subscription benefits, and unconsumed service benefits, which cannot be restored. Please confirm carefully before deletion.</strong></p>
+
+  <!-- 7. 服务说明 -->
+  <h2 data-lang="zh">七、服务说明</h2>
+  <h2 data-lang="en">7. Service Description</h2>
+  <p data-lang="zh"><strong>7.1 本地优先架构。</strong>CoCode 采用本地优先设计：你的代码库、配置文件及对话数据默认存储在你的本地设备，模型调用的凭证（API Key）也仅保存在本地。除非你主动使用需要联网的功能（如账号登录、官方模型调用、云同步），我们的服务器不会获取你的代码与对话内容。</p>
+  <p data-lang="en"><strong>7.1 Local-first architecture.</strong> CoCode is designed with a local-first approach: your codebase, configuration files, and conversation data are stored on your local device by default, and your model credentials (API keys) are also kept locally. Unless you actively use features that require network access (such as account login, official model calls, or cloud sync), our servers will not obtain your code and conversation content.</p>
+  <p data-lang="zh"><strong>7.2 服务形式。</strong>本服务可能以桌面应用、CLI、网页等多种形态提供。不同形态的功能可能存在差异，具体以产品实际呈现为准。我们可能持续迭代产品功能，对部分功能进行优化、调整或下线。</p>
+  <p data-lang="en"><strong>7.2 Service forms.</strong> The Service may be provided in various forms such as desktop applications, CLI, and web pages. Features may vary across forms; the actual presentation in the product shall prevail. We may continuously iterate product features, optimize, adjust, or discontinue certain features.</p>
+  <p data-lang="zh"><strong>7.3 系统要求。</strong>你需自备接入本服务所必需的设备、操作系统与网络环境，并承担使用本服务产生的相关费用（如上网流量费）。因你的设备或网络原因导致服务无法正常使用的，我们不承担责任。</p>
+  <p data-lang="en"><strong>7.3 System requirements.</strong> You need to prepare the devices, operating systems, and network environments necessary for accessing the Service, and bear the related costs (such as Internet traffic fees) of using the Service. We are not liable for the Service being unavailable due to your devices or network conditions.</p>
+
+  <!-- 8. 付费与积分 -->
+  <h2 data-lang="zh">八、付费与积分</h2>
+  <h2 data-lang="en">8. Payment and Credits</h2>
+  <p data-lang="zh">本服务提供两种模型使用方式：</p>
+  <p data-lang="en">The Service offers two ways to use models:</p>
+  <ol>
+    <li data-lang="zh"><strong>自带模型（BYOK）：</strong>你可使用自己的模型服务凭证接入第三方模型。此模式下我们不收取费用，你与第三方模型服务提供商之间的费用结算及约定由你自行负责；</li>
+    <li data-lang="en"><strong>Bring Your Own Key (BYOK):</strong> You may connect third-party models using your own model service credentials. We do not charge fees in this mode; the billing and agreements between you and third-party model service providers are your own responsibility;</li>
+    <li data-lang="zh"><strong>官方模型订阅：</strong>我们提供由我们统一运营的内置官方模型，你可以按月订阅套餐获取积分，并按模型调用量消耗积分。积分按批次发放与消耗，不同批次的积分可能有不同的有效期，具体以购买页面及套餐说明为准。</li>
+    <li data-lang="en"><strong>Official model subscription:</strong> We provide built-in official models uniformly operated by us. You may purchase monthly subscription plans to obtain credits, which are consumed by model usage. Credits are granted and consumed in batches, and different batches may have different validity periods, subject to the purchase page and plan descriptions.</li>
+  </ol>
+  <p data-lang="zh"><strong>8.1 积分性质。</strong>积分仅用于计量官方模型的调用量，是本服务内部使用的虚拟计量单位，<strong>不具有货币属性，不可兑换现金、不可转让、不可交易</strong>，其价值以获得相应服务为限。</p>
+  <p data-lang="en"><strong>8.1 Nature of credits.</strong> Credits are only used to measure the usage of official models and are virtual units for internal use within the Service. <strong>They are not currency, cannot be exchanged for cash, and cannot be transferred or traded;</strong> their value is limited to obtaining the corresponding services.</p>
+  <p data-lang="zh"><strong>8.2 计费规则。</strong>官方模型的调用按实际使用量计量扣减积分。由于上游模型服务计量方式调整、模型版本升级等原因，不同时期、不同模型的积分消耗标准可能不同，我们将在产品界面或套餐说明中公示。</p>
+  <p data-lang="en"><strong>8.2 Billing rules.</strong> Calls to official models are metered and deducted from credits based on actual usage. Due to adjustments in upstream model service metering, model version upgrades, and other factors, the credit consumption standards for different periods and models may vary, which we will publish in the product interface or plan descriptions.</p>
+  <p data-lang="zh"><strong>8.3 支付方式。</strong>付费订单通过第三方支付平台（如爱发电）处理。我们不会直接收集或存储你的银行卡、支付账户等敏感支付信息，相关支付行为受该第三方平台的服务协议约束。</p>
+  <p data-lang="en"><strong>8.3 Payment methods.</strong> Payment orders are processed through third-party payment platforms (e.g., Afdian). We do not directly collect or store your sensitive payment information such as bank cards or payment accounts; such payment activities are governed by the service agreements of those third-party platforms.</p>
+  <p data-lang="zh"><strong>8.4 异常订单处理。</strong>如发现利用漏洞、伪造订单、恶意退款等方式异常获取积分或服务权益的行为，我们有权冻结、扣回相关积分并视情节终止服务。</p>
+  <p data-lang="en"><strong>8.4 Abnormal order handling.</strong> If we discover credits or service benefits obtained abnormally through exploiting vulnerabilities, forging orders, or malicious refunds, we may freeze or claw back the relevant credits and terminate the Service depending on the severity.</p>
+
+  <!-- 9. 退款与终止 -->
+  <h2 data-lang="zh">九、退款与终止</h2>
+  <h2 data-lang="en">9. Refunds and Termination</h2>
+  <p data-lang="zh"><strong>9.1 退款政策。</strong>因本服务通过第三方支付平台收费，退款主要通过该平台流程办理，并遵循其规则。一般而言，如你购买的套餐存在未被消耗的服务权益且符合平台退款条件的，我们将在合理范围内予以配合处理。已经实际消耗的服务部分，原则上不支持退款。</p>
+  <p data-lang="en"><strong>9.1 Refund policy.</strong> As we charge fees through third-party payment platforms, refunds are mainly processed through those platforms and subject to their rules. Generally, if your purchased plan contains unconsumed service benefits and meets the platform's refund conditions, we will cooperate in handling within a reasonable scope. Consumed portions of the service are, in principle, non-refundable.</p>
+  <p data-lang="zh"><strong>9.2 服务终止后的处理。</strong>如本服务因不可抗力、政策调整或我们经营决策等原因终止，对于你已付费但未消耗的服务权益，我们将通过公告载明的方式为你办理退款或提供替代方案。</p>
+  <p data-lang="en"><strong>9.2 Handling upon service termination.</strong> If the Service is terminated due to force majeure, policy adjustments, or our business decisions, we will process refunds or provide alternatives for your paid but unconsumed service benefits in the manner stated in the announcement.</p>
+
+  <!-- 10. 行为规范 -->
+  <h2 data-lang="zh">十、行为规范</h2>
+  <h2 data-lang="en">10. Code of Conduct</h2>
+  <p data-lang="zh">你在使用本服务时，应遵守法律法规及公序良俗，<strong>不得从事以下行为：</strong></p>
+  <p data-lang="en">When using the Service, you must comply with applicable laws and public morals. <strong>You may not engage in the following:</strong></p>
+  <ol>
+    <li data-lang="zh">反对宪法确定的基本原则，危害国家安全、泄露国家秘密、颠覆国家政权、破坏国家统一；</li>
+    <li data-lang="en">Opposing the fundamental principles established by the Constitution, endangering national security, leaking state secrets, subverting state power, or undermining national unity;</li>
+    <li data-lang="zh">宣扬恐怖主义、极端主义、民族仇恨、邪教或封建迷信；</li>
+    <li data-lang="en">Advocating terrorism, extremism, ethnic hatred, cults, or feudal superstition;</li>
+    <li data-lang="zh">散布谣言、虚假信息，扰乱经济秩序和社会秩序；</li>
+    <li data-lang="en">Spreading rumors or false information that disrupts economic or social order;</li>
+    <li data-lang="zh">散布淫秽、色情、暴力、赌博、凶杀、恐怖或教唆犯罪的内容；</li>
+    <li data-lang="en">Distributing obscene, pornographic, violent, gambling, murder, terrorist, or crime-inciting content;</li>
+    <li data-lang="zh">侮辱、诽谤、骚扰、威胁他人，侵害他人隐私、名誉权、肖像权、知识产权等合法权益；</li>
+    <li data-lang="en">Insulting, defaming, harassing, or threatening others, or infringing on others' privacy, reputation, portrait rights, intellectual property, or other lawful rights;</li>
+    <li data-lang="zh">利用本服务从事危害计算机网络安全的行为，包括非法侵入网络、窃取数据、传播恶意代码、制作或传播病毒木马等；</li>
+    <li data-lang="en">Using the Service to engage in activities that endanger computer network security, including unauthorized network access, data theft, distributing malicious code, or creating and spreading viruses and Trojans;</li>
+    <li data-lang="zh">未经授权以自动化方式（如脚本、机器人）批量调用本服务，对我们的基础设施或上游模型服务造成不合理负载；</li>
+    <li data-lang="en">Using the Service in an automated manner (e.g., scripts, bots) without authorization, placing unreasonable load on our infrastructure or upstream model services;</li>
+    <li data-lang="zh">将本服务用于军事、武器开发、关键基础设施运营等高风险活动，或用于生成与自残、欺诈、网络钓鱼相关的内容；</li>
+    <li data-lang="en">Using the Service for high-risk activities such as military affairs, weapons development, or critical infrastructure operations, or to generate content related to self-harm, fraud, or phishing;</li>
+    <li data-lang="zh">对本服务的全部或部分（包括软件、界面、代码结构）进行反向工程、反编译或试图获取源代码（法律法规明确允许的除外）；</li>
+    <li data-lang="en">Reverse engineering, decompiling, or attempting to obtain the source code of the Service, in whole or in part (including software, interfaces, and code structure), except as expressly permitted by law;</li>
+    <li data-lang="zh">删除或遮蔽本服务中的版权声明、商标或其他权利标识；</li>
+    <li data-lang="en">Removing or obscuring copyright notices, trademarks, or other rights identifiers in the Service;</li>
+    <li data-lang="zh">将本服务接入任何未经我们书面许可的转发、代理、转售体系，或变相提供多用户共享服务；</li>
+    <li data-lang="en">Connecting the Service to any forwarding, agency, or resale system without our written permission, or implicitly providing multi-user shared services;</li>
+    <li data-lang="zh">其他违反法律法规、本协议或公序良俗的行为。</li>
+    <li data-lang="en">Any other conduct that violates laws, regulations, this Agreement, or public morals.</li>
+  </ol>
+
+  <!-- 11. 知识产权 -->
+  <h2 data-lang="zh">十一、知识产权</h2>
+  <h2 data-lang="en">11. Intellectual Property</h2>
+  <p data-lang="zh"><strong>11.1 本服务的知识产权。</strong>本服务（包括但不限于软件、代码、商标、界面设计、文档及相关数据）的知识产权及其他合法权利归我们或相应权利人所有。在你遵守本协议的前提下，我们授予你非独家、有限、不可转让、不可再许可、可撤销的权利，以访问和使用本服务。本协议未明确授予的权利均由我们保留。</p>
+  <p data-lang="en"><strong>11.1 IP of the Service.</strong> All intellectual property and other lawful rights in the Service (including but not limited to software, code, trademarks, interface design, documentation, and related data) belong to us or the respective rights holders. Subject to your compliance with this Agreement, we grant you a non-exclusive, limited, non-transferable, non-sublicensable, revocable right to access and use the Service. All rights not expressly granted are reserved by us.</p>
+  <p data-lang="zh"><strong>11.2 模型输出。</strong><strong>在适用法律允许的范围内，我们不对人工智能模型的输出（Output）主张任何所有权。</strong>你对自己输入（Input）及由此生成的输出享有合法权利，但应确保输入内容已获合法授权，且输出内容的使用遵守适用法律。由于人工智能技术的固有特性，相同输入可能生成相同或相似输出，我们无法保证输出的独占性。</p>
+  <p data-lang="en"><strong>11.2 Model output.</strong> <strong>To the extent permitted by applicable law, we do not claim any ownership of the Output generated by AI models.</strong> You retain lawful rights to your Input and the resulting Output, provided that your Input is lawfully authorized and your use of the Output complies with applicable law. Due to the inherent nature of AI technology, the same Input may generate identical or similar Output, and we cannot guarantee the exclusivity of the Output.</p>
+
+  <!-- 12. 你的内容 -->
+  <h2 data-lang="zh">十二、你的内容</h2>
+  <h2 data-lang="en">12. Your Content</h2>
+  <p data-lang="zh">你通过本服务输入、创建、上传的代码、文本、文件及其他信息（"输入"），以及本服务响应你输入而生成的内容（"输出"），合称为"你的内容"。你保留你的内容的全部合法权利。</p>
+  <p data-lang="en">Code, text, files, and other information you input, create, or upload through the Service ("Input"), and content generated by the Service in response to your Input ("Output"), are collectively referred to as "Your Content". You retain all lawful rights in Your Content.</p>
+  <p data-lang="zh">你确认并承诺，你的输入均由你原创或已获合法授权，不会侵犯任何第三方的合法权益。你应对你的内容及使用本服务的后果独立承担责任。如你的内容引发第三方争议或投诉，你应负责处理并使我们免受损失。</p>
+  <p data-lang="en">You confirm and warrant that your Input is either your original work or lawfully authorized, and does not infringe upon the lawful rights of any third party. You are solely responsible for Your Content and the consequences of using the Service. If your content causes disputes or complaints from third parties, you shall handle them and hold us harmless.</p>
+  <p data-lang="zh">CoCode 采用本地优先架构：你的代码库和对话数据默认存储在你的本地设备上，仅在你主动使用云同步等联网功能时才会上传至我们的服务器。<strong>我们不会将你的输入、输出用于模型训练。</strong></p>
+  <p data-lang="en">CoCode adopts a local-first architecture: your codebase and conversation data are stored on your local device by default, and are uploaded to our servers only when you actively use networked features such as cloud sync. <strong>We will not use your Input or Output for model training.</strong></p>
+
+  <!-- 13. 数据与隐私 -->
+  <h2 data-lang="zh">十三、数据与隐私保护</h2>
+  <h2 data-lang="en">13. Data and Privacy Protection</h2>
+  <p data-lang="zh">我们高度重视你的个人信息保护。关于我们如何收集、使用、存储和保护你的个人信息，以及你享有的相关权利，请详见《隐私政策》；关于个人信息跨境传输的安排，请详见《跨境数据传输协议》。上述文件构成本协议的组成部分。</p>
+  <p data-lang="en">We take the protection of your personal information seriously. For details on how we collect, use, store, and protect your personal information and your related rights, please refer to the Privacy Policy; for arrangements on cross-border transfer of personal information, please refer to the Cross-Border Data Transfer Agreement. These documents form an integral part of this Agreement.</p>
+
+  <!-- 14. 第三方服务 -->
+  <h2 data-lang="zh">十四、第三方服务</h2>
+  <h2 data-lang="en">14. Third-Party Services</h2>
+  <p data-lang="zh">本服务可能集成或链接至第三方服务（如模型服务提供商、支付平台、代码托管平台、更新分发渠道等）。你使用第三方服务时，应遵守该第三方的服务条款和隐私政策。<strong>我们不对第三方服务的可用性、准确性或安全性承担责任；第三方服务的中断、变更或终止可能影响本服务相应功能的正常使用。</strong></p>
+  <p data-lang="en">The Service may integrate with or link to third-party services (such as model service providers, payment platforms, code hosting platforms, and update distribution channels). When using third-party services, you must comply with their terms of service and privacy policies. <strong>We are not responsible for the availability, accuracy, or security of third-party services; interruptions, changes, or terminations of third-party services may affect the normal use of corresponding features of the Service.</strong></p>
+  <p data-lang="zh">在 BYOK 模式下，你与第三方模型服务提供商之间形成独立的法律关系，相应的内容政策、费用、限流等事项以该提供商的规则为准。我们仅作为你指定的技术通道转发请求，不对第三方模型的行为、输出内容承担责任。</p>
+  <p data-lang="en">In BYOK mode, you form an independent legal relationship with third-party model service providers; content policies, fees, rate limits, and other matters are subject to the rules of such providers. We only forward requests as the technical channel designated by you, and are not responsible for the behavior or output of third-party models.</p>
+
+  <!-- 15. 免责声明 -->
+  <h2 data-lang="zh">十五、免责声明</h2>
+  <h2 data-lang="en">15. Disclaimer</h2>
+  <p data-lang="zh"><strong>本服务按"现状"和"可用"基础提供。在法律允许的最大范围内，我们不对服务的及时性、安全性、准确性、完整性、无病毒或无错误作出任何明示或暗示的保证。</strong></p>
+  <p data-lang="en"><strong>The Service is provided on an "as is" and "as available" basis. To the maximum extent permitted by law, we make no express or implied warranties regarding the timeliness, security, accuracy, completeness, virus-free nature, or error-free nature of the Service.</strong></p>
+  <p data-lang="zh"><strong>关于 AI 生成内容：</strong>人工智能模型生成的内容可能存在错误、偏见、过时或不完整的情况，不构成专业建议。你应自行判断并核实输出内容，在将输出用于生产环境、发布、部署或重大决策前进行充分测试与人工审查。<strong>因你直接采纳未经核实的输出而产生的损失，我们不承担责任。</strong></p>
+  <p data-lang="en"><strong>Regarding AI-generated content:</strong> Content generated by AI models may contain errors, biases, outdated information, or incompleteness, and does not constitute professional advice. You should independently judge and verify the Output, and conduct sufficient testing and human review before using the Output in production environments, publishing, deployment, or critical decisions. <strong>We are not liable for losses arising from your direct adoption of unverified Output.</strong></p>
+  <p data-lang="zh"><strong>关于不可控因素：</strong>因不可抗力（如自然灾害、战争、罢工）、基础电信故障、上游模型服务异常、法律法规调整、政府行为等原因导致服务中断或数据丢失的，我们不承担责任，但将尽合理努力减少对你的影响并及时通知。</p>
+  <p data-lang="en"><strong>Regarding uncontrollable factors:</strong> We are not liable for service interruptions or data loss caused by force majeure (such as natural disasters, war, or strikes), basic telecom failures, upstream model service anomalies, changes in laws and regulations, or government actions, but we will make reasonable efforts to minimize the impact on you and notify you promptly.</p>
+
+  <!-- 16. 责任限制 -->
+  <h2 data-lang="zh">十六、责任限制</h2>
+  <h2 data-lang="en">16. Limitation of Liability</h2>
+  <p data-lang="zh"><strong>在法律允许的最大范围内，我们对任何间接、附带、特殊、惩罚性或后果性的损失（包括利润损失、数据丢失、业务中断、商誉损害等）不承担责任，即使我们已被告知此类损失的可能性。</strong></p>
+  <p data-lang="en"><strong>To the maximum extent permitted by law, we shall not be liable for any indirect, incidental, special, punitive, or consequential damages (including loss of profits, data loss, business interruption, or damage to goodwill), even if we have been advised of the possibility of such damages.</strong></p>
+  <p data-lang="zh">在法律允许的最大范围内，我们对你的累计赔偿责任总额以你在索赔发生前十二个月内就本服务向我们实际支付的费用金额为限。法律法规另有强制性规定的，从其规定。</p>
+  <p data-lang="en">To the maximum extent permitted by law, our total cumulative liability to you is limited to the fees you actually paid to us for the Service in the twelve (12) months preceding the claim. Where mandatory provisions of law provide otherwise, such provisions shall prevail.</p>
+
+  <!-- 17. 违约处理 -->
+  <h2 data-lang="zh">十七、违约处理</h2>
+  <h2 data-lang="en">17. Breach Handling</h2>
+  <p data-lang="zh">如我们认为你违反本协议或相关法律法规，我们有权视情节轻重，不经事先通知采取以下一项或多项措施：警示提醒、限制部分功能、降低服务优先级、暂停服务、封禁账号、清退异常获取的权益，并保留追究法律责任的权利。</p>
+  <p data-lang="en">If we believe you have violated this Agreement or applicable laws, we may, depending on the severity and without prior notice, take one or more of the following measures: warnings, feature restrictions, service deprioritization, service suspension, account banning, and clawback of abnormally obtained benefits, and reserve the right to pursue legal remedies.</p>
+  <p data-lang="zh">如你对处理结果有异议，可通过本协议第二十条载明的联系方式向我们申诉。我们将根据你提供的材料进行复核，并在合理期限内反馈结果。</p>
+  <p data-lang="en">If you object to the handling result, you may appeal to us through the contact information provided in Section 20 of this Agreement. We will review based on the materials you provide and give feedback within a reasonable period.</p>
+
+  <!-- 18. 服务变更与终止 -->
+  <h2 data-lang="zh">十八、服务的变更、中断与终止</h2>
+  <h2 data-lang="en">18. Service Changes, Interruption, and Termination</h2>
+  <p data-lang="zh">我们可能因业务发展、技术升级、法规要求等原因，对本服务的部分或全部进行更新、变更、暂停或终止。对于重大变更或终止，我们将通过公告等方式提前合理期限通知你（不可抗力或法律法规要求的除外）。</p>
+  <p data-lang="en">We may update, modify, suspend, or terminate part or all of the Service due to business development, technical upgrades, regulatory requirements, or other reasons. For material changes or termination, we will notify you a reasonable period in advance via announcements (except in cases of force majeure or legal requirements).</p>
+  <p data-lang="zh">你可随时停止使用本服务。我们也可能因你严重违约、法律法规要求或其他正当原因终止向你提供服务。服务终止后，本协议中关于知识产权、免责声明、责任限制、争议解决等条款继续有效。</p>
+  <p data-lang="en">You may stop using the Service at any time. We may also terminate providing the Service to you due to your serious breach, legal requirements, or other legitimate reasons. Upon termination, the provisions of this Agreement regarding intellectual property, disclaimers, limitation of liability, and dispute resolution shall remain in effect.</p>
+
+  <!-- 19. 未成年人 -->
+  <h2 data-lang="zh">十九、未成年人使用条款</h2>
+  <h2 data-lang="en">19. Use by Minors</h2>
+  <p data-lang="zh">本服务主要面向成年开发者。<strong>如你是未满十八周岁的未成年人，请在监护人的陪同和指导下阅读本协议，并在取得监护人同意后使用本服务。</strong>如你是未满十四周岁的未成年人，我们依法不向你提供账号注册服务。</p>
+  <p data-lang="en">The Service is primarily intended for adult developers. <strong>If you are a minor under the age of eighteen, please read this Agreement accompanied and guided by a guardian, and use the Service with the guardian's consent.</strong> If you are a minor under the age of fourteen, we will not provide account registration services to you in accordance with law.</p>
+  <p data-lang="zh">监护人应加强对未成年人使用本服务的引导与监督，关注其上网安全与消费行为。如我们在不知情的情况下收集了未满十四周岁未成年人的个人信息，将设法尽快删除相关数据。</p>
+  <p data-lang="en">Guardians should strengthen the guidance and supervision of minors using the Service, and pay attention to their online safety and consumption behavior. If we have collected personal information of a minor under the age of fourteen without knowledge, we will endeavor to delete the relevant data as soon as possible.</p>
+
+  <!-- 20. 法律与联系 -->
+  <h2 data-lang="zh">二十、法律适用、争议解决与联系我们</h2>
+  <h2 data-lang="en">20. Governing Law, Dispute Resolution, and Contact Us</h2>
+  <h3 data-lang="zh">20.1 法律适用与争议解决</h3>
+  <h3 data-lang="en">20.1 Governing Law and Dispute Resolution</h3>
+  <p data-lang="zh">本协议的订立、生效、解释、履行及争议解决均适用中华人民共和国法律（不含港澳台地区法律）。因本协议或本服务产生的争议，双方应首先友好协商解决；协商不成的，任何一方均可向我们运营者所在地有管辖权的人民法院提起诉讼。</p>
+  <p data-lang="en">This Agreement is governed by the laws of the People's Republic of China (excluding the laws of Hong Kong, Macao, and Taiwan regions). Disputes arising from this Agreement or the Service shall first be resolved through friendly negotiation; if negotiation fails, either party may file a lawsuit with the competent people's court at the location of our operator.</p>
+  <p data-lang="zh">本协议部分条款被认定无效或不可执行的，不影响其他条款的效力。</p>
+  <p data-lang="en">If any provision of this Agreement is held invalid or unenforceable, the remaining provisions shall remain in full force and effect.</p>
+  <h3 data-lang="zh">20.2 联系我们</h3>
+  <h3 data-lang="en">20.2 Contact Us</h3>
+  <p data-lang="zh">如对本协议有任何疑问、意见或建议，可通过以下方式联系我们：</p>
+  <p data-lang="en">If you have any questions, comments, or suggestions regarding this Agreement, you may contact us at:</p>
+  <p data-lang="zh">邮箱：<a href="mailto:2206674900@qq.com">2206674900@qq.com</a></p>
+  <p data-lang="en">Email: <a href="mailto:2206674900@qq.com">2206674900@qq.com</a></p>
+  <p data-lang="zh">我们将在收到你的消息后十五个工作日内予以回复。</p>
+  <p data-lang="en">We will respond within fifteen (15) business days after receiving your message.</p>
+
+  <div class="note" data-lang="zh"><strong>再次提醒：请你完整阅读本协议后再使用本服务。你的每次使用行为均视为对当时生效版本协议的接受。</strong></div>
+  <div class="note" data-lang="en"><strong>Reminder: Please read this Agreement in full before using the Service. Each use of the Service constitutes your acceptance of the then-current version of this Agreement.</strong></div>
+
+</section>
+</div>
+
+<!-- ============ 隐私政策 ============ -->
+<div id="view-privacy" class="view">
+<header>
+  <div class="wrap nav">
+    <a href="index.html" class="brand">CoCode</a>
+    <div class="lang-switch">
+      <button class="lang-btn active" data-lang="zh">中文</button>
+      <button class="lang-btn" data-lang="en">EN</button>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <h1 data-lang="zh">隐私政策</h1>
+    <h1 data-lang="en">Privacy Policy</h1>
+    <p class="sub" data-lang="zh">更新日期：2026 年 9 月 19 日&nbsp;&nbsp;|&nbsp;&nbsp;生效日期：2026 年 9 月 19 日</p>
+    <p class="sub" data-lang="en">Last updated: September 19, 2026&nbsp;&nbsp;|&nbsp;&nbsp;Effective date: September 19, 2026</p>
+  </div>
+</section>
+
+<section class="legal wrap">
+
+  <div class="note" data-lang="zh">
+    <strong>CoCode 采用本地优先架构。</strong>你的代码库和对话数据默认存储在本地设备上，仅在你主动使用云功能时才会上传。本政策将帮助你了解我们如何处理你的个人信息。<strong>其中，限制或免除责任的条款以加粗形式提示，请重点阅读。</strong>本政策与你所签署的《用户协议》具有同等法律效力；如本政策与《用户协议》就个人信息处理事项存在不一致，以本政策为准。
+  </div>
+  <div class="note" data-lang="en">
+    <strong>CoCode adopts a local-first architecture.</strong> Your codebase and conversation data are stored on your local device by default and are uploaded only when you actively use cloud features. This policy explains how we handle your personal information. <strong>Clauses limiting or excluding liability are highlighted in bold; please read them carefully.</strong> This Policy and the Terms of Service you have accepted have equal legal effect; in the event of any inconsistency between this Policy and the Terms of Service regarding the processing of personal information, this Policy shall prevail.
+  </div>
+
+  <!-- 一、收集与使用 -->
+  <h2 data-lang="zh">一、我们如何收集和使用个人信息</h2>
+  <h2 data-lang="en">1. How We Collect and Use Personal Information</h2>
+
+  <h3 data-lang="zh">1.1 账号注册与登录</h3>
+  <h3 data-lang="en">1.1 Account Registration and Login</h3>
+  <p data-lang="zh">当你注册或登录 CoCode 时，我们会收集你的电子邮箱地址，用于创建账号、身份验证及服务通知。如你使用第三方账号登录，经你同意后，我们会获取该第三方平台的公开信息（如昵称、头像）用于账号绑定。上述信息均为提供账号服务所必需，如你拒绝提供，将无法注册并使用我们的账号体系。</p>
+  <p data-lang="en">When you register or log in to CoCode, we collect your email address for account creation, identity verification, and service notifications. If you log in using a third-party account, with your consent, we obtain public information from that platform (e.g., nickname, avatar) for account binding. The above information is necessary for providing account services; if you refuse to provide it, you will not be able to register and use our account system.</p>
+
+  <h3 data-lang="zh">1.2 服务运行与安全</h3>
+  <h3 data-lang="en">1.2 Service Operation and Security</h3>
+  <p data-lang="zh">为保障服务正常运行和网络安全，我们会收集你的设备信息（操作系统类型及版本、设备型号）、IP 地址、软件版本号、网络接入方式及操作日志。这些信息是提供服务和保障安全所必需的基本信息。我们会将上述信息用于安全事件的监测与排查、异常登录的识别以及服务稳定性的统计分析，并将按照最低必要原则进行去标识化处理。</p>
+  <p data-lang="en">To ensure normal service operation and network security, we collect your device information (OS type and version, device model), IP address, software version, network access type, and operation logs. This information is essential for providing the Service and maintaining security. We use such information for security incident monitoring and investigation, identification of abnormal logins, and statistical analysis of service stability, and will process it on a minimum-necessary and de-identified basis.</p>
+
+  <h3 data-lang="zh">1.3 模型调用与对话数据</h3>
+  <h3 data-lang="en">1.3 Model Calls and Conversation Data</h3>
+  <p data-lang="zh">当你使用 AI 功能时，你输入的文本、代码片段、任务指令及上传的文件会被发送至你选择的模型提供商（自带 Key 模式下直接发送至对应第三方；内置官方模型模式下经由我们的服务器转发）以生成响应。</p>
+  <p data-lang="en">When you use AI features, the text, code snippets, task instructions, and files you upload are sent to your selected model provider (in BYOK mode, directly to the corresponding third party; in official model mode, relayed through our servers) to generate responses.</p>
+  <p data-lang="zh"><strong>本地优先原则：</strong>你的代码库和对话内容默认存储在你的本地设备上。我们不会主动上传你的代码库文件。仅当你使用云同步、跨端同步等功能时，相关数据才会传输至我们的服务器。</p>
+  <p data-lang="en"><strong>Local-first principle:</strong> Your codebase and conversations are stored on your local device by default. We do not proactively upload your codebase files. Data is transmitted to our servers only when you use features such as cloud sync or cross-device sync.</p>
+  <p data-lang="zh">内置官方模型模式下，为提供积分计费服务，我们会记录模型调用的模型名称、调用时间及消耗积分，但不存储你输入的明文内容。<strong>我们不会将你通过内置官方模型提交的输入内容及对应的输出内容用于模型训练。</strong></p>
+  <p data-lang="en">In official model mode, to provide credit-based billing, we record the model name, call time, and credits consumed for each model call, but we do not store the plaintext of your input. <strong>We do not use the inputs you submit through official models, or the corresponding outputs, for model training.</strong></p>
+
+  <h3 data-lang="zh">1.4 付费与积分</h3>
+  <h3 data-lang="en">1.4 Payment and Credits</h3>
+  <p data-lang="zh">当你购买官方模型订阅套餐时，我们会收集你的订单信息（订单号、套餐类型、购买时间、积分余额）。支付信息由第三方支付平台（如爱发电）处理，我们不存储你的银行卡号等支付敏感信息。如你需要开具凭证或处理退款，我们可能会另行收集你的联系方式以便与你确认处理结果。</p>
+  <p data-lang="en">When you purchase an official model subscription plan, we collect your order information (order number, plan type, purchase time, credit balance). Payment information is processed by third-party payment platforms (e.g., Afdian); we do not store sensitive payment information such as your bank card number. If you request a receipt or a refund, we may additionally collect your contact information to confirm the handling result with you.</p>
+
+  <h3 data-lang="zh">1.5 客服与反馈</h3>
+  <h3 data-lang="en">1.5 Customer Support and Feedback</h3>
+  <p data-lang="zh">当你联系客服或提交反馈时，我们会收集你的联系方式及你主动提供的问题描述，用于响应你的请求和改进服务。为便于定位和解决问题，你可能会在反馈中附上日志文件或截图，请你自行确认其中不包含不愿提供给他人的信息后再行提交。</p>
+  <p data-lang="en">When you contact customer support or submit feedback, we collect your contact information and the problem description you provide, in order to respond to your request and improve the Service. To help locate and resolve issues, you may attach log files or screenshots to your feedback; please make sure they do not contain information you do not wish to share before submitting.</p>
+
+  <h3 data-lang="zh">1.6 依法豁免征得同意的情形</h3>
+  <h3 data-lang="en">1.6 Circumstances Exempt from Consent under Law</h3>
+  <p data-lang="zh">根据相关法律法规，在以下情形中，我们收集、使用你的个人信息无需征得你的授权同意：（1）为订立、履行你作为一方当事人的合同所必需；（2）为履行法定职责或者法定义务所必需；（3）为应对突发公共卫生事件，或者紧急情况下为保护自然人的生命健康和财产安全所必需；（4）为公共利益实施新闻报道、舆论监督等行为，在合理的范围内处理个人信息；（5）依照法律规定在合理的范围内处理你自行公开或者其他已经合法公开的个人信息；（6）法律法规规定的其他情形。请你理解，我们对这些信息的处理将始终遵循合法、正当、必要的原则。</p>
+  <p data-lang="en">Under applicable laws and regulations, we do not need your authorization or consent to collect and use your personal information in the following circumstances: (1) where it is necessary for the conclusion or performance of a contract to which you are a party; (2) where it is necessary for the performance of statutory duties or obligations; (3) where it is necessary for responding to a public health emergency, or for protecting the life, health, or property of a natural person in an emergency; (4) where personal information is processed within a reasonable scope for news reporting or public opinion supervision in the public interest; (5) where personal information that you have voluntarily disclosed or that has been lawfully disclosed is processed within a reasonable scope as provided by law; and (6) other circumstances provided by laws and regulations. Please understand that our processing of such information will always follow the principles of lawfulness, legitimacy, and necessity.</p>
+
+  <!-- 二、Cookie -->
+  <h2 data-lang="zh">二、我们如何使用 Cookie 和同类技术</h2>
+  <h2 data-lang="en">2. How We Use Cookies and Similar Technologies</h2>
+  <p data-lang="zh">我们可能在网站上使用 Cookie 或类似技术，用于保持登录状态、记住偏好设置及分析网站流量。我们不会将 Cookie 用于本政策所述目的之外的任何用途。你可通过浏览器设置拒绝或管理 Cookie，但部分功能可能因此受到影响。如你清除或拒绝 Cookie，你可能需要在每次访问时重新登录，且某些依赖 Cookie 才能实现的个性化设置将无法生效。</p>
+  <p data-lang="en">We may use cookies or similar technologies on our website to maintain login status, remember preferences, and analyze website traffic. We do not use cookies for any purpose other than those described in this Policy. You can refuse or manage cookies through your browser settings, but some features may be affected as a result. If you clear or refuse cookies, you may need to log in again each time you visit, and certain personalized settings that rely on cookies may not take effect.</p>
+
+  <!-- 三、共享、转让、公开披露 -->
+  <h2 data-lang="zh">三、我们如何共享、转让、公开披露你的个人信息</h2>
+  <h2 data-lang="en">3. How We Share, Transfer, and Publicly Disclose Your Personal Information</h2>
+
+  <h3 data-lang="zh">3.1 委托处理</h3>
+  <h3 data-lang="en">3.1 Entrusted Processing</h3>
+  <p data-lang="zh">我们可能委托合作伙伴（如云服务提供商、邮件服务提供商）处理你的个人信息。我们会与受托方签署数据处理协议，要求其仅在授权范围内处理信息、采取必要安全措施，并在委托关系终止时按照我们的要求删除或返还其所处理的个人信息。我们会对受托方的数据处理能力进行合理评估，并对其处理活动进行监督。</p>
+  <p data-lang="en">We may entrust partners (e.g., cloud service providers, email service providers) to process your personal information. We sign data processing agreements with them, requiring them to process information only within the authorized scope, adopt necessary security measures, and delete or return the personal information they have processed at our request upon termination of the entrustment. We will reasonably assess the data processing capabilities of such processors and supervise their processing activities.</p>
+
+  <h3 data-lang="zh">3.2 内置官方模型</h3>
+  <h3 data-lang="en">3.2 Official Models</h3>
+  <p data-lang="zh">当你使用内置官方模型时，你的输入内容会经由我们的服务器转发至对应模型提供商以生成响应。转发过程中我们仅传输完成该次调用所必需的内容。<strong>我们不会将你的输入内容用于模型训练或其他目的。</strong>如你希望你的输入内容完全不经过我们的服务器，你可以选择自带 API Key（BYOK）模式，由你的设备直接调用对应模型提供商的接口。</p>
+  <p data-lang="en">When you use official models, your input is relayed through our servers to the corresponding model provider to generate responses. During relaying, we only transmit the content necessary for completing that call. <strong>We do not use your input for model training or any other purpose.</strong> If you prefer that your input never passes through our servers, you may choose the BYOK (bring your own API key) mode, where your device calls the model provider's API directly.</p>
+
+  <h3 data-lang="zh">3.3 共享</h3>
+  <h3 data-lang="en">3.3 Sharing</h3>
+  <p data-lang="zh">除下列情形外，我们不会与其他任何第三方共享你的个人信息：（1）事先获得你的明确同意；（2）为提供核心功能所必需，且仅共享完成该功能所必需的最少信息，例如为完成支付而向支付平台传输订单信息；（3）根据法律法规、强制性要求或有权机关的指示必须提供。</p>
+  <p data-lang="en">We do not share your personal information with any third party except in the following circumstances: (1) with your explicit prior consent; (2) where it is necessary for providing core functions and only the minimum information required for such functions is shared, for example, transmitting order information to a payment platform to complete a payment; and (3) where provision is required by laws and regulations, mandatory requirements, or the instructions of competent authorities.</p>
+
+  <h3 data-lang="zh">3.4 转让</h3>
+  <h3 data-lang="en">3.4 Transfer</h3>
+  <p data-lang="zh">我们不会将你的个人信息转让给任何公司、组织和个人，但以下情形除外：（1）事先获得你的明确同意；（2）涉及合并、分立、解散、被宣告破产等事由时，如需转让个人信息，我们会向你告知接收方的名称和联系方式，并要求接收方继续履行本政策及其他法律法规规定的义务。接收方若变更原先的处理目的、处理方式，应重新取得你的同意。</p>
+  <p data-lang="en">We will not transfer your personal information to any company, organization, or individual, except in the following circumstances: (1) with your explicit prior consent; and (2) in the event of a merger, division, dissolution, or declaration of bankruptcy, if the transfer of personal information is required, we will inform you of the recipient's name and contact information and require the recipient to continue to perform its obligations under this Policy and applicable laws. If the recipient changes the original processing purpose or method, it shall obtain your consent again.</p>
+
+  <h3 data-lang="zh">3.5 公开披露</h3>
+  <h3 data-lang="en">3.5 Public Disclosure</h3>
+  <p data-lang="zh">我们仅会在以下情形且采取符合法律法规要求的保护措施后，公开披露你的个人信息：（1）经你明确授权同意；（2）依据法律法规或有权机关的强制性要求必须披露。涉及敏感个人信息的公开披露，我们将另行取得你的单独同意。</p>
+  <p data-lang="en">We will only publicly disclose your personal information after adopting protective measures that meet the requirements of laws and regulations in the following circumstances: (1) with your explicit authorization and consent; and (2) where disclosure is mandatory under laws and regulations or the compulsory requirements of competent authorities. Where the public disclosure involves sensitive personal information, we will obtain your separate consent.</p>
+
+  <h3 data-lang="zh">3.6 我们不会向第三方出售你的个人信息。</h3>
+  <h3 data-lang="en">3.6 We Do Not Sell Your Personal Information</h3>
+  <p data-lang="zh"><strong>我们不会向任何第三方出售你的个人信息。</strong>如我们未来拟开展超出本政策所述范围的共享、转让或公开披露活动，我们将再次征求你的同意。</p>
+  <p data-lang="en"><strong>We will not sell your personal information to any third party.</strong> If we intend to carry out sharing, transfer, or public disclosure beyond the scope described in this Policy in the future, we will seek your consent again.</p>
+
+  <!-- 四、存储 -->
+  <h2 data-lang="zh">四、我们如何存储个人信息</h2>
+  <h2 data-lang="en">4. How We Store Personal Information</h2>
+  <h3 data-lang="zh">4.1 存储地点</h3>
+  <h3 data-lang="en">4.1 Storage Location</h3>
+  <p data-lang="zh">我们依照法律法规的规定，将在境内运营过程中收集和产生的个人信息存储于中华人民共和国境内。如涉及向境外提供，我们将严格按照中国相关法律法规的要求执行，包括履行数据出境安全评估、标准合同备案或个人信息保护认证等程序（如适用），具体安排详见《跨境数据传输协议》。</p>
+  <p data-lang="en">In accordance with applicable laws, we store personal information collected and generated during domestic operations within the People's Republic of China. If the provision of personal information across borders is involved, we will strictly comply with the requirements of relevant Chinese laws and regulations, including carrying out cross-border data transfer security assessment, standard contract filing, or personal information protection certification (where applicable), as detailed in the Cross-Border Data Transfer Agreement.</p>
+
+  <h3 data-lang="zh">4.2 存储期限</h3>
+  <h3 data-lang="en">4.2 Retention Period</h3>
+  <p data-lang="zh">我们仅在为提供服务之目的所必需的期间内保留你的个人信息，例如：账号信息在账号存续期间保留；订单及积分记录自交易完成之日起保留不少于法律规定的期限，以便处理对账、退款及可能的争议；操作日志保留期限一般不超过十二个月。超出必要期限后，我们将删除或匿名化处理你的个人信息，法律法规另有规定的除外。当你注销账号后，我们将在合理期限内删除或匿名化你的个人信息，法律要求留存的除外。</p>
+  <p data-lang="en">We retain your personal information only for as long as necessary to provide the Service. For example: account information is retained for the duration of the account; order and credit records are retained for no less than the statutory period from the completion of the transaction, in order to handle reconciliation, refunds, and possible disputes; operation logs are generally retained for no more than twelve months. After the necessary period, we will delete or anonymize your personal information, unless otherwise required by law. After you cancel your account, we will delete or anonymize your personal information within a reasonable period, except where retention is required by law.</p>
+
+  <!-- 五、安全 -->
+  <h2 data-lang="zh">五、我们如何保护个人信息安全</h2>
+  <h2 data-lang="en">5. How We Protect Personal Information Security</h2>
+  <h3 data-lang="zh">5.1 安全措施</h3>
+  <h3 data-lang="en">5.1 Security Measures</h3>
+  <p data-lang="zh">我们采取行业通行的安全措施保护你的个人信息，包括：传输加密（TLS）、存储加密、最小权限的访问控制、安全审计及数据分类分级管理。API Key 等敏感凭证在本地通过操作系统安全存储（如 macOS Keychain）加密保存，不以明文形式暴露。我们的员工均签署保密协议，并仅能在履行职责所必需的范围内访问个人信息。</p>
+  <p data-lang="en">We adopt industry-standard security measures to protect your personal information, including encryption in transit (TLS), encryption at rest, least-privilege access control, security audits, and data classification management. Sensitive credentials such as API keys are encrypted locally using the operating system's secure storage (e.g., macOS Keychain) and are not exposed in plaintext. Our employees have signed confidentiality agreements and can only access personal information within the scope necessary for performing their duties.</p>
+
+  <h3 data-lang="zh">5.2 安全事件处置</h3>
+  <h3 data-lang="en">5.2 Security Incident Response</h3>
+  <p data-lang="zh">尽管我们采取了合理的安全措施，但互联网环境并非百分之百安全。<strong>请你妥善保管你的账号凭据及本地设备，因你自身原因（如主动泄露密码、设备失窃未启用锁屏）导致的损失，需由你自行承担相应责任。</strong>如不幸发生个人信息安全事件，我们将立即启动应急预案，依法向有关主管部门报告，并通过应用内通知、邮件等方式及时告知你事件情况、可能的影响及你可采取的补救措施。</p>
+  <p data-lang="en">Although we adopt reasonable security measures, the Internet environment is not 100% secure. <strong>Please keep your account credentials and local devices safe; losses caused by your own fault (e.g., voluntarily disclosing your password, or a stolen device without screen lock enabled) shall be borne by you.</strong> In the unfortunate event of a personal information security incident, we will immediately activate our emergency response plan, report to the relevant competent authorities as required by law, and promptly inform you of the incident, its possible impact, and remedial measures you can take, via in-app notifications, email, and other means.</p>
+
+  <!-- 六、你的权利 -->
+  <h2 data-lang="zh">六、你的个人信息权利</h2>
+  <h2 data-lang="en">6. Your Personal Information Rights</h2>
+  <p data-lang="zh">按照中国相关的法律、法规、标准，我们保障你对自己的个人信息行使以下权利：</p>
+  <p data-lang="en">In accordance with relevant Chinese laws, regulations, and standards, we safeguard your rights to exercise the following over your personal information:</p>
+  <ul>
+    <li data-lang="zh"><strong>查阅与复制：</strong>你可在应用设置中查看你的账号信息及数据；你可通过客服申请复制你的账号基本信息。</li>
+    <li data-lang="en"><strong>Access and copy:</strong> You may view your account information and data in the app settings, and you may request a copy of your basic account information through customer support.</li>
+    <li data-lang="zh"><strong>更正与补充：</strong>当你发现我们处理的个人信息有错误时，你有权作出更正或补充。你可以自行更正，或通过客服提出更正申请。</li>
+    <li data-lang="en"><strong>Correction and supplementation:</strong> When you discover that the personal information we process is inaccurate, you have the right to correct or supplement it. You may do so yourself or submit a correction request through customer support.</li>
+    <li data-lang="zh"><strong>删除：</strong>你可删除对话记录、代码库索引等数据；在符合法律法规及服务规则的前提下，你也可要求我们删除相应个人信息。</li>
+    <li data-lang="en"><strong>Deletion:</strong> You may delete conversation history, codebase indexes, and other data; subject to applicable laws and service rules, you may also request that we delete the corresponding personal information.</li>
+    <li data-lang="zh"><strong>撤回同意：</strong>你可撤回对某项信息收集的同意，但这不影响此前基于同意已进行的处理的效力。撤回同意可能导致相关功能无法继续使用。</li>
+    <li data-lang="en"><strong>Withdrawal of consent:</strong> You may withdraw consent for specific information collection, but this does not affect the validity of processing already carried out based on your prior consent. Withdrawal of consent may render related features unavailable.</li>
+    <li data-lang="zh"><strong>账号注销：</strong>你可通过客服申请注销账号。注销后，我们将停止为你提供服务，并在合理期限内删除或匿名化你的个人信息。</li>
+    <li data-lang="en"><strong>Account cancellation:</strong> You may request account cancellation through customer support. Upon cancellation, we will stop providing services to you and delete or anonymize your personal information within a reasonable period.</li>
+    <li data-lang="zh"><strong>要求解释与获取规则副本：</strong>你有权要求我们对个人信息处理规则进行解释说明，并获取相关规则的副本。</li>
+    <li data-lang="en"><strong>Right to explanation and to obtain a copy of the rules:</strong> You have the right to request an explanation of our personal information processing rules and to obtain a copy of such rules.</li>
+  </ul>
+  <p data-lang="zh">我们将在收到你的请求并核实你的身份后的<strong>十五个工作日内</strong>予以响应。对于你的合理请求，我们原则上不收取费用；但对于多次重复、超出合理限度的请求，我们将视情况收取一定的成本费用。对于无端重复、需要过多技术投入、给他人合法权益带来风险或非常不切实际的请求，我们可能会予以拒绝，并向你说明理由。</p>
+  <p data-lang="en">We will respond to your request within <strong>fifteen working days</strong> after receiving it and verifying your identity. We generally do not charge fees for reasonable requests; however, for repeated requests beyond a reasonable limit, we may charge a reasonable cost fee depending on the circumstances. We may decline requests that are unreasonably repetitive, require disproportionate technical effort, risk the legitimate rights of others, or are highly impractical, and we will explain the reasons to you.</p>
+
+  <!-- 七、自动化决策 -->
+  <h2 data-lang="zh">七、自动化决策说明</h2>
+  <h2 data-lang="en">7. Automated Decision-Making</h2>
+  <p data-lang="zh">本服务的核心是辅助你完成编程与开发任务，我们不会利用你的个人信息对你作出具有法律约束力的自动化决策，也不会利用你的个人信息进行对你权益有重大影响的自动化商业营销决策。当你使用 AI 功能时，模型可能基于你当前会话的上下文自动生成内容，该生成过程仅作用于你当次任务的输出结果，不构成对你的画像评估。<strong>AI 生成内容可能存在错误或遗漏，请你自行核实后再采用，重要决策请勿完全依赖 AI 输出。</strong></p>
+  <p data-lang="en">The core of the Service is to assist you in completing programming and development tasks. We will not make legally binding automated decisions about you based on your personal information, nor will we use your personal information for automated commercial marketing decisions that significantly affect your rights and interests. When you use AI features, the model may automatically generate content based on the context of your current session; such a generation process only affects the output of your current task and does not constitute profiling of you. <strong>AI-generated content may contain errors or omissions. Please verify it before use, and do not rely solely on AI output for important decisions.</strong></p>
+
+  <!-- 八、未成年人 -->
+  <h2 data-lang="zh">八、未成年人保护</h2>
+  <h2 data-lang="en">8. Protection of Minors</h2>
+  <h3 data-lang="zh">8.1 一般规定</h3>
+  <h3 data-lang="en">8.1 General Provisions</h3>
+  <p data-lang="zh">我们非常重视未成年人的个人信息保护。本服务面向专业开发者与成年用户，我们不主动面向未成年人推广或营销。如你是未成年人，请在监护人的同意和指导下使用本服务。如监护人发现我们在未获有效同意的情况下收集了未成年人的个人信息，可通过本政策公布的联系方式联系我们，我们将尽快删除相关数据。</p>
+  <p data-lang="en">We attach great importance to protecting minors' personal information. The Service is intended for professional developers and adult users, and we do not actively promote or market to minors. If you are a minor, please use the Service with the consent and guidance of your guardian. If a guardian discovers that we have collected a minor's personal information without valid consent, they may contact us via the channels published in this Policy, and we will delete the relevant data as soon as possible.</p>
+
+  <h3 data-lang="zh">8.2 未满十四周岁的儿童</h3>
+  <h3 data-lang="en">8.2 Children under Fourteen</h3>
+  <p data-lang="zh">我们的产品和服务主要面向成年人。我们不会主动收集未满十四周岁儿童的个人信息。若我们发现在未事先获得可证实的监护人同意的情况下收集了儿童的个人信息，将设法尽快删除相关数据。</p>
+  <p data-lang="en">Our products and services are primarily intended for adults. We do not knowingly collect personal information from children under fourteen. If we become aware that we have collected a child's personal information without prior verifiable consent of a guardian, we will take steps to delete such data as soon as possible.</p>
+
+  <!-- 九、个人信息出境 -->
+  <h2 data-lang="zh">九、个人信息出境</h2>
+  <h2 data-lang="en">9. Cross-Border Transfer of Personal Information</h2>
+  <p data-lang="zh">为向你提供服务，你的部分个人信息（如账号信息、模型调用请求）可能经由我们在境外部署的基础设施节点或境外服务提供商处理（例如基础设施云计算服务）。我们将在开展个人信息出境活动前向你履行告知义务，并按照法律法规要求采取以下一项或多项合规措施：（1）通过国家网信部门组织的数据出境安全评估；（2）按照国家网信部门的规定经专业机构进行个人信息保护认证；（3）按照国家网信部门制定的标准合同与境外接收方订立合同。关于出境数据的范围、境外接收方的名称、联系方式、处理目的、处理方式和个人信息的种类等详细信息，请查阅《跨境数据传输协议》。</p>
+  <p data-lang="en">To provide the Service, part of your personal information (e.g., account information, model call requests) may be processed through infrastructure nodes we deploy overseas or by overseas service providers (e.g., infrastructure cloud computing services). Before carrying out cross-border transfer of personal information, we will inform you and adopt one or more of the following compliance measures as required by laws and regulations: (1) passing the cross-border data transfer security assessment organized by the national cyberspace administration; (2) obtaining personal information protection certification from a professional institution as prescribed by the national cyberspace administration; and (3) entering into a contract with the overseas recipient based on the standard contract formulated by the national cyberspace administration. For details on the scope of transferred data and the name, contact information, processing purpose, processing method, and categories of personal information of the overseas recipient, please refer to the Cross-Border Data Transfer Agreement.</p>
+
+  <!-- 十、政策修订 -->
+  <h2 data-lang="zh">十、隐私政策的修订</h2>
+  <h2 data-lang="en">10. Revisions to This Privacy Policy</h2>
+  <p data-lang="zh">我们可能适时修订本隐私政策。修订后，我们将在本页面更新"更新日期"，并通过应用内通知等方式提示你。如修订涉及以下重大变更，我们将以显著方式提示你，并在必要时另行征得你的同意：（1）个人信息处理目的、处理方式发生变更；（2）处理的个人信息类型发生变更；（3）向你提供个人信息的对象或其处理方式发生变更；（4）你参与个人信息处理方面的权利及其行使方式发生变化。我们还会将历史版本存档，供你查阅。</p>
+  <p data-lang="en">We may revise this Privacy Policy from time to time. When we do, we will update the "Last updated" date on this page and notify you via in-app notifications. If revisions involve the following material changes, we will notify you in a prominent manner and, where necessary, seek your separate consent: (1) changes to the purpose or method of processing personal information; (2) changes to the types of personal information processed; (3) changes to the recipients of your personal information or their processing methods; and (4) changes to your rights regarding the processing of personal information and how to exercise them. We will also archive previous versions of this Policy for your reference.</p>
+
+  <!-- 十一、适用范围 -->
+  <h2 data-lang="zh">十一、适用范围与争议解决</h2>
+  <h2 data-lang="en">11. Scope of Application and Dispute Resolution</h2>
+  <p data-lang="zh">本政策适用于 CoCode 桌面应用、CLI 工具及官方网站。本政策不适用于第三方服务的隐私实践（包括你通过 BYOK 模式直接调用的模型提供商、支付平台及其他第三方网站或应用），请参阅相应第三方的隐私政策。如你与本政策相关的个人信息处理活动发生争议，我们真诚希望与你友好协商解决；协商不成的，你可以向有关政府部门投诉举报，或依据《用户协议》约定的争议解决方式处理。</p>
+  <p data-lang="en">This Policy applies to the CoCode desktop application, CLI tool, and official website. This Policy does not apply to the privacy practices of third-party services (including model providers you call directly in BYOK mode, payment platforms, and other third-party websites or applications); please refer to the respective third-party privacy policies. In the event of any dispute arising from personal information processing activities related to this Policy, we sincerely hope to resolve it with you through friendly negotiation; if negotiation fails, you may file a complaint with the relevant government authorities or handle it in accordance with the dispute resolution method agreed in the Terms of Service.</p>
+
+  <!-- 十二、联系我们 -->
+  <h2 data-lang="zh">十二、如何联系我们</h2>
+  <h2 data-lang="en">12. How to Contact Us</h2>
+  <p data-lang="zh">如对本隐私政策有任何疑问、意见或建议，或需行使个人信息权利、提出投诉举报，请通过以下方式联系我们，我们将在收到你的消息后十五个工作日内回复：</p>
+  <p data-lang="en">If you have any questions, comments, or suggestions about this Privacy Policy, or wish to exercise your personal information rights or file a complaint, please contact us at the following. We will reply within fifteen working days after receiving your message:</p>
+  <p data-lang="zh">邮箱：<a href="mailto:2206674900@qq.com">2206674900@qq.com</a></p>
+  <p data-lang="en">Email: <a href="mailto:2206674900@qq.com">2206674900@qq.com</a></p>
+  <p data-lang="zh">一般情况下，我们将在十五个工作日内答复。如果你对我们的回复不满意，特别是我们的行为损害了你的合法权益，你还可以向网信、电信、公安及市场监管等政府部门进行投诉、举报。</p>
+  <p data-lang="en">Under normal circumstances, we will reply within fifteen working days. If you are not satisfied with our reply, in particular if our conduct infringes upon your legitimate rights and interests, you may also lodge a complaint or report to government authorities such as those in charge of cyberspace administration, telecommunications, public security, and market regulation.</p>
+
+</section>
+</div>
+
+<!-- ============ 跨境传输 ============ -->
+<div id="view-cross-border" class="view">
+<header>
+  <div class="wrap nav">
+    <a href="index.html" class="brand">CoCode</a>
+    <div class="lang-switch">
+      <button class="lang-btn active" data-lang="zh">中文</button>
+      <button class="lang-btn" data-lang="en">EN</button>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <h1 data-lang="zh">跨境数据传输协议</h1>
+    <h1 data-lang="en">Cross-Border Data Transfer Agreement</h1>
+    <p class="sub" data-lang="zh">更新日期：2026 年 9 月 19 日 &nbsp;·&nbsp; 生效日期：2026 年 9 月 19 日</p>
+    <p class="sub" data-lang="en">Last updated: September 19, 2026 &nbsp;·&nbsp; Effective date: September 19, 2026</p>
+  </div>
+</section>
+
+<section class="legal wrap">
+
+  <!-- 导言 -->
+  <div class="note" data-lang="zh">
+    本协议旨在取得你的授权，同意 CoCode 运营团队（"我们"）为向你提供 AI 编程代理服务之目的，将你的部分个人信息传输至位于中华人民共和国境外的接收方。根据《中华人民共和国个人信息保护法》第三十八条、第三十九条及第四十条的规定，向境外提供个人信息的，应当向个人告知境外接收方的名称或者姓名、联系方式、处理目的、处理方式、个人信息的种类以及个人向境外接收方行使权利的方式和程序，并取得个人的单独同意。本协议与《用户协议》《隐私政策》共同构成我们与你之间关于个人信息保护的完整约定；本协议未尽事宜，适用《隐私政策》的相关规定；两者不一致的，就跨境传输相关事项以本协议为准。请你仔细阅读以下条款，特别以<strong>加粗</strong>方式提示的内容，在充分理解后作出是否同意的决定。<strong>当你勾选"我已阅读并同意跨境数据传输协议"或继续使用涉及跨境传输的相关服务时，我们将视为你已自愿同意我们基于本协议所述目的将你的个人信息传输至境外。</strong>
+  </div>
+  <div class="note" data-lang="en">
+    This Agreement aims to obtain your authorization to consent to the CoCode Team ("we", "us") transferring some of your personal information to recipients located outside the People's Republic of China for the purpose of providing you with AI programming agent services. Pursuant to Articles 38, 39, and 40 of the Personal Information Protection Law of the People's Republic of China, where personal information is provided across borders, the individual must be informed of the name and contact details of the overseas recipient, the purpose and method of the processing, the types of personal information involved, and the manner and procedure for the individual to exercise their rights against the overseas recipient, and separate consent must be obtained. This Agreement, together with the Terms of Service and the Privacy Policy, constitutes the complete agreement between us and you regarding personal information protection; matters not covered in this Agreement shall be governed by the Privacy Policy; in the event of any inconsistency, this Agreement shall prevail with respect to matters concerning cross-border transfer. Please read the following clauses carefully, especially those highlighted in <strong>bold</strong>, and make your decision after fully understanding them. <strong>When you check "I have read and agree to the Cross-Border Data Transfer Agreement" or continue to use the relevant services involving cross-border transfer, we will deem that you have voluntarily consented to our transfer of your personal information overseas for the purposes described in this Agreement.</strong>
+  </div>
+
+  <!-- 一、术语 -->
+  <h2 data-lang="zh">一、术语定义</h2>
+  <h2 data-lang="en">1. Definitions</h2>
+  <p data-lang="zh">为便于理解，本协议中的下列术语含义如下：</p>
+  <p data-lang="en">For ease of understanding, the following terms in this Agreement have the meanings set out below:</p>
+  <ul>
+    <li data-lang="zh"><strong>"本服务"：</strong>指 CoCode 桌面应用、命令行工具（CLI）、官方网站及相关配套服务；</li>
+    <li data-lang="en"><strong>"Service":</strong> refers to the CoCode desktop application, command-line interface (CLI), official website, and related supporting services;</li>
+    <li data-lang="zh"><strong>"个人信息"：</strong>指以电子或者其他方式记录的与已识别或者可识别的自然人有关的各种信息，不包括匿名化处理后的信息；</li>
+    <li data-lang="en"><strong>"Personal information":</strong> refers to various kinds of information, recorded electronically or otherwise, relating to identified or identifiable natural persons, excluding information after anonymization;</li>
+    <li data-lang="zh"><strong>"敏感个人信息"：</strong>指一旦泄露或者非法使用，容易导致自然人的人格尊严受到侵害或者人身、财产安全受到危害的个人信息，包括生物识别、宗教信仰、特定身份、医疗健康、金融账户、行踪轨迹等信息，以及不满十四周岁未成年人的个人信息；</li>
+    <li data-lang="en"><strong>"Sensitive personal information":</strong> refers to personal information that, once leaked or illegally used, could easily cause harm to a natural person's dignity or to the safety of his or her person or property, including biometric information, religious beliefs, specific identity, medical health, financial accounts, location tracks, and any personal information of minors under the age of fourteen;</li>
+    <li data-lang="zh"><strong>"个人信息主体"：</strong>指个人信息所识别或者关联的自然人，即本服务的用户（"你"）；</li>
+    <li data-lang="en"><strong>"Personal information subject":</strong> refers to the natural person identified by or associated with the personal information, i.e., the user of the Service ("you");</li>
+    <li data-lang="zh"><strong>"单独同意"：</strong>指个人信息处理者在作出处理行为的告知后，专门针对个人信息处理活动取得个人作出同意的意思表示，区别于概括同意或一揽子同意；</li>
+    <li data-lang="en"><strong>"Separate consent":</strong> refers to an expression of consent specifically given by the individual for a particular processing activity after being informed of such processing, as distinguished from general or bundled consent;</li>
+    <li data-lang="zh"><strong>"匿名化"：</strong>指个人信息经过处理无法识别特定自然人且不能复原的过程；</li>
+    <li data-lang="en"><strong>"Anonymization":</strong> refers to a process by which personal information cannot be used to identify a specific natural person and cannot be restored;</li>
+    <li data-lang="zh"><strong>"境内"：</strong>指中华人民共和国关境以内（不包含香港特别行政区、澳门特别行政区和台湾地区）；</li>
+    <li data-lang="en"><strong>"Onshore":</strong> refers to within the customs territory of the People's Republic of China (excluding the Hong Kong Special Administrative Region, the Macao Special Administrative Region, and the Taiwan region);</li>
+    <li data-lang="zh"><strong>"境外"：</strong>指中华人民共和国关境以外的国家和地区。</li>
+    <li data-lang="en"><strong>"Overseas":</strong> refers to countries and regions outside the customs territory of the People's Republic of China.</li>
+  </ul>
+
+  <!-- 二、接收方 -->
+  <h2 data-lang="zh">二、境外个人信息接收方</h2>
+  <h2 data-lang="en">2. Overseas Recipients of Personal Information</h2>
+  <p data-lang="zh">为向你提供稳定、可靠的本服务，我们会将你的部分个人信息传输至以下境外接收方：</p>
+  <p data-lang="en">To provide you with a stable and reliable Service, we transfer some of your personal information to the following overseas recipients:</p>
+  <ul>
+    <li data-lang="zh"><strong>Cloudflare, Inc.（美国）：</strong>提供服务器托管、内容分发（CDN）、域名解析与网络基础设施服务。我们的官方网站、身份验证与积分服务接口部分部署于 Cloudflare 全球网络，其数据中心分布在世界各地（包括境外节点），你的部分网络通信数据（如 IP 地址、请求时间、请求头信息）会在传输过程中经由其网络处理；</li>
+    <li data-lang="en"><strong>Cloudflare, Inc. (United States):</strong> Provides server hosting, content delivery (CDN), domain name resolution, and network infrastructure services. Our official website and parts of the interfaces for identity verification and credit services are deployed on Cloudflare's global network, whose data centers are located around the world (including overseas nodes). Some of your network communication data (such as IP address, request time, and request headers) will be processed through its network during transmission;</li>
+    <li data-lang="zh"><strong>你选择的第三方模型服务提供商（如适用）：</strong>当你在自带模型（BYOK）模式下选择调用境外可用的第三方模型服务时，你的请求内容将按照该提供商的服务条款直接传输至该提供商，该传输行为由你自主发起并受你与该提供商之间的协议约束。</li>
+    <li data-lang="en"><strong>Third-party model service providers selected by you (if applicable):</strong> When you choose to call an overseas-available third-party model service in Bring Your Own Key (BYOK) mode, your request content will be transmitted directly to that provider in accordance with its terms of service. Such transfer is initiated by you and governed by the agreement between you and that provider.</li>
+  </ul>
+  <p data-lang="zh">上述接收方处理个人信息的联系方式，可通过其官方网站公布的渠道查询。除上述接收方外，<strong>未经你的允许，我们不会将你的个人信息传输至境外任何其他个人信息接收方。</strong>如未来需要新增境外接收方，我们将通过协议修订、应用内通知等方式重新取得你的同意；新增传输活动在你作出同意之前不会实施。</p>
+  <p data-lang="en">The contact details of the above recipients for processing personal information can be found through the channels published on their official websites. Apart from the recipients listed above, <strong>we will not transfer your personal information to any other overseas recipient without your permission.</strong> If we need to add new overseas recipients in the future, we will obtain your consent again through agreement revisions, in-app notifications, and other means; the new transfer activities will not take place before you consent.</p>
+
+  <!-- 三、传输目的 -->
+  <h2 data-lang="zh">三、个人信息跨境传输与处理的目的</h2>
+  <h2 data-lang="en">3. Purposes of Cross-Border Transfer and Processing</h2>
+  <p data-lang="zh">我们进行个人信息跨境传输及处理的目的包括：</p>
+  <p data-lang="en">The purposes of cross-border transfer and processing of your personal information include:</p>
+  <ol>
+    <li data-lang="zh"><strong>网站与接口服务交付：</strong>通过部署于境外网络的 CDN 与基础设施，向你提供官方网站的访问、静态资源分发及服务接口响应；</li>
+    <li data-lang="en"><strong>Website and API delivery:</strong> Providing access to the official website, distribution of static resources, and responses from service interfaces through CDN and infrastructure deployed on overseas networks;</li>
+    <li data-lang="zh"><strong>身份验证与账号安全：</strong>支持账号登录、身份验证、会话保持，防范刷号、撞库、DDoS 攻击等安全威胁，确保系统及数据安全；</li>
+    <li data-lang="en"><strong>Identity verification and account security:</strong> Supporting account login, identity verification, and session persistence, and defending against security threats such as credential stuffing, brute-force attacks, and DDoS attacks to ensure system and data security;</li>
+    <li data-lang="zh"><strong>服务运行与维护：</strong>保障服务的稳定运行、性能优化、故障排查、容灾备份及服务质量监测；</li>
+    <li data-lang="en"><strong>Service operation and maintenance:</strong> Ensuring stable service operation, performance optimization, troubleshooting, disaster recovery and backup, and service quality monitoring;</li>
+    <li data-lang="zh"><strong>积分计费管理：</strong>记录模型调用的积分消耗，维护你的积分账户余额，向你出具积分账单记录；</li>
+    <li data-lang="en"><strong>Credit billing management:</strong> Recording credit consumption for model calls, maintaining your credit account balance, and providing you with credit billing records;</li>
+    <li data-lang="zh"><strong>反欺诈与滥用防控：</strong>识别和阻断自动化脚本、恶意注册、积分套利等滥用行为，保护你和平台的合法权益；</li>
+    <li data-lang="en"><strong>Anti-fraud and abuse prevention:</strong> Identifying and blocking abuse such as automated scripts, malicious registration, and credit arbitrage, to protect your legitimate rights and interests and those of the platform;</li>
+    <li data-lang="zh"><strong>安全审计与合规：</strong>满足法律法规、监管要求及安全审计之需要。</li>
+    <li data-lang="en"><strong>Security audit and compliance:</strong> Meeting the needs of laws and regulations, regulatory requirements, and security audits.</li>
+  </ol>
+  <p data-lang="zh">我们不会将你的个人信息用于上述目的之外的其他目的。如需变更处理目的，我们将重新取得你的单独同意。</p>
+  <p data-lang="en">We will not use your personal information for purposes other than those listed above. If we need to change the processing purpose, we will obtain your separate consent again.</p>
+
+  <!-- 四、传输信息类型 -->
+  <h2 data-lang="zh">四、跨境传输与处理的个人信息类型</h2>
+  <h2 data-lang="en">4. Types of Personal Information Transferred and Processed Cross-Border</h2>
+  <p data-lang="zh">我们跨境传输和处理的个人信息与处理目的直接相关，遵循最小必要原则，具体包括：</p>
+  <p data-lang="en">The personal information we transfer and process cross-border is directly related to the processing purposes and follows the principle of minimization, specifically including:</p>
+  <ol>
+    <li data-lang="zh"><strong>账号信息：</strong>你的账号标识（用户 ID）、电子邮箱地址（加密传输）、注册时间、账号状态；</li>
+    <li data-lang="en"><strong>Account information:</strong> Your account identifier (user ID), email address (transmitted in encrypted form), registration time, and account status;</li>
+    <li data-lang="zh"><strong>身份验证信息：</strong>登录凭证（如令牌、会话标识）、验证请求记录；</li>
+    <li data-lang="en"><strong>Authentication information:</strong> Login credentials (e.g., tokens, session identifiers) and verification request records;</li>
+    <li data-lang="zh"><strong>调用记录：</strong>模型名称、调用时间、消耗积分、请求状态码（<strong>不含你输入的明文内容</strong>）；</li>
+    <li data-lang="en"><strong>Call records:</strong> Model name, call time, credits consumed, and request status codes (<strong>excluding the plaintext of your input</strong>);</li>
+    <li data-lang="zh"><strong>积分信息：</strong>积分余额、积分变动记录、订单关联信息（不含支付敏感信息）；</li>
+    <li data-lang="en"><strong>Credit information:</strong> Credit balance, credit transaction records, and order-related information (excluding sensitive payment information);</li>
+    <li data-lang="zh"><strong>设备与网络信息：</strong>操作系统类型、设备型号、软件版本号、IP 地址、请求时间（用于安全防护、异常检测与流量调度）；</li>
+    <li data-lang="en"><strong>Device and network information:</strong> OS type, device model, software version, IP address, and request time (for security protection, anomaly detection, and traffic scheduling);</li>
+    <li data-lang="zh"><strong>BYOK 模式下的调用内容（如适用）：</strong>你在自带模型模式下使用境外第三方模型服务时输入的文本、代码片段、任务指令及上传的文件，此类内容由你自主选择传输至对应提供商。</li>
+    <li data-lang="en"><strong>Call content in BYOK mode (if applicable):</strong> The text, code snippets, task instructions, and uploaded files you input when using overseas third-party model services in BYOK mode. Such content is transmitted by you at your own discretion to the corresponding provider.</li>
+  </ol>
+  <p data-lang="zh">上述信息为跨境传输信息的全部类别。我们不会传输你的完整代码库、本地文件目录结构或与处理目的无关的其他信息，具体传输的类别以你实际使用服务的情况为准。</p>
+  <p data-lang="en">The above constitutes the full categories of information transferred cross-border. We will not transfer your entire codebase, local file directory structure, or other information unrelated to the processing purposes; the specific categories transferred depend on your actual use of the Service.</p>
+
+  <!-- 五、敏感个人信息专项说明 -->
+  <h2 data-lang="zh">五、敏感个人信息专项说明</h2>
+  <h2 data-lang="en">5. Special Statement on Sensitive Personal Information</h2>
+  <p data-lang="zh">我们深知敏感个人信息保护的重要性，并遵循以下原则处理可能涉及的敏感个人信息：</p>
+  <p data-lang="en">We are fully aware of the importance of protecting sensitive personal information and follow the principles below when handling any sensitive personal information that may be involved:</p>
+  <ol>
+    <li data-lang="zh"><strong>不主动收集：</strong>我们不主动收集你的生物识别信息、宗教信仰、特定身份、医疗健康、行踪轨迹等敏感个人信息；</li>
+    <li data-lang="en"><strong>No active collection:</strong> We do not actively collect your biometric information, religious beliefs, specific identity, medical health, location tracks, or other sensitive personal information;</li>
+    <li data-lang="zh"><strong>避免传输：</strong>在我们自行发起的跨境传输范围内，不包含敏感个人信息；本协议第四节所列信息类型均为一般个人信息；</li>
+    <li data-lang="en"><strong>Avoidance of transfer:</strong> The cross-border transfers initiated by us do not include sensitive personal information; the types of information listed in Section 4 of this Agreement are ordinary personal information;</li>
+    <li data-lang="zh"><strong>提示你自主判断：</strong>当你在 BYOK 模式下自主向境外第三方模型服务输入内容时，请你自行判断并避免在其中包含敏感个人信息，该等信息的传输由你自主决定并由你与该第三方之间的协议约束；</li>
+    <li data-lang="en"><strong>Your own judgment:</strong> When you input content to overseas third-party model services in BYOK mode, please judge for yourself and avoid including sensitive personal information therein; the transfer of such information is decided by you and governed by the agreement between you and such third party;</li>
+    <li data-lang="zh"><strong>未成年人保护：</strong>本服务面向成年人提供。如你是不满十四周岁未成年人的监护人，请勿让该未成年人使用本服务；如我们发现在未事先获得可证实的监护人同意的情况下收集了未成年人的个人信息，我们将设法尽快删除相关数据。</li>
+    <li data-lang="en"><strong>Protection of minors:</strong> The Service is intended for adults. If you are the guardian of a minor under the age of fourteen, please do not allow such minor to use the Service. If we discover that we have collected personal information of a minor without prior verifiable consent of a guardian, we will endeavor to delete the relevant data as soon as possible.</li>
+  </ol>
+
+  <!-- 六、法律依据 -->
+  <h2 data-lang="zh">六、跨境传输的法律依据</h2>
+  <h2 data-lang="en">6. Legal Basis for Cross-Border Transfer</h2>
+  <p data-lang="zh">我们依据《中华人民共和国个人信息保护法》第三十八条第一款第（一）项的规定，通过取得你的单独同意的方式开展本次个人信息跨境传输活动，并将持续评估以下合规路径的适用性：通过国家网信部门组织的数据出境安全评估；经专业机构进行的个人信息保护认证；按照国家网信部门制定的标准合同与境外接收方订立合同。</p>
+  <p data-lang="en">In accordance with Article 38(1)(i) of the Personal Information Protection Law of the People's Republic of China, we carry out this cross-border transfer of personal information on the basis of your separate consent, and we will continuously assess the applicability of the following compliance pathways: the security assessment organized by the national cyberspace administration; the personal information protection certification conducted by professional institutions; or the conclusion of a contract with the overseas recipient according to the standard contract formulated by the national cyberspace administration.</p>
+  <p data-lang="zh">在取得你的单独同意前，我们将依法履行告知义务，明确告知境外接收方的名称、联系方式、处理目的、处理方式、个人信息的种类以及你向境外接收方行使权利的方式和程序。如相关法律法规对个人信息出境提出新的要求，我们将及时调整本协议及数据传输安排，确保持续合规。</p>
+  <p data-lang="en">Before obtaining your separate consent, we will fulfill our obligation to inform, clearly informing you of the name of the overseas recipient, its contact details, the processing purpose and method, the types of personal information, and the manner and procedure for you to exercise your rights against the overseas recipient. If relevant laws and regulations impose new requirements on outbound transfer of personal information, we will promptly adjust this Agreement and the data transfer arrangements to ensure continued compliance.</p>
+
+  <!-- 七、存储与安全 -->
+  <h2 data-lang="zh">七、个人信息存储与安全保障</h2>
+  <h2 data-lang="en">7. Personal Information Storage and Security</h2>
+  <h3 data-lang="zh">7.1 存储地点与期限</h3>
+  <h3 data-lang="en">7.1 Storage Location and Retention</h3>
+  <p data-lang="zh">你的账号与积分数据以中华人民共和国境内服务器为主要存储地。经由境外网络（如 CDN、网关节点）处理的传输中数据，仅在实现处理目的所必需的期限内保留，境外接收方不会建立你个人信息的长期存储副本，除非其服务机制要求的最短缓存周期。当个人信息超出保存期限或达到你注销账户的条件时，我们将对个人信息进行删除或匿名化处理，法律另有规定的除外。</p>
+  <p data-lang="en">Your account and credit data are primarily stored on servers located within the People's Republic of China. Data in transit processed through overseas networks (such as CDN or gateway nodes) is retained only for the period necessary to achieve the processing purpose. The overseas recipients will not establish long-term storage copies of your personal information, except for the shortest caching period required by their service mechanisms. When personal information exceeds the retention period or when your account is deleted, we will delete or anonymize the personal information, except as otherwise provided by law.</p>
+  <h3 data-lang="zh">7.2 安全保障措施</h3>
+  <h3 data-lang="en">7.2 Security Safeguards</h3>
+  <p data-lang="zh">我们采取以下技术与管理措施保障你个人信息在跨境传输中的安全性：</p>
+  <p data-lang="en">We adopt the following technical and organizational measures to ensure the security of your personal information during cross-border transfer:</p>
+  <ul>
+    <li data-lang="zh"><strong>传输加密：</strong>所有数据传输均采用 TLS 加密通道，防止传输过程中被窃取或篡改；</li>
+    <li data-lang="en"><strong>Encryption in transit:</strong> All data transfers use TLS-encrypted channels to prevent interception or tampering during transmission;</li>
+    <li data-lang="zh"><strong>密码保护：</strong>你的登录密码使用单向加盐哈希算法存储，任何人员（包括我们内部员工）均无法查看你的明文密码；</li>
+    <li data-lang="en"><strong>Password protection:</strong> Your login password is stored using a one-way salted hashing algorithm; no one (including our internal staff) can view your plaintext password;</li>
+    <li data-lang="zh"><strong>密钥隔离：</strong>你的自定义模型 API 密钥仅存储在你本地设备，我们的服务器不保存、不备份你的密钥明文；</li>
+    <li data-lang="en"><strong>Key isolation:</strong> Your custom model API keys are stored only on your local device; our servers do not store or back up the plaintext of your keys;</li>
+    <li data-lang="zh"><strong>最小必要原则：</strong>仅传输实现服务目的所必需的信息，不传输与目的无关的个人信息；</li>
+    <li data-lang="en"><strong>Minimization principle:</strong> Only information necessary for the service purpose is transferred; personal information unrelated to the purpose is not transferred;</li>
+    <li data-lang="zh"><strong>脱敏处理：</strong>调用记录等日志信息中不包含你输入的明文内容；</li>
+    <li data-lang="en"><strong>De-identification:</strong> Log information such as call records does not contain the plaintext of your input;</li>
+    <li data-lang="zh"><strong>人机验证：</strong>在登录、注册等关键环节部署人机验证机制，防范自动化攻击；</li>
+    <li data-lang="en"><strong>Human verification:</strong> Human verification mechanisms are deployed at critical steps such as login and registration to defend against automated attacks;</li>
+    <li data-lang="zh"><strong>供应商合规：</strong>我们要求境外接收方采取符合行业标准的安全措施（如加密、访问控制、安全审计），并仅在授权范围内处理信息，不得转委托处理；</li>
+    <li data-lang="en"><strong>Vendor compliance:</strong> We require overseas recipients to adopt industry-standard security measures (such as encryption, access control, and security audits), process information only within the authorized scope, and refrain from further entrusting the processing;</li>
+    <li data-lang="zh"><strong>访问控制：</strong>我们内部对可访问相关数据的范围进行严格限制，并定期开展安全审查与应急演练。</li>
+    <li data-lang="en"><strong>Access control:</strong> We strictly limit the internal scope of access to relevant data and conduct regular security reviews and emergency drills.</li>
+  </ul>
+
+  <!-- 八、接收方义务 -->
+  <h2 data-lang="zh">八、境外接收方应履行的义务</h2>
+  <h2 data-lang="en">8. Obligations of Overseas Recipients</h2>
+  <p data-lang="zh">我们要求境外接收方承诺履行以下义务：</p>
+  <p data-lang="en">We require overseas recipients to undertake the following obligations:</p>
+  <ol>
+    <li data-lang="zh">按照本协议约定的处理目的、方式和信息类型处理个人信息，不得超出授权范围处理；</li>
+    <li data-lang="en">Process personal information in accordance with the purpose, method, and types of information agreed in this Agreement, and not process beyond the authorized scope;</li>
+    <li data-lang="zh">采取必要的技术与管理措施保障所处理个人信息的安全，达到不低于中国法律要求的保护水平；</li>
+    <li data-lang="en">Adopt necessary technical and organizational measures to safeguard the security of the personal information processed, achieving a level of protection no lower than that required by Chinese law;</li>
+    <li data-lang="zh">不得将你的输入内容用于模型训练或算法改进（如适用），除非法律法规另有要求；</li>
+    <li data-lang="en">Not use your input for model training or algorithm improvement (where applicable), unless otherwise required by law;</li>
+    <li data-lang="zh">未经我们及你的同意，不得将所处理的个人信息再转移至其他境外接收方，法律法规另有规定的除外；</li>
+    <li data-lang="en">Not further transfer the processed personal information to other overseas recipients without the consent of us and you, except as otherwise provided by law;</li>
+    <li data-lang="zh">协助我们响应你行使个人信息权利的请求；</li>
+    <li data-lang="en">Assist us in responding to your requests to exercise your personal information rights;</li>
+    <li data-lang="zh">发生个人信息安全事件时，及时向我们通报并配合处置；</li>
+    <li data-lang="en">Promptly notify us of and cooperate in handling personal information security incidents;</li>
+    <li data-lang="zh">在委托处理关系终止时，按照我们的要求删除或返还其所处理的个人信息。</li>
+    <li data-lang="en">Upon termination of the entrusted processing relationship, delete or return the personal information they have processed as required by us.</li>
+  </ol>
+
+  <!-- 九、应急处置 -->
+  <h2 data-lang="zh">九、应急处置与安全事件通知</h2>
+  <h2 data-lang="en">9. Emergency Response and Security Incident Notification</h2>
+  <p data-lang="zh">如发生或可能发生你的个人信息在跨境传输过程中泄露、篡改、丢失的安全事件，我们将采取以下措施：</p>
+  <p data-lang="en">If a security incident involving the leakage, tampering, or loss of your personal information occurs or may occur during cross-border transfer, we will take the following measures:</p>
+  <ol>
+    <li data-lang="zh"><strong>立即止损：</strong>第一时间启动应急预案，采取补救措施防止事件扩大，并要求境外接收方配合处置；</li>
+    <li data-lang="en"><strong>Immediate mitigation:</strong> Immediately activate the emergency response plan, take remedial measures to prevent the incident from escalating, and require overseas recipients to cooperate in handling;</li>
+    <li data-lang="zh"><strong>法定报告：</strong>按照《中华人民共和国个人信息保护法》第五十七条等规定，将事件情况报告履行个人信息保护职责的部门；</li>
+    <li data-lang="en"><strong>Statutory reporting:</strong> Report the incident to the department responsible for personal information protection in accordance with Article 57 and other provisions of the Personal Information Protection Law of the People's Republic of China;</li>
+    <li data-lang="zh"><strong>告知用户：</strong>如事件可能对你的人身、财产安全造成危害，我们将通过应用内通知、电子邮件、站内公告等方式及时告知你事件的概况、可能的影响、已采取的补救措施以及你可以采取的减轻危害的措施；</li>
+    <li data-lang="en"><strong>User notification:</strong> If the incident may cause harm to your personal or property safety, we will promptly notify you through in-app notifications, email, website announcements, and other means of the overview of the incident, the possible impact, the remedial measures taken, and the measures you can take to mitigate the harm;</li>
+    <li data-lang="zh"><strong>事后复盘：</strong>事件处置完成后，我们将开展复盘分析，完善相关安全措施，防止同类事件再次发生。</li>
+    <li data-lang="en"><strong>Post-incident review:</strong> After the incident is handled, we will conduct a review and analysis, improve relevant security measures, and prevent similar incidents from happening again.</li>
+  </ol>
+
+  <!-- 十、权利保证 -->
+  <h2 data-lang="zh">十、权利保证</h2>
+  <h2 data-lang="en">10. Rights Assurance</h2>
+  <p data-lang="zh">我们承诺：未经你的允许，不会将你的个人信息传输至本协议所述之外的境外任何个人信息接收方。</p>
+  <p data-lang="en">We undertake that, without your permission, we will not transfer your personal information to any overseas personal information recipient other than those described in this Agreement.</p>
+  <p data-lang="zh">你有权向境外接收方主张《中华人民共和国个人信息保护法》项下的各项权利，包括查阅、复制、更正、补充、删除其处理的个人信息，以及要求其说明个人信息处理规则。如你需要行使上述权利，可按照《隐私政策》中载明的路径向我们提出，我们将协调境外接收方在法律规定的期限内予以响应。</p>
+  <p data-lang="en">You have the right to assert against the overseas recipients all rights under the Personal Information Protection Law of the People's Republic of China, including access, copying, correction, supplementation, and deletion of the personal information they process, as well as the right to request an explanation of their personal information processing rules. To exercise these rights, you may submit your request through the channels specified in the Privacy Policy, and we will coordinate with the overseas recipients to respond within the statutory time limit.</p>
+  <p data-lang="zh">如你认为我们的跨境传输行为侵害了你的个人信息权益，你有权通过本协议第十三条载明的联系方式向我们投诉，也有权向履行个人信息保护职责的部门投诉、举报，或依法向人民法院提起诉讼。</p>
+  <p data-lang="en">If you believe that our cross-border transfer infringes upon your personal information rights and interests, you have the right to file a complaint with us through the contact information set out in Section 13 of this Agreement, to lodge a complaint or report to the department responsible for personal information protection, or to bring a lawsuit before the people's court in accordance with law.</p>
+
+  <!-- 十一、撤回同意 -->
+  <h2 data-lang="zh">十一、撤回同意</h2>
+  <h2 data-lang="en">11. Withdrawal of Consent</h2>
+  <p data-lang="zh">你亦可随时撤回对跨境传输的同意。撤回路径：应用「设置 → 隐私 → 管理我的同意」，或通过本协议第十三条载明的联系方式向我们提出书面申请。请你知悉：</p>
+  <p data-lang="en">You may also withdraw your consent to cross-border transfer at any time. Path: App "Settings → Privacy → Manage My Consent", or submit a written request to us via the contact information provided in Section 13 of this Agreement. Please note that:</p>
+  <ol>
+    <li data-lang="zh">如你撤回同意，我们将停止对你的个人信息的跨境传输，但不影响你撤回同意前基于你的同意已进行的个人信息处理活动的效力；</li>
+    <li data-lang="en">If you withdraw your consent, we will stop cross-border transfer of your personal information, but this does not affect the validity of personal information processing activities already carried out based on your consent before withdrawal;</li>
+    <li data-lang="zh">撤回同意后，依赖跨境传输的官方服务功能将无法使用，但自带模型（BYOK）模式及纯本地功能不受影响；</li>
+    <li data-lang="en">After withdrawal, official service features that rely on cross-border transfer will be unavailable, but the Bring Your Own Key (BYOK) mode and purely local features will not be affected;</li>
+    <li data-lang="zh">撤回同意不影响依法应当保留的数据的处理。</li>
+    <li data-lang="en">Withdrawal of consent does not affect the processing of data that must be retained pursuant to law.</li>
+  </ol>
+
+  <!-- 十二、协议变更 -->
+  <h2 data-lang="zh">十二、协议的变更</h2>
+  <h2 data-lang="en">12. Changes to This Agreement</h2>
+  <p data-lang="zh">我们可能适时修订本协议。修订后，我们将在本页面更新"更新日期"，并通过应用内通知、站内公告等方式提示你。如修订涉及新增境外接收方、新增传输信息类型或变更传输目的等重大事项，我们将重新取得你的单独同意；在你作出同意前，相关新增传输活动不会实施。</p>
+  <p data-lang="en">We may revise this Agreement from time to time. When we do, we will update the "Last updated" date on this page and notify you via in-app notifications, website announcements, and other means. If revisions involve material matters such as adding overseas recipients, adding types of transferred information, or changing the transfer purpose, we will obtain your separate consent again; before you consent, the relevant new transfer activities will not take place.</p>
+  <p data-lang="zh">如你在本协议修订后继续使用涉及跨境传输的相关服务，且未在合理期限内提出异议，我们将视为你同意修订后的协议；但对于需要重新取得单独同意的事项，仍以你重新作出的同意为准。</p>
+  <p data-lang="en">If you continue to use the relevant services involving cross-border transfer after this Agreement is revised without raising any objection within a reasonable period, we will deem that you agree to the revised Agreement; however, for matters requiring separate consent again, your renewed consent shall prevail.</p>
+
+  <!-- 十三、联络方式 -->
+  <h2 data-lang="zh">十三、联络方式</h2>
+  <h2 data-lang="en">13. Contact Information</h2>
+  <p data-lang="zh">如对本跨境数据传输协议有任何疑问、意见或建议，或需行使相关权利，可通过以下方式联系我们：</p>
+  <p data-lang="en">If you have any questions, comments, or suggestions about this Cross-Border Data Transfer Agreement, or wish to exercise your rights, you may contact us at:</p>
+  <p data-lang="zh">邮箱：<a href="mailto:2206674900@qq.com">2206674900@qq.com</a></p>
+  <p data-lang="en">Email: <a href="mailto:2206674900@qq.com">2206674900@qq.com</a></p>
+  <p data-lang="zh">我们将在收到你的请求后十五个工作日内予以回复。如你对我们的处理结果不满意，你也可以向履行个人信息保护职责的部门投诉、举报。</p>
+  <p data-lang="en">We will respond within fifteen (15) business days after receiving your request. If you are not satisfied with our handling, you may also file a complaint or report to the department responsible for personal information protection.</p>
+
+  <div class="note" data-lang="zh"><strong>如你同意上述内容，请在应用内勾选确认。</strong>上次修订于 2026 年 9 月 19 日。</div>
+  <div class="note" data-lang="en"><strong>If you agree to the above, please check the confirmation box in the app.</strong> Last revised on September 19, 2026.</div>
+
+</section>
+</div>
+
+<footer>
+  <div class="wrap ft">
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <span class="en" style="font-weight:600;color:var(--ink)">CoCode</span>
+      <span class="en">AGPL-3.0 LICENSED · RUNS LOCALLY · DATA NEVER LEAVES YOUR MACHINE</span>
+    </div>
+    <div style="display:flex;gap:18px;flex-wrap:wrap">
+      <a class="en" href="#terms" data-route="terms" style="color:var(--faint);text-decoration:none">用户协议 / Terms</a>
+      <a class="en" href="#privacy" data-route="privacy" style="color:var(--faint);text-decoration:none">隐私政策 / Privacy</a>
+      <a class="en" href="#cross-border" data-route="cross-border" style="color:var(--faint);text-decoration:none">跨境传输 / Cross-Border</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var VIEWS = ['home','pricing','terms','privacy','cross-border'];
+  var SCROLL_IDS = ['features','versions','download'];
+
+  function showView(name){
+    VIEWS.forEach(function(v){
+      var el = document.getElementById('view-'+v);
+      if(el) el.classList.toggle('active', v===name);
+    });
+    document.querySelectorAll('[data-route]').forEach(function(a){
+      a.classList.toggle('active', a.getAttribute('data-route')===name);
+    });
+    window.scrollTo({top:0,behavior:'instant'});
+  }
+
+  function handleRoute(){
+    // 同时支持 pathname（/terms）和 hash（#terms）
+    var pathPart = location.pathname.replace(/\/+$/,'').replace(/\.html$/,'').slice(1);
+    var hashPart = location.hash.replace(/^#/,'');
+    var name = VIEWS.indexOf(pathPart)>=0 ? pathPart : (hashPart || 'home');
+    if(VIEWS.indexOf(name)>=0){
+      showView(name);
+    } else if(SCROLL_IDS.indexOf(name)>=0){
+      showView('home');
+      setTimeout(function(){
+        var el = document.getElementById(name);
+        if(el) el.scrollIntoView({behavior:'smooth'});
+      },50);
+    } else {
+      showView('home');
+    }
+  }
+
+  document.addEventListener('click', function(e){
+    var a = e.target.closest('a[href^="#"]');
+    if(!a) return;
+    var target = a.getAttribute('href').slice(1);
+    if(!target) return;
+    if(VIEWS.indexOf(target)>=0 || SCROLL_IDS.indexOf(target)>=0){
+      e.preventDefault();
+      location.hash = target;
+    }
+  });
+
+  document.querySelectorAll('.lang-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var lang = btn.getAttribute('data-lang');
+      document.documentElement.classList.toggle('en', lang==='en');
+      document.querySelectorAll('.lang-btn').forEach(function(b){
+        b.classList.toggle('active', b===btn);
+      });
+    });
+  });
+
+  // reveal 动画：各源页面的 script 在合并时被剥离，这里统一恢复触发逻辑
+  var rvs = document.querySelectorAll('.rv');
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting){en.target.classList.add('on');io.unobserve(en.target);}
+      });
+    },{threshold:.1,rootMargin:'0px 0px -50px 0px'});
+    rvs.forEach(function(e){io.observe(e);});
+  } else {
+    rvs.forEach(function(e){e.classList.add('on');});
+  }
+
+  window.addEventListener('hashchange', handleRoute);
+  handleRoute();
+})();
+</script>
+
+</body>
+</html>
