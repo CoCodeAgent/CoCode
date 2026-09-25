@@ -255,6 +255,14 @@
     margin-top:24px;align-self:flex-start;font-size:14px;font-weight:500;
     color:var(--faint);background:var(--panel);padding:10px 26px;border-radius:32px;
   }
+  .dl-links{margin-top:24px;display:flex;flex-direction:column;gap:10px;align-self:stretch}
+  .dl-link{
+    display:flex;justify-content:space-between;align-items:baseline;gap:12px;text-decoration:none;
+    border:1px solid var(--line);border-radius:18px;padding:12px 18px;
+    font-size:14px;font-weight:500;color:var(--ink);transition:all .25s var(--ease);
+  }
+  .dl-link:hover{border-color:var(--ink);transform:translateY(-2px);box-shadow:0 10px 28px -14px rgba(24,30,37,.25)}
+  .dl-link>span:not([data-lang]){font-size:12px;color:var(--faint);font-weight:300;white-space:nowrap}
 
   /* ---------- 关于/CTA ---------- */
   .about-cta{
@@ -288,27 +296,27 @@
 <!-- ================= HERO ================= -->
 <div class="hero">
   <div class="wrap">
-    <h1 class="rv">会干活的<br>编程 <span class="grad">Agent</span></h1>
-    <p class="hero-sub rv rv-d1">CoCode Desktop 替你<b>读代码、改文件、跑命令、开检查点</b>——每一步摆在眼前，每一处改动可回滚</p>
+    <h1 class="rv"><span data-lang="zh">会干活的<br>编程 <span class="grad">Agent</span></span><span data-lang="en">A Coding Agent<br>That <span class="grad">Gets Things Done</span></span></h1>
+    <p class="hero-sub rv rv-d1"><span data-lang="zh">CoCode Desktop 替你<b>读代码、改文件、跑命令、开检查点</b>——每一步摆在眼前，每一处改动可回滚</span><span data-lang="en">CoCode Desktop <b>reads code, edits files, runs commands, takes checkpoints</b> for you — every step in plain sight, every change revertible</span></p>
     <div class="hero-cta rv rv-d2">
-      <a class="btn btn-ink" href="#download">下载 CoCode Desktop</a>
-      <a class="btn btn-ghost" href="#features">了解功能</a>
+      <a class="btn btn-ink" href="#download"><span data-lang="zh">下载 CoCode Desktop</span><span data-lang="en">Download CoCode Desktop</span></a>
+      <a class="btn btn-ghost" href="#features"><span data-lang="zh">了解功能</span><span data-lang="en">Explore Features</span></a>
     </div>
     <div class="hero-feats rv rv-d2">
       <div class="hf">
         <span class="tag en">BRING YOUR OWN MODEL</span>
-        <h3>自接入模型</h3>
-        <p>DeepSeek、智谱、Moonshot、本地 Ollama、自建 vLLM——任何 OpenAI 兼容接口都能接，模型不支持工具调用时自动降级，不会整个失效</p>
+        <h3><span data-lang="zh">自接入模型</span><span data-lang="en">Bring Your Own Model</span></h3>
+        <p><span data-lang="zh">DeepSeek、智谱、Moonshot、本地 Ollama、自建 vLLM——任何 OpenAI 兼容接口都能接，模型不支持工具调用时自动降级，不会整个失效</span><span data-lang="en">DeepSeek, Zhipu, Moonshot, local Ollama, self-hosted vLLM — any OpenAI-compatible endpoint works, with automatic degradation when a model lacks tool calling</span></p>
       </div>
       <div class="hf">
         <span class="tag en">TOKEN EFFICIENT</span>
-        <h3>低 token 多干活</h3>
-        <p>repo map 替掉几十轮搜索，本地索引增量落盘，上下文自动压缩，prompt cache 全程透传——同样的任务，账单少一截</p>
+        <h3><span data-lang="zh">低 token 多干活</span><span data-lang="en">Token-Efficient Output</span></h3>
+        <p><span data-lang="zh">repo map 替掉几十轮搜索，本地索引增量落盘，上下文自动压缩，prompt cache 全程透传——同样的任务，账单少一截</span><span data-lang="en">A repo map replaces dozens of search rounds, local indexes persist incrementally, context auto-compacts, prompt cache passes through — same tasks, smaller bills</span></p>
       </div>
       <div class="hf">
         <span class="tag en">CHECKPOINT</span>
-        <h3>每轮可回滚</h3>
-        <p>涉及写入和执行的轮次，动手前自动快照改砸了一键回滚到任意一轮——这也是敢开全自动模式的前提</p>
+        <h3><span data-lang="zh">每轮可回滚</span><span data-lang="en">Revert Any Turn</span></h3>
+        <p><span data-lang="zh">涉及写入和执行的轮次，动手前自动快照改砸了一键回滚到任意一轮——这也是敢开全自动模式的前提</span><span data-lang="en">Turns that write or execute snapshot automatically first; one click reverts to any turn — the reason full-auto mode is safe to enable</span></p>
       </div>
     </div>
   </div>
@@ -320,7 +328,7 @@
 
     <div class="sec-head rv">
       <div class="sec-no">01 — FEATURES</div>
-      <h2>真实工程级，<br>不止生成代码，更懂干活</h2>
+      <h2><span data-lang="zh">真实工程级，<br>不止生成代码，更懂干活</span><span data-lang="en">Production-grade.<br>More than code generation.</span></h2>
     </div>
 
     <!-- 块 1：工具 -->
@@ -328,22 +336,22 @@
       <div class="fb-grid">
         <div>
           <span class="fb-kicker en">18 BUILT-IN TOOLS</span>
-          <div class="fb-title">十八个内置工具，<br>从 <em>读写执行</em> 到浏览器</div>
-          <p class="fb-desc">Bash、Read、Write、Edit、Git、WebFetch、LSP、语义检索一应俱全，还有<b>能截图给模型看的内置浏览器</b>和并行调研的子代理</p>
+          <div class="fb-title"><span data-lang="zh">十八个内置工具，<br>从 <em>读写执行</em> 到浏览器</span><span data-lang="en">18 built-in tools,<br>from <em>read, write &amp; run</em> to the browser</span></div>
+          <p class="fb-desc"><span data-lang="zh">Bash、Read、Write、Edit、Git、WebFetch、LSP、语义检索一应俱全，还有<b>能截图给模型看的内置浏览器</b>和并行调研的子代理</span><span data-lang="en">Bash, Read, Write, Edit, Git, WebFetch, LSP, semantic search and more — plus a <b>built-in browser that screenshots for the model</b> and parallel research subagents</span></p>
           <ul class="fb-points">
-            <li>结构化任务面板，计划实时可见</li>
-            <li>Subagent 派发并行调研，权限只降不升</li>
-            <li>MCP 服务器接入，与 Claude Desktop 同形</li>
+            <li><span data-lang="zh">结构化任务面板，计划实时可见</span><span data-lang="en">Structured task panel with a live plan view</span></li>
+            <li><span data-lang="zh">Subagent 派发并行调研，权限只降不升</span><span data-lang="en">Parallel research via subagents; permissions only ever tighten</span></li>
+            <li><span data-lang="zh">MCP 服务器接入，与 Claude Desktop 同形</span><span data-lang="en">MCP server support, same shape as Claude Desktop</span></li>
           </ul>
         </div>
         <div class="fb-visual">
           <div class="term">
             <div class="term-bar"><i></i><i></i><i></i><span>cocode — session</span></div>
             <div class="term-body">
-              <div><span class="u">›</span> <span class="c">RepoMap</span> <span class="c">加载仓库符号骨架（省 token）</span></div>
-              <div><span class="u">›</span> <span class="c">Search</span> <span class="c">"权限决策"</span> → <span class="g">agent.js:1204</span></div>
-              <div><span class="u">›</span> <span class="c">Browser</span> <span class="c">打开登录页</span> → <span class="b">screenshot ✓</span></div>
-              <div><span class="u">›</span> <span class="c">Subagent ×3</span> <span class="c">并行调研三个模块</span> <span class="g">✓</span></div>
+              <div><span class="u">›</span> <span class="c">RepoMap</span> <span class="c"><span data-lang="zh">加载仓库符号骨架（省 token）</span><span data-lang="en">load repo symbol skeleton (saves tokens)</span></span></div>
+              <div><span class="u">›</span> <span class="c">Search</span> <span class="c">"<span data-lang="zh">权限决策</span><span data-lang="en">permission decision</span>"</span> → <span class="g">agent.js:1204</span></div>
+              <div><span class="u">›</span> <span class="c">Browser</span> <span class="c"><span data-lang="zh">打开登录页</span><span data-lang="en">open the login page</span></span> → <span class="b">screenshot ✓</span></div>
+              <div><span class="u">›</span> <span class="c">Subagent ×3</span> <span class="c"><span data-lang="zh">并行调研三个模块</span><span data-lang="en">research three modules in parallel</span></span> <span class="g">✓</span></div>
               <div><span class="k">18 tools ready</span> <span class="c">— 0 npm dependencies</span></div>
             </div>
           </div>
@@ -360,22 +368,22 @@
             <div class="term-body">
               <div><span class="c">Bash</span> <span class="o">npm install left-pad</span></div>
               <div><span class="c">┌─────────────────────────────┐</span></div>
-              <div><span class="c">│</span> 允许本次执行 &nbsp;&nbsp;<span class="c">↑↓ 选择</span></div>
-              <div><span class="c">│</span> <span class="b">以后都允许</span> <span class="c">— 写入允许清单</span></div>
-              <div><span class="c">│</span> 拒绝本次</div>
+              <div><span class="c">│</span> <span data-lang="zh">允许本次执行</span><span data-lang="en">Allow this run</span> &nbsp;&nbsp;<span class="c">↑↓ <span data-lang="zh">选择</span><span data-lang="en">select</span></span></div>
+              <div><span class="c">│</span> <span class="b"><span data-lang="zh">以后都允许</span><span data-lang="en">Always allow</span></span> <span class="c">— <span data-lang="zh">写入允许清单</span><span data-lang="en">add to allowlist</span></span></div>
+              <div><span class="c">│</span> <span data-lang="zh">拒绝本次</span><span data-lang="en">Deny this run</span></div>
               <div><span class="c">└─────────────────────────────┘</span></div>
-              <div><span class="g">✓ sandbox:</span> <span class="c">路径沙箱 · 环境净化 · 密钥脱敏</span></div>
+              <div><span class="g">✓ sandbox:</span> <span class="c"><span data-lang="zh">路径沙箱 · 环境净化 · 密钥脱敏</span><span data-lang="en">path sandbox · env sanitization · key redaction</span></span></div>
             </div>
           </div>
         </div>
         <div>
           <span class="fb-kicker en">HUMAN IN THE LOOP</span>
-          <div class="fb-title">五档权限，<br><em>控制权</em>一直在你手里</div>
-          <p class="fb-desc">从「只读契约」到「全自动」逐级放开每次执行前弹确认卡，选一次「以后都允许」，同类操作<b>永久免打扰</b>——不是处处问你，也不是处处瞒你</p>
+          <div class="fb-title"><span data-lang="zh">五档权限，<br><em>控制权</em>一直在你手里</span><span data-lang="en">Five permission levels,<br><em>control</em> always stays with you</span></div>
+          <p class="fb-desc"><span data-lang="zh">从「只读契约」到「全自动」逐级放开每次执行前弹确认卡，选一次「以后都允许」，同类操作<b>永久免打扰</b>——不是处处问你，也不是处处瞒你</span><span data-lang="en">Graduated from "read-only" to "full auto"; a confirm card pops up before every run. Pick "always allow" once and similar actions go <b>quiet for good</b> — not nagging you everywhere, not hiding anything either</span></p>
           <ul class="fb-points">
-            <li>路径沙箱：符号链接越界一律拦下</li>
-            <li>子进程环境净化：API_KEY、TOKEN 一律剥离</li>
-            <li>密钥脱敏：工具输出与日志全量过 redact()</li>
+            <li><span data-lang="zh">路径沙箱：符号链接越界一律拦下</span><span data-lang="en">Path sandbox: symlink escapes are always blocked</span></li>
+            <li><span data-lang="zh">子进程环境净化：API_KEY、TOKEN 一律剥离</span><span data-lang="en">Child-process sanitization: API_KEY, TOKEN always stripped</span></li>
+            <li><span data-lang="zh">密钥脱敏：工具输出与日志全量过 redact()</span><span data-lang="en">Key redaction: all tool output and logs pass redact()</span></li>
           </ul>
         </div>
       </div>
@@ -386,12 +394,12 @@
       <div class="fb-grid">
         <div>
           <span class="fb-kicker en">TRACE &amp; REPLAY</span>
-          <div class="fb-title">跑过就留痕，<br>每个决策<em>可回放</em></div>
-          <p class="fb-desc">每次运行写一份完整时间线：请求、工具调用、权限决策、上下文压缩出问题时你看到的是<b>它为什么这么做</b>，而不是一团黑箱</p>
+          <div class="fb-title"><span data-lang="zh">跑过就留痕，<br>每个决策<em>可回放</em></span><span data-lang="en">Everything is logged,<br>every decision <em>replayable</em></span></div>
+          <p class="fb-desc"><span data-lang="zh">每次运行写一份完整时间线：请求、工具调用、权限决策、上下文压缩出问题时你看到的是<b>它为什么这么做</b>，而不是一团黑箱</span><span data-lang="en">Every run writes a full timeline: requests, tool calls, permission decisions, context compaction. When something breaks you see <b>why it did what it did</b>, not a black box</span></p>
           <ul class="fb-points">
-            <li>「运行记录」面板随时回放任意一次运行</li>
-            <li>检查点内容寻址快照，自动保留最近 10 轮</li>
-            <li>默认不记对话正文，开全文也先过脱敏</li>
+            <li><span data-lang="zh">「运行记录」面板随时回放任意一次运行</span><span data-lang="en">Replay any past run from the Runs panel</span></li>
+            <li><span data-lang="zh">检查点内容寻址快照，自动保留最近 10 轮</span><span data-lang="en">Content-addressed checkpoints, last 10 turns auto-kept</span></li>
+            <li><span data-lang="zh">默认不记对话正文，开全文也先过脱敏</span><span data-lang="en">Conversation text off by default; full text still passes redaction</span></li>
           </ul>
         </div>
         <div class="fb-visual">
@@ -403,7 +411,7 @@
               <div><span class="c">10:24:05</span> <span class="u">Bash</span> npm run build <span class="g">✓ 4.2s</span></div>
               <div><span class="c">10:24:07</span> <span class="o">checkpoint #3</span> <span class="c">→ snapshot 1.8MB</span></div>
               <div><span class="c">10:24:09</span> <span class="b">context compact</span> <span class="c">18.2k → 9.6k tok</span></div>
-              <div><span class="c">10:24:10</span> <span class="g">✓ finished</span> <span class="c">— 可回放 · 可回滚</span></div>
+              <div><span class="c">10:24:10</span> <span class="g">✓ finished</span> <span class="c">— <span data-lang="zh">可回放 · 可回滚</span><span data-lang="en">replayable · revertible</span></span></div>
             </div>
           </div>
         </div>
@@ -418,26 +426,26 @@
   <div class="wrap">
     <div class="sec-head rv">
       <div class="sec-no">02 — SURFACES</div>
-      <h2>CoCode Desktop，<br>Agent 的每一步<em style="font-style:normal;background:var(--grad-blue);-webkit-background-clip:text;background-clip:text;color:transparent">摆在眼前</em></h2>
-      <p class="sec-sub">不必盯终端、不必记命令桌面版把整个 Agent 装进一个清爽的窗口，会话、配置、工具全部开箱即用</p>
+      <h2><span data-lang="zh">CoCode Desktop，<br>Agent 的每一步<em style="font-style:normal;background:var(--grad-blue);-webkit-background-clip:text;background-clip:text;color:transparent">摆在眼前</em></span><span data-lang="en">CoCode Desktop,<br>every Agent step <em style="font-style:normal;background:var(--grad-blue);-webkit-background-clip:text;background-clip:text;color:transparent">in plain sight</em></span></h2>
+      <p class="sec-sub"><span data-lang="zh">不必盯终端、不必记命令桌面版把整个 Agent 装进一个清爽的窗口，会话、配置、工具全部开箱即用</span><span data-lang="en">No terminal-watching, no command memorizing — the desktop app puts the whole Agent in one clean window, with sessions, settings and tools ready out of the box</span></p>
     </div>
     <div class="duo rv">
       <div class="duo-card">
         <div class="ico en" style="font-family:var(--outfit);font-size:15px;font-weight:600">GUI</div>
-        <h3>看得见的工作台</h3>
+        <h3><span data-lang="zh">看得见的工作台</span><span data-lang="en">A workbench you can see</span></h3>
         <div class="dc-en">Everything On Screen</div>
-        <p>聊天即协作：Agent 的每次读写、每条命令都以卡片流式呈现，支持什么、反对什么，一键决定</p>
-        <ul><li>会话侧栏</li><li>工具调用卡片</li><li>权限确认卡</li><li>计划面板</li></ul>
+        <p><span data-lang="zh">聊天即协作：Agent 的每次读写、每条命令都以卡片流式呈现，支持什么、反对什么，一键决定</span><span data-lang="en">Chat is collaboration: every read/write and every command streams in as cards — approve or reject with one click</span></p>
+        <ul><li><span data-lang="zh">会话侧栏</span><span data-lang="en">Session sidebar</span></li><li><span data-lang="zh">工具调用卡片</span><span data-lang="en">Tool-call cards</span></li><li><span data-lang="zh">权限确认卡</span><span data-lang="en">Permission cards</span></li><li><span data-lang="zh">计划面板</span><span data-lang="en">Plan panel</span></li></ul>
       </div>
       <div class="duo-card">
         <div class="ico" style="font-size:14px;font-weight:700">⌘</div>
-        <h3>改了什么，一目了然</h3>
+        <h3><span data-lang="zh">改了什么，一目了然</span><span data-lang="en">See exactly what changed</span></h3>
         <div class="dc-en">Diff · Checkpoint · Trace</div>
-        <p>内置变更预览逐行着色展示未提交改动；每轮自动快照，不满意就地回滚；运行记录随时回放</p>
-        <ul><li>变更预览</li><li>检查点回滚</li><li>运行记录</li><li>内置浏览器</li></ul>
+        <p><span data-lang="zh">内置变更预览逐行着色展示未提交改动；每轮自动快照，不满意就地回滚；运行记录随时回放</span><span data-lang="en">A built-in diff view colors uncommitted changes line by line; every turn auto-snapshots, roll back in place if unhappy; replay runs anytime</span></p>
+        <ul><li><span data-lang="zh">变更预览</span><span data-lang="en">Diff preview</span></li><li><span data-lang="zh">检查点回滚</span><span data-lang="en">Checkpoint rollback</span></li><li><span data-lang="zh">运行记录</span><span data-lang="en">Run history</span></li><li><span data-lang="zh">内置浏览器</span><span data-lang="en">Built-in browser</span></li></ul>
       </div>
     </div>
-    <p class="rv" style="margin-top:28px;font-size:14px;color:var(--faint);text-align:center">也提供 CLI 版本（终端 REPL），供偏好在命令行工作的用户使用</p>
+    <p class="rv" style="margin-top:28px;font-size:14px;color:var(--faint);text-align:center"><span data-lang="zh">也提供 CLI 版本（终端 REPL），供偏好在命令行工作的用户使用</span><span data-lang="en">A CLI edition (terminal REPL) is also available for those who prefer working in the command line</span></p>
   </div>
 </section>
 
@@ -446,13 +454,13 @@
   <div class="wrap">
     <div class="sec-head rv">
       <div class="sec-no">03 — IN NUMBERS</div>
-      <h2>几个实在的数字</h2>
+      <h2><span data-lang="zh">几个实在的数字</span><span data-lang="en">A few honest numbers</span></h2>
     </div>
     <div class="nums rv">
-      <div class="num"><div class="v">0</div><div class="l">核心包 npm 依赖——纯 Node.js + fetch</div></div>
-      <div class="num"><div class="v">18</div><div class="l">内置工具，覆盖读写执行到浏览</div></div>
-      <div class="num"><div class="v">5</div><div class="l">档权限模式，从只读到全自动</div></div>
-      <div class="num"><div class="v">140+</div><div class="l">全链路集成测试用例守住行为</div></div>
+      <div class="num"><div class="v">0</div><div class="l"><span data-lang="zh">核心包 npm 依赖——纯 Node.js + fetch</span><span data-lang="en">npm dependencies in the core — pure Node.js + fetch</span></div></div>
+      <div class="num"><div class="v">18</div><div class="l"><span data-lang="zh">内置工具，覆盖读写执行到浏览</span><span data-lang="en">built-in tools, from read/write/run to browsing</span></div></div>
+      <div class="num"><div class="v">5</div><div class="l"><span data-lang="zh">档权限模式，从只读到全自动</span><span data-lang="en">permission levels, from read-only to full auto</span></div></div>
+      <div class="num"><div class="v">140+</div><div class="l"><span data-lang="zh">全链路集成测试用例守住行为</span><span data-lang="en">end-to-end integration tests guarding behavior</span></div></div>
     </div>
   </div>
 </section>
@@ -462,28 +470,30 @@
   <div class="wrap">
     <div class="sec-head rv">
       <div class="sec-no">04 — DOWNLOAD</div>
-      <h2>下载 CoCode Desktop</h2>
-      <p class="sec-sub">下载 CoCode Desktop，让 AI 接管你的电脑，助你完成工作，与你编辑作品</p>
+      <h2><span data-lang="zh">下载 CoCode Desktop</span><span data-lang="en">Download CoCode Desktop</span></h2>
+      <p class="sec-sub"><span data-lang="zh">下载 CoCode Desktop，让 AI 接管你的电脑，助你完成工作，与你编辑作品</span><span data-lang="en">Download CoCode Desktop — let AI take over your computer, get work done and edit alongside you</span></p>
     </div>
     <div class="dl-grid rv">
       <div class="dl-card">
         <div class="dl-os">macOS</div>
-        <div class="dl-note">Apple Silicon / Intel</div>
-        <div class="dl-soon">敬请期待</div>
+        <div class="dl-note"><span data-lang="zh">v1.0.0 · Apple Silicon 与 Intel 通用</span><span data-lang="en">v1.0.0 · Apple Silicon and Intel</span></div>
+        <div class="dl-links">
+          <a class="dl-link" href="https://github.com/CoCodeAgent/CoCode/releases/download/v1.0.0/CoCode-1.0.0-mac.dmg"><span data-lang="zh">下载通用安装包</span><span data-lang="en">Download universal installer</span><span>macOS 13+</span></a>
+        </div>
       </div>
       <div class="dl-card">
         <div class="dl-os">Windows</div>
         <div class="dl-note">64-bit Installer</div>
-        <div class="dl-soon">敬请期待</div>
+        <div class="dl-soon"><span data-lang="zh">敬请期待</span><span data-lang="en">Coming soon</span></div>
       </div>
       <div class="dl-card">
-        <div class="dl-os">源码构建</div>
+        <div class="dl-os"><span data-lang="zh">源码构建</span><span data-lang="en">Build from source</span></div>
         <div class="dl-note">Node 18+ · Electron</div>
-        <div class="dl-soon">敬请期待</div>
+        <div class="dl-soon"><span data-lang="zh">敬请期待</span><span data-lang="en">Coming soon</span></div>
       </div>
     </div>
     <p class="rv" style="margin-top:26px;font-size:13.5px;color:var(--faint);text-align:center">
-      首次启动后，在设置里填入任意 OpenAI 兼容模型的地址与 Key（DeepSeek、智谱、Moonshot、本地 Ollama…），即可开始使用
+      <span data-lang="zh">首次启动后，在设置里填入任意 OpenAI 兼容模型的地址与 Key（DeepSeek、智谱、Moonshot、本地 Ollama…），即可开始使用</span><span data-lang="en">After first launch, enter any OpenAI-compatible model's URL and key in Settings (DeepSeek, Zhipu, Moonshot, local Ollama…) and you're ready to go</span>
     </p>
   </div>
 </section>
@@ -492,11 +502,11 @@
 <section style="padding-top:0">
   <div class="wrap">
     <div class="about-cta rv">
-      <h2>下次改代码，<br>让 CoCode <span class="grad">动手</span></h2>
-      <p>AGPL-3.0 开源 · 本地运行 · 数据不出你的机器</p>
+      <h2><span data-lang="zh">下次改代码，<br>让 CoCode <span class="grad">动手</span></span><span data-lang="en">Next time you touch code,<br>let CoCode <span class="grad">do it</span></span></h2>
+      <p><span data-lang="zh">AGPL-3.0 开源 · 本地运行 · 数据不出你的机器</span><span data-lang="en">AGPL-3.0 open source · runs locally · your data never leaves your machine</span></p>
       <div class="hero-cta">
-        <a class="btn btn-ink" href="https://github.com/CoCodeAgent/CoCode" target="_blank" rel="noopener">GitHub 仓库</a>
-        <a class="btn btn-ghost" href="#download">下载</a>
+        <a class="btn btn-ink" href="https://github.com/CoCodeAgent/CoCode" target="_blank" rel="noopener"><span data-lang="zh">GitHub 仓库</span><span data-lang="en">GitHub Repo</span></a>
+        <a class="btn btn-ghost" href="#download"><span data-lang="zh">下载</span><span data-lang="en">Download</span></a>
       </div>
     </div>
   </div>

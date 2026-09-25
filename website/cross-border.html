@@ -45,8 +45,8 @@ html.en [data-lang="en"]{display:block}
   <div class="wrap nav">
     <a href="index.html" class="brand">CoCode</a>
     <div class="lang-switch">
-      <button class="lang-btn active" data-lang="zh">中文</button>
-      <button class="lang-btn" data-lang="en">EN</button>
+      <button class="lang-btn active" data-lng="zh">中文</button>
+      <button class="lang-btn" data-lng="en">EN</button>
     </div>
   </div>
 </header>
@@ -100,8 +100,8 @@ html.en [data-lang="en"]{display:block}
   <p data-lang="zh">为向你提供稳定、可靠的本服务，我们会将你的部分个人信息传输至以下境外接收方：</p>
   <p data-lang="en">To provide you with a stable and reliable Service, we transfer some of your personal information to the following overseas recipients:</p>
   <ul>
-    <li data-lang="zh"><strong>Cloudflare, Inc.（美国）：</strong>提供服务器托管、内容分发（CDN）、域名解析与网络基础设施服务。我们的官方网站、身份验证与积分服务接口部分部署于 Cloudflare 全球网络，其数据中心分布在世界各地（包括境外节点），你的部分网络通信数据（如 IP 地址、请求时间、请求头信息）会在传输过程中经由其网络处理；</li>
-    <li data-lang="en"><strong>Cloudflare, Inc. (United States):</strong> Provides server hosting, content delivery (CDN), domain name resolution, and network infrastructure services. Our official website and parts of the interfaces for identity verification and credit services are deployed on Cloudflare's global network, whose data centers are located around the world (including overseas nodes). Some of your network communication data (such as IP address, request time, and request headers) will be processed through its network during transmission;</li>
+    <li data-lang="zh"><strong>Cloudflare, Inc.（美国）：</strong>提供服务器托管、内容分发（CDN）、域名解析与网络基础设施服务。我们的官方网站、身份验证、模型配置同步与免费语音识别接口部署于 Cloudflare 全球网络，你的部分网络通信数据会在传输过程中经由其网络处理；</li>
+    <li data-lang="en"><strong>Cloudflare, Inc. (United States):</strong> Provides server hosting, content delivery, DNS, and network infrastructure. Our website, identity, model-configuration sync, and free speech-recognition interfaces are deployed on Cloudflare's global network, so some network communication data is processed through that network in transit;</li>
     <li data-lang="zh"><strong>你选择的第三方模型服务提供商（如适用）：</strong>当你在自带模型（BYOK）模式下选择调用境外可用的第三方模型服务时，你的请求内容将按照该提供商的服务条款直接传输至该提供商，该传输行为由你自主发起并受你与该提供商之间的协议约束。</li>
     <li data-lang="en"><strong>Third-party model service providers selected by you (if applicable):</strong> When you choose to call an overseas-available third-party model service in Bring Your Own Key (BYOK) mode, your request content will be transmitted directly to that provider in accordance with its terms of service. Such transfer is initiated by you and governed by the agreement between you and that provider.</li>
   </ul>
@@ -120,10 +120,10 @@ html.en [data-lang="en"]{display:block}
     <li data-lang="en"><strong>Identity verification and account security:</strong> Supporting account login, identity verification, and session persistence, and defending against security threats such as credential stuffing, brute-force attacks, and DDoS attacks to ensure system and data security;</li>
     <li data-lang="zh"><strong>服务运行与维护：</strong>保障服务的稳定运行、性能优化、故障排查、容灾备份及服务质量监测；</li>
     <li data-lang="en"><strong>Service operation and maintenance:</strong> Ensuring stable service operation, performance optimization, troubleshooting, disaster recovery and backup, and service quality monitoring;</li>
-    <li data-lang="zh"><strong>积分计费管理：</strong>记录模型调用的积分消耗，维护你的积分账户余额，向你出具积分账单记录；</li>
-    <li data-lang="en"><strong>Credit billing management:</strong> Recording credit consumption for model calls, maintaining your credit account balance, and providing you with credit billing records;</li>
-    <li data-lang="zh"><strong>反欺诈与滥用防控：</strong>识别和阻断自动化脚本、恶意注册、积分套利等滥用行为，保护你和平台的合法权益；</li>
-    <li data-lang="en"><strong>Anti-fraud and abuse prevention:</strong> Identifying and blocking abuse such as automated scripts, malicious registration, and credit arbitrage, to protect your legitimate rights and interests and those of the platform;</li>
+    <li data-lang="zh"><strong>免费语音识别：</strong>将用户主动录制的音频转发给语音识别服务商以生成文字，该功能免费；</li>
+    <li data-lang="en"><strong>Free speech recognition:</strong> Relaying recordings initiated by the user to a speech-recognition provider to generate text, free of charge;</li>
+    <li data-lang="zh"><strong>反欺诈与滥用防控：</strong>识别和阻断自动化脚本、恶意注册等滥用行为，保护你和平台的合法权益；</li>
+    <li data-lang="en"><strong>Anti-fraud and abuse prevention:</strong> Identifying and blocking abuse such as automated scripts and malicious registration, to protect you and the platform;</li>
     <li data-lang="zh"><strong>安全审计与合规：</strong>满足法律法规、监管要求及安全审计之需要。</li>
     <li data-lang="en"><strong>Security audit and compliance:</strong> Meeting the needs of laws and regulations, regulatory requirements, and security audits.</li>
   </ol>
@@ -140,10 +140,8 @@ html.en [data-lang="en"]{display:block}
     <li data-lang="en"><strong>Account information:</strong> Your account identifier (user ID), email address (transmitted in encrypted form), registration time, and account status;</li>
     <li data-lang="zh"><strong>身份验证信息：</strong>登录凭证（如令牌、会话标识）、验证请求记录；</li>
     <li data-lang="en"><strong>Authentication information:</strong> Login credentials (e.g., tokens, session identifiers) and verification request records;</li>
-    <li data-lang="zh"><strong>调用记录：</strong>模型名称、调用时间、消耗积分、请求状态码（<strong>不含你输入的明文内容</strong>）；</li>
-    <li data-lang="en"><strong>Call records:</strong> Model name, call time, credits consumed, and request status codes (<strong>excluding the plaintext of your input</strong>);</li>
-    <li data-lang="zh"><strong>积分信息：</strong>积分余额、积分变动记录、订单关联信息（不含支付敏感信息）；</li>
-    <li data-lang="en"><strong>Credit information:</strong> Credit balance, credit transaction records, and order-related information (excluding sensitive payment information);</li>
+    <li data-lang="zh"><strong>语音识别数据：</strong>你主动录制并提交用于转写的音频，以及完成请求所需的时间与状态信息；</li>
+    <li data-lang="en"><strong>Speech-recognition data:</strong> Audio you intentionally record and submit for transcription, plus timing and status data required to complete the request;</li>
     <li data-lang="zh"><strong>设备与网络信息：</strong>操作系统类型、设备型号、软件版本号、IP 地址、请求时间（用于安全防护、异常检测与流量调度）；</li>
     <li data-lang="en"><strong>Device and network information:</strong> OS type, device model, software version, IP address, and request time (for security protection, anomaly detection, and traffic scheduling);</li>
     <li data-lang="zh"><strong>BYOK 模式下的调用内容（如适用）：</strong>你在自带模型模式下使用境外第三方模型服务时输入的文本、代码片段、任务指令及上传的文件，此类内容由你自主选择传输至对应提供商。</li>
@@ -181,8 +179,8 @@ html.en [data-lang="en"]{display:block}
   <h2 data-lang="en">7. Personal Information Storage and Security</h2>
   <h3 data-lang="zh">7.1 存储地点与期限</h3>
   <h3 data-lang="en">7.1 Storage Location and Retention</h3>
-  <p data-lang="zh">你的账号与积分数据以中华人民共和国境内服务器为主要存储地。经由境外网络（如 CDN、网关节点）处理的传输中数据，仅在实现处理目的所必需的期限内保留，境外接收方不会建立你个人信息的长期存储副本，除非其服务机制要求的最短缓存周期。当个人信息超出保存期限或达到你注销账户的条件时，我们将对个人信息进行删除或匿名化处理，法律另有规定的除外。</p>
-  <p data-lang="en">Your account and credit data are primarily stored on servers located within the People's Republic of China. Data in transit processed through overseas networks (such as CDN or gateway nodes) is retained only for the period necessary to achieve the processing purpose. The overseas recipients will not establish long-term storage copies of your personal information, except for the shortest caching period required by their service mechanisms. When personal information exceeds the retention period or when your account is deleted, we will delete or anonymize the personal information, except as otherwise provided by law.</p>
+  <p data-lang="zh">你的账号数据以中华人民共和国境内服务器为主要存储地。经由境外网络（如 CDN、网关节点）处理的传输中数据，仅在实现处理目的所必需的期限内保留。当个人信息超出保存期限或达到你注销账户的条件时，我们将对个人信息进行删除或匿名化处理，法律另有规定的除外。</p>
+  <p data-lang="en">Your account data is primarily stored on servers located within the People's Republic of China. Data in transit processed through overseas networks is retained only as long as necessary. When personal information exceeds the retention period or your account is deleted, we delete or anonymize it unless law requires otherwise.</p>
   <h3 data-lang="zh">7.2 安全保障措施</h3>
   <h3 data-lang="en">7.2 Security Safeguards</h3>
   <p data-lang="zh">我们采取以下技术与管理措施保障你个人信息在跨境传输中的安全性：</p>
@@ -281,8 +279,8 @@ html.en [data-lang="en"]{display:block}
   <h2 data-lang="en">13. Contact Information</h2>
   <p data-lang="zh">如对本跨境数据传输协议有任何疑问、意见或建议，或需行使相关权利，可通过以下方式联系我们：</p>
   <p data-lang="en">If you have any questions, comments, or suggestions about this Cross-Border Data Transfer Agreement, or wish to exercise your rights, you may contact us at:</p>
-  <p data-lang="zh">邮箱：<a href="mailto:2206674900@qq.com">2206674900@qq.com</a></p>
-  <p data-lang="en">Email: <a href="mailto:2206674900@qq.com">2206674900@qq.com</a></p>
+  <p data-lang="zh">邮箱：<a href="mailto:support@ohfun.online">support@ohfun.online</a></p>
+  <p data-lang="en">Email: <a href="mailto:support@ohfun.online">support@ohfun.online</a></p>
   <p data-lang="zh">我们将在收到你的请求后十五个工作日内予以回复。如你对我们的处理结果不满意，你也可以向履行个人信息保护职责的部门投诉、举报。</p>
   <p data-lang="en">We will respond within fifteen (15) business days after receiving your request. If you are not satisfied with our handling, you may also file a complaint or report to the department responsible for personal information protection.</p>
 
@@ -307,7 +305,7 @@ html.en [data-lang="en"]{display:block}
   var buttons=document.querySelectorAll('.lang-btn');
   buttons.forEach(function(btn){
     btn.addEventListener('click',function(){
-      var lang=this.getAttribute('data-lang');
+      var lang=this.getAttribute('data-lng');
       document.documentElement.classList.toggle('en',lang==='en');
       buttons.forEach(function(b){b.classList.toggle('active',b===btn);});
     });

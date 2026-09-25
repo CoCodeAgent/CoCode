@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>CoCode — 会干活的编程 Agent</title>
-<meta name="description" content="CoCode Desktop：自接入模型的编程 Agent 桌面端零依赖核心，18 个内置工具，低 token 多干活，每轮可回滚">
+<meta name="description" id="meta-desc" content="CoCode Desktop：自接入模型的编程 Agent 桌面端零依赖核心，18 个内置工具，低 token 多干活，每轮可回滚">
 <link rel="icon" type="image/png" href="logo.PNG">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -257,6 +257,14 @@
     margin-top:24px;align-self:flex-start;font-size:14px;font-weight:500;
     color:var(--faint);background:var(--panel);padding:10px 26px;border-radius:32px;
   }
+  .dl-links{margin-top:24px;display:flex;flex-direction:column;gap:10px;align-self:stretch}
+  .dl-link{
+    display:flex;justify-content:space-between;align-items:baseline;gap:12px;text-decoration:none;
+    border:1px solid var(--line);border-radius:18px;padding:12px 18px;
+    font-size:14px;font-weight:500;color:var(--ink);transition:all .25s var(--ease);
+  }
+  .dl-link:hover{border-color:var(--ink);transform:translateY(-2px);box-shadow:0 10px 28px -14px rgba(24,30,37,.25)}
+  .dl-link>span:not([data-lang]){font-size:12px;color:var(--faint);font-weight:300;white-space:nowrap}
 
   /* ---------- 关于/CTA ---------- */
   .about-cta{
@@ -285,107 +293,6 @@
   .ft{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center}
   .ft .en{letter-spacing:.06em}
 
-/* ===== 定价页样式（已限定作用域） ===== */
-:root{
-    --ink:#181E25;
-    --sub:#5c6572;
-    --faint:#86909C;
-    --panel:#F7F8FA;
-    --line:#E4E7EB;
-    --white:#fff;
-    --grad-purple:linear-gradient(100deg,#7A27FF,#A36AFF);
-    --grad-pink:linear-gradient(100deg,#FF276F,#FF7038);
-    --grad-blue:linear-gradient(100deg,#1BA4FF,#38CDFF);
-    --grad-tri:linear-gradient(100deg,#7A27FF,#1BA4FF 55%,#FF276F);
-    --outfit:"Outfit",-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
-    --sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
-    --mono:"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
-    --ease:cubic-bezier(.22,1,.36,1);
-  }*{margin:0;padding:0;box-sizing:border-box}#view-pricing ::selection{background:#7A27FF;color:#fff}#view-pricing a{color:inherit;text-decoration:none}#view-pricing .wrap{max-width:1200px;margin:0 auto;padding:0 40px}#view-pricing .en{font-family:var(--outfit)}#view-pricing .mono{font-family:var(--mono)}#view-pricing .rv{opacity:0;transform:translateY(28px);transition:opacity .8s var(--ease),transform .8s var(--ease)}#view-pricing .rv.on{opacity:1;transform:none}#view-pricing .rv-d1{transition-delay:.1s}#view-pricing .rv-d2{transition-delay:.2s}#view-pricing .rv-d3{transition-delay:.3s}@media (prefers-reduced-motion:reduce){#view-pricing .rv{opacity:1;transform:none;transition:none}}#view-pricing header{
-    position:fixed;top:0;left:0;right:0;z-index:60;
-    background:rgba(255,255,255,.82);backdrop-filter:blur(18px);
-    border-bottom:1px solid rgba(228,231,235,.6);
-  }#view-pricing .hd{display:flex;align-items:center;justify-content:space-between;height:72px}#view-pricing .brand{display:flex;align-items:center;gap:11px;font-family:var(--outfit);font-size:19px;font-weight:600;letter-spacing:.01em}#view-pricing .brand svg{display:block}#view-pricing nav{display:flex;align-items:center;gap:6px;font-size:15px;color:var(--ink)}#view-pricing .pill{padding:8px 20px;border-radius:32px;transition:background .3s var(--ease);font-weight:400}#view-pricing .pill:hover{background:var(--panel)}#view-pricing .pill.active{background:var(--ink);color:#fff}#view-pricing .hd-cta{
-    margin-left:12px;font-family:var(--outfit);font-weight:500;
-    background:var(--ink);color:#fff;font-size:14px;
-    padding:9px 24px;border-radius:32px;transition:all .3s var(--ease);
-  }#view-pricing .hd-cta:hover{background:#2b323b;transform:translateY(-1px)}@media(max-width:820px){#view-pricing nav .pill{display:none}}#view-pricing .hero{padding:200px 0 70px;text-align:center;position:relative;overflow:hidden}#view-pricing .hero::before{
-    content:"";position:absolute;top:-320px;left:50%;transform:translateX(-50%);
-    width:1100px;height:640px;border-radius:50%;
-    background:radial-gradient(closest-side,rgba(122,39,255,.08),rgba(27,164,255,.05) 55%,transparent);
-    pointer-events:none;
-  }#view-pricing .hero-badge{
-    display:inline-flex;align-items:center;gap:8px;
-    font-family:var(--outfit);font-size:13px;font-weight:500;color:var(--sub);
-    background:var(--panel);border:1px solid var(--line);
-    padding:7px 18px;border-radius:32px;margin-bottom:34px;position:relative;
-  }#view-pricing .hero-badge .dot{width:7px;height:7px;border-radius:50%;background:var(--grad-tri)}#view-pricing h1{
-    font-family:var(--outfit);font-weight:600;position:relative;
-    font-size:clamp(42px,6vw,70px);line-height:1.14;letter-spacing:-.015em;
-  }#view-pricing h1 .grad{background:var(--grad-purple);-webkit-background-clip:text;background-clip:text;color:transparent}#view-pricing .hero-sub{margin:24px auto 0;max-width:38em;font-size:18px;color:var(--sub);font-weight:300;position:relative}#view-pricing .hero-sub b{color:var(--ink);font-weight:500}#view-pricing .plans{padding:30px 0 40px}#view-pricing .plan-grid{display:grid;grid-template-columns:1fr 1.12fr 1fr;gap:22px;align-items:stretch}@media(max-width:960px){#view-pricing .plan-grid{grid-template-columns:1fr;max-width:520px;margin:0 auto}}#view-pricing .plan{
-    background:#fff;border:1px solid var(--line);border-radius:36px;
-    padding:44px 40px 40px;display:flex;flex-direction:column;position:relative;
-    transition:transform .4s var(--ease),box-shadow .4s var(--ease);
-  }#view-pricing .plan:hover{transform:translateY(-6px);box-shadow:0 28px 64px -28px rgba(24,30,37,.2)}#view-pricing .plan-name{font-family:var(--outfit);font-size:21px;font-weight:600;display:flex;align-items:center;gap:10px}#view-pricing .plan-tone{width:11px;height:11px;border-radius:50%;flex:none}#view-pricing .plan-lite .plan-tone{background:var(--grad-blue)}#view-pricing .plan-pro .plan-tone{background:var(--grad-purple)}#view-pricing .plan-max .plan-tone{background:var(--grad-pink)}#view-pricing .plan-tagline{font-size:13.5px;color:var(--faint);margin-top:2px;font-weight:300}#view-pricing .price{margin:30px 0 6px;display:flex;align-items:baseline;gap:4px;font-family:var(--outfit)}#view-pricing .price .cur{font-size:22px;font-weight:500;color:var(--sub)}#view-pricing .price .num{font-size:clamp(52px,4.6vw,64px);font-weight:700;letter-spacing:-.03em;line-height:1}#view-pricing .price .per{font-size:15px;color:var(--faint);font-weight:400}#view-pricing .plan-lite .price .num,#view-pricing .plan-max .price .num{color:var(--ink)}#view-pricing .credits{font-size:14.5px;color:var(--sub);font-weight:300}#view-pricing .credits b{color:var(--ink);font-weight:600;font-family:var(--outfit)}#view-pricing .unit-price{
-    display:inline-block;margin-top:10px;font-family:var(--mono);font-size:12px;color:var(--faint);
-    background:var(--panel);border-radius:20px;padding:4px 13px;
-  }#view-pricing .plan ul{margin:28px 0 34px;display:flex;flex-direction:column;gap:13px;flex:1}#view-pricing .plan ul li{list-style:none;position:relative;padding-left:17px;font-size:14.5px;color:var(--sub);font-weight:300}#view-pricing .plan ul li b{color:var(--ink);font-weight:500}#view-pricing .plan ul li::before{content:"";position:absolute;left:0;top:.52em;width:6px;height:6px;border-radius:50%}#view-pricing .plan-lite ul li::before{background:#38CDFF}#view-pricing .plan-max ul li::before{background:#FF7038}#view-pricing .plan .btn{justify-content:center}#view-pricing .btn{
-    display:inline-flex;align-items:center;gap:8px;
-    font-family:var(--outfit);font-size:15px;font-weight:500;
-    padding:13px 32px;border-radius:32px;transition:all .3s var(--ease);
-  }#view-pricing .btn-ink{background:var(--ink);color:#fff;box-shadow:0 8px 24px -8px rgba(24,30,37,.35)}#view-pricing .btn-ink:hover{transform:translateY(-2px);box-shadow:0 16px 40px -10px rgba(24,30,37,.4)}#view-pricing .btn-ghost{border:1px solid var(--line);color:var(--ink)}#view-pricing .btn-ghost:hover{border-color:var(--ink);transform:translateY(-2px)}#view-pricing .plan-pro{
-    background:#181E25;color:#fff;border:none;
-    box-shadow:0 36px 88px -32px rgba(24,30,37,.5);
-  }@media(min-width:961px){#view-pricing .plan-pro{transform:translateY(-14px)}#view-pricing .plan-pro:hover{transform:translateY(-20px)}}#view-pricing .plan-pro::before{
-    content:"";position:absolute;top:0;left:36px;right:36px;height:3px;border-radius:3px;
-    background:var(--grad-tri);
-  }#view-pricing .plan-pro .plan-tagline{color:rgba(255,255,255,.45)}#view-pricing .plan-pro .price .cur,#view-pricing .plan-pro .credits{color:rgba(255,255,255,.6)}#view-pricing .plan-pro .credits b{color:#fff}#view-pricing .plan-pro .price .num{
-    background:linear-gradient(100deg,#A36AFF,#38CDFF);
-    -webkit-background-clip:text;background-clip:text;color:transparent;
-  }#view-pricing .plan-pro .unit-price{background:rgba(255,255,255,.08);color:rgba(255,255,255,.55)}#view-pricing .plan-pro ul li{color:rgba(255,255,255,.62)}#view-pricing .plan-pro ul li b{color:#fff}#view-pricing .plan-pro ul li::before{background:#A36AFF}#view-pricing .plan-pro .btn{background:#fff;color:var(--ink);box-shadow:0 8px 32px -8px rgba(163,106,255,.55)}#view-pricing .plan-pro .btn:hover{transform:translateY(-2px);box-shadow:0 16px 44px -10px rgba(163,106,255,.6)}#view-pricing .pop-badge{
-    position:absolute;top:-15px;left:50%;transform:translateX(-50%);
-    font-family:var(--outfit);font-size:12.5px;font-weight:600;letter-spacing:.06em;
-    background:var(--grad-purple);color:#fff;padding:7px 22px;border-radius:32px;
-    box-shadow:0 8px 22px -6px rgba(122,39,255,.5);white-space:nowrap;
-  }#view-pricing .plans-note{margin-top:30px;text-align:center;font-size:13.5px;color:var(--faint);font-weight:300}#view-pricing .plans-note b{color:var(--sub);font-weight:500}#view-pricing section{padding:90px 0}#view-pricing .sec-head{margin-bottom:44px}#view-pricing .sec-no{font-family:var(--outfit);font-size:13px;font-weight:600;letter-spacing:.14em;color:var(--faint);text-transform:uppercase;margin-bottom:14px}#view-pricing h2{font-family:var(--outfit);font-weight:600;font-size:clamp(28px,3.6vw,42px);letter-spacing:-.01em;line-height:1.25}#view-pricing .sec-sub{margin-top:12px;color:var(--sub);font-size:16px;max-width:38em;font-weight:300}#view-pricing .table-shell{
-    border:1px solid var(--line);border-radius:32px;overflow:hidden;background:#fff;
-  }#view-pricing .table-scroll{overflow-x:auto}#view-pricing table{width:100%;border-collapse:collapse;min-width:640px;font-size:14.5px}#view-pricing thead th{
-    font-family:var(--outfit);font-weight:600;font-size:15px;text-align:left;
-    padding:20px 26px;background:var(--panel);border-bottom:1px solid var(--line);
-  }#view-pricing thead th.dim{width:150px;color:var(--faint);font-size:13px;letter-spacing:.06em;font-weight:500}#view-pricing thead th .th-tag{
-    display:inline-block;margin-left:9px;font-size:11px;font-weight:600;letter-spacing:.05em;
-    background:var(--grad-purple);color:#fff;border-radius:20px;padding:3px 11px;vertical-align:2px;
-  }#view-pricing tbody th{
-    text-align:left;font-weight:500;color:var(--ink);font-size:14px;white-space:nowrap;
-    padding:17px 26px;background:var(--panel);border-bottom:1px solid rgba(228,231,235,.55);width:150px;
-  }#view-pricing tbody td{
-    padding:17px 26px;border-bottom:1px solid rgba(228,231,235,.55);
-    color:var(--sub);font-weight:300;transition:background .25s var(--ease);
-  }#view-pricing tbody tr:last-child th,#view-pricing tbody tr:last-child td{border-bottom:none}#view-pricing tbody td.hot{background:rgba(122,39,255,.035);color:var(--ink);font-weight:400}#view-pricing tbody tr:hover td{background:rgba(122,39,255,.045)}#view-pricing tbody tr:hover td.hot{background:rgba(122,39,255,.08)}#view-pricing td .big{font-family:var(--outfit);font-weight:600;font-size:17px;color:var(--ink)}#view-pricing td .sm{display:block;font-size:12px;color:var(--faint);font-weight:300;margin-top:1px}#view-pricing .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}@media(max-width:820px){#view-pricing .steps{grid-template-columns:1fr}}#view-pricing .step{
-    background:var(--panel);border-radius:32px;padding:36px 34px;position:relative;
-    transition:transform .35s var(--ease);
-  }#view-pricing .step:hover{transform:translateY(-4px)}#view-pricing .step .no{
-    font-family:var(--outfit);font-weight:700;font-size:15px;width:38px;height:38px;border-radius:50%;
-    display:flex;align-items:center;justify-content:center;color:#fff;margin-bottom:18px;
-  }#view-pricing .step:nth-child(1) .no{background:var(--grad-purple)}#view-pricing .step:nth-child(2) .no{background:var(--grad-blue)}#view-pricing .step:nth-child(3) .no{background:var(--grad-pink)}#view-pricing .step h3{font-size:16.5px;font-weight:600;margin-bottom:8px}#view-pricing .step p{font-size:14px;color:var(--sub);font-weight:300}#view-pricing .step p b{color:var(--ink);font-weight:500}#view-pricing .faq{max-width:760px;margin:0 auto}#view-pricing .faq details{
-    border:1px solid var(--line);border-radius:24px;background:#fff;
-    padding:22px 30px;margin-bottom:14px;transition:border-color .3s var(--ease);
-  }#view-pricing .faq details:hover{border-color:rgba(122,39,255,.35)}#view-pricing .faq summary{
-    cursor:pointer;list-style:none;font-weight:500;font-size:15.5px;
-    display:flex;justify-content:space-between;align-items:center;gap:16px;
-  }#view-pricing .faq summary::-webkit-details-marker{display:none}#view-pricing .faq summary::after{
-    content:"+";font-family:var(--outfit);font-size:20px;color:var(--faint);
-    transition:transform .3s var(--ease);flex:none;
-  }#view-pricing .faq details[open] summary::after{transform:rotate(45deg)}#view-pricing .faq details p{margin-top:12px;font-size:14.5px;color:var(--sub);font-weight:300}#view-pricing .faq details p b{color:var(--ink);font-weight:500}#view-pricing .cta-block{
-    border-radius:60px;background:#181E25;color:#fff;
-    padding:96px 72px;text-align:center;position:relative;overflow:hidden;
-  }#view-pricing .cta-block::before{
-    content:"";position:absolute;bottom:-260px;left:50%;transform:translateX(-50%);
-    width:900px;height:480px;border-radius:50%;
-    background:radial-gradient(closest-side,rgba(122,39,255,.3),rgba(27,164,255,.14) 55%,transparent);
-    pointer-events:none;
-  }#view-pricing .cta-block h2{color:#fff;position:relative;font-size:clamp(28px,4.2vw,50px);max-width:16em;margin:0 auto}#view-pricing .cta-block h2 .grad{background:linear-gradient(100deg,#A36AFF,#38CDFF);-webkit-background-clip:text;background-clip:text;color:transparent}#view-pricing .cta-block p{margin:18px auto 0;color:rgba(255,255,255,.66);max-width:34em;font-weight:300;position:relative}#view-pricing .cta-block .hero-cta{margin-top:38px;position:relative;display:flex;gap:14px;justify-content:center;flex-wrap:wrap}#view-pricing .cta-block .btn-light{background:#fff;color:var(--ink);box-shadow:0 8px 32px -8px rgba(163,106,255,.5)}#view-pricing .cta-block .btn-light:hover{transform:translateY(-2px);box-shadow:0 16px 44px -10px rgba(163,106,255,.6)}#view-pricing .cta-block .btn-dark-g{border:1px solid rgba(255,255,255,.24);color:#fff}#view-pricing .cta-block .btn-dark-g:hover{border-color:#fff;transform:translateY(-2px)}@media(max-width:960px){#view-pricing .cta-block{border-radius:36px;padding:72px 32px}}#view-pricing footer{padding:48px 0;font-size:13.5px;color:var(--faint)}#view-pricing .ft{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center}#view-pricing .ft .en{letter-spacing:.06em}
-
 /* ===== 协议页样式（已限定作用域） ===== */
 :root{--ink:#181E25;--faint:#8A92A0;--line:#E6E9EE;--paper:#FFFFFF;--grad:linear-gradient(100deg,#7A27FF 0%,#1BA4FF 50%,#EC4899 100%)}*{margin:0;padding:0;box-sizing:border-box}#view-terms .wrap,#view-privacy .wrap,#view-cross-border .wrap{max-width:820px;margin:0 auto;padding:0 24px}#view-terms header,#view-privacy header,#view-cross-border header{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.85);backdrop-filter:saturate(180%) blur(12px);border-bottom:1px solid var(--line)}#view-terms .nav,#view-privacy .nav,#view-cross-border .nav{display:flex;align-items:center;justify-content:space-between;height:60px}#view-terms .brand,#view-privacy .brand,#view-cross-border .brand{font-weight:700;font-size:17px;letter-spacing:-.02em;color:var(--ink);text-decoration:none}#view-terms .lang-switch,#view-privacy .lang-switch,#view-cross-border .lang-switch{display:flex;gap:4px;background:#F3F5F8;border-radius:999px;padding:3px}#view-terms .lang-btn,#view-privacy .lang-btn,#view-cross-border .lang-btn{border:none;background:transparent;padding:5px 14px;border-radius:999px;font-size:12.5px;font-weight:500;cursor:pointer;color:var(--faint);transition:.2s}#view-terms .lang-btn.active,#view-privacy .lang-btn.active,#view-cross-border .lang-btn.active{background:var(--ink);color:#fff}#view-terms .hero,#view-privacy .hero,#view-cross-border .hero{padding:56px 0 40px;border-bottom:1px solid var(--line)}#view-terms .hero h1,#view-privacy .hero h1,#view-cross-border .hero h1{font-size:34px;font-weight:700;letter-spacing:-.03em;line-height:1.2}#view-terms .hero .sub,#view-privacy .hero .sub,#view-cross-border .hero .sub{margin-top:10px;color:var(--faint);font-size:14px}#view-terms .legal,#view-privacy .legal,#view-cross-border .legal{padding:48px 0 80px}#view-terms .legal h2,#view-privacy .legal h2,#view-cross-border .legal h2{font-size:20px;font-weight:600;margin:36px 0 14px;letter-spacing:-.01em}#view-terms .legal h3,#view-privacy .legal h3,#view-cross-border .legal h3{font-size:16px;font-weight:600;margin:22px 0 10px}#view-terms .legal p,#view-privacy .legal p,#view-cross-border .legal p,#view-terms .legal li,#view-privacy .legal li,#view-cross-border .legal li{margin-bottom:12px;color:#3A4250}#view-terms .legal ol,#view-privacy .legal ol,#view-cross-border .legal ol,#view-terms .legal ul,#view-privacy .legal ul,#view-cross-border .legal ul{padding-left:22px;margin-bottom:12px}#view-terms .legal li,#view-privacy .legal li,#view-cross-border .legal li{margin-bottom:8px}#view-terms .legal strong,#view-privacy .legal strong,#view-cross-border .legal strong{font-weight:600;color:var(--ink)}#view-terms .legal .note,#view-privacy .legal .note,#view-cross-border .legal .note{background:#F6F8FB;border-left:3px solid #7A27FF;padding:14px 18px;border-radius:0 8px 8px 0;margin:18px 0;font-size:14px}#view-terms .legal a,#view-privacy .legal a,#view-cross-border .legal a{color:#7A27FF;text-decoration:none}#view-terms .legal a:hover,#view-privacy .legal a:hover,#view-cross-border .legal a:hover{text-decoration:underline}#view-terms footer,#view-privacy footer,#view-cross-border footer{border-top:1px solid var(--line);padding:32px 0;font-size:13px;color:var(--faint)}#view-terms .ft,#view-privacy .ft,#view-cross-border .ft{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}#view-terms .ft a,#view-privacy .ft a,#view-cross-border .ft a{color:var(--faint);text-decoration:none;margin-right:18px}#view-terms .ft a:hover,#view-privacy .ft a:hover,#view-cross-border .ft a:hover{color:var(--ink)}[data-lang="en"]{display:none}html.en [data-lang="zh"]{display:none}html.en [data-lang="en"]{display:block}@media(max-width:640px){#view-terms .hero h1,#view-privacy .hero h1,#view-cross-border .hero h1{font-size:26px}#view-terms .legal,#view-privacy .legal,#view-cross-border .legal{padding:32px 0 60px}}
 
@@ -396,6 +303,36 @@
 .pill.active{background:var(--ink);color:#fff}
 .lang-btn{border:none;background:transparent;padding:5px 14px;border-radius:999px;font-size:12.5px;font-weight:500;cursor:pointer;color:var(--faint);transition:.2s}
 .lang-btn.active{background:var(--ink);color:#fff}
+/* 行内双语：避免 data-lang 的块级规则破坏按钮/链接内的布局 */
+html.en span[data-lang="en"],html.en a [data-lang="en"],html.en button [data-lang="en"]{display:inline}
+/* ===== 汉堡菜单（移动端抽屉） ===== */
+.burger{display:none;border:none;background:transparent;cursor:pointer;padding:10px 8px;margin-left:2px}
+.burger span{display:block;width:20px;height:2px;border-radius:2px;background:var(--ink);transition:transform .25s var(--ease),opacity .2s}
+.burger span+span{margin-top:5px}
+.burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.burger.open span:nth-child(2){opacity:0}
+.burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.drawer{display:none}
+@media(max-width:820px){
+  .burger{display:block}
+  nav .hd-cta{display:none}
+  .drawer{
+    display:block;position:fixed;top:72px;left:0;right:0;z-index:59;
+    background:rgba(255,255,255,.96);backdrop-filter:blur(18px);
+    border-bottom:1px solid var(--line);
+    padding:6px 28px 14px;
+    opacity:0;transform:translateY(-10px);pointer-events:none;
+    transition:opacity .22s var(--ease),transform .22s var(--ease);
+  }
+  .drawer.open{opacity:1;transform:none;pointer-events:auto}
+  .drawer a{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:13px 2px;border-bottom:1px solid var(--line);
+    font-size:15px;color:var(--ink);
+  }
+  .drawer a:last-child{border-bottom:none}
+  .drawer a.active{font-weight:600}
+}
 </style>
 </head>
 <body>
@@ -408,13 +345,24 @@
       CoCode
     </a>
     <nav>
-      <a class="pill" href="#home" data-route="home">首页</a>
-      <a class="pill" href="#features" data-scroll="features">功能</a>
-      <a class="pill" href="#versions" data-scroll="versions">双版本</a>
-      <a class="pill" href="#pricing" data-route="pricing">定价</a>
-      <a class="pill" href="#download" data-scroll="download">下载</a>
+      <a class="pill" href="#home" data-route="home"><span data-lang="zh">首页</span><span data-lang="en">Home</span></a>
+      <a class="pill" href="#features" data-scroll="features"><span data-lang="zh">功能</span><span data-lang="en">Features</span></a>
+      <a class="pill" href="#versions" data-scroll="versions"><span data-lang="zh">双版本</span><span data-lang="en">Editions</span></a>
+      <a class="pill" href="#download" data-scroll="download"><span data-lang="zh">下载</span><span data-lang="en">Download</span></a>
+      <button class="lang-btn active" data-lng="zh" type="button">中文</button>
+      <button class="lang-btn" data-lng="en" type="button">EN</button>
       <a class="hd-cta" href="https://github.com/CoCodeAgent/CoCode" target="_blank" rel="noopener">GitHub</a>
+      <button class="burger" id="burger" type="button" aria-label="菜单" aria-expanded="false" aria-controls="drawer">
+        <span></span><span></span><span></span>
+      </button>
     </nav>
+  </div>
+  <div class="drawer" id="drawer">
+    <a href="#home" data-route="home"><span data-lang="zh">首页</span><span data-lang="en">Home</span></a>
+    <a href="#features" data-scroll="features"><span data-lang="zh">功能</span><span data-lang="en">Features</span></a>
+    <a href="#versions" data-scroll="versions"><span data-lang="zh">双版本</span><span data-lang="en">Editions</span></a>
+    <a href="#download" data-scroll="download"><span data-lang="zh">下载</span><span data-lang="en">Download</span></a>
+    <a href="https://github.com/CoCodeAgent/CoCode" target="_blank" rel="noopener">GitHub</a>
   </div>
 </header>
 
@@ -423,27 +371,27 @@
 <!-- ================= HERO ================= -->
 <div class="hero">
   <div class="wrap">
-    <h1 class="rv">会干活的<br>编程 <span class="grad">Agent</span></h1>
-    <p class="hero-sub rv rv-d1">CoCode Desktop 替你<b>读代码、改文件、跑命令、开检查点</b>——每一步摆在眼前，每一处改动可回滚</p>
+    <h1 class="rv"><span data-lang="zh">会干活的<br>编程 <span class="grad">Agent</span></span><span data-lang="en">A Coding Agent<br>That <span class="grad">Gets Things Done</span></span></h1>
+    <p class="hero-sub rv rv-d1"><span data-lang="zh">CoCode Desktop 替你<b>读代码、改文件、跑命令、开检查点</b>——每一步摆在眼前，每一处改动可回滚</span><span data-lang="en">CoCode Desktop <b>reads code, edits files, runs commands, takes checkpoints</b> for you — every step in plain sight, every change revertible</span></p>
     <div class="hero-cta rv rv-d2">
-      <a class="btn btn-ink" href="#download">下载 CoCode Desktop</a>
-      <a class="btn btn-ghost" href="#features">了解功能</a>
+      <a class="btn btn-ink" href="#download"><span data-lang="zh">下载 CoCode Desktop</span><span data-lang="en">Download CoCode Desktop</span></a>
+      <a class="btn btn-ghost" href="#features"><span data-lang="zh">了解功能</span><span data-lang="en">Explore Features</span></a>
     </div>
     <div class="hero-feats rv rv-d2">
       <div class="hf">
         <span class="tag en">BRING YOUR OWN MODEL</span>
-        <h3>自接入模型</h3>
-        <p>DeepSeek、智谱、Moonshot、本地 Ollama、自建 vLLM——任何 OpenAI 兼容接口都能接，模型不支持工具调用时自动降级，不会整个失效</p>
+        <h3><span data-lang="zh">自接入模型</span><span data-lang="en">Bring Your Own Model</span></h3>
+        <p><span data-lang="zh">DeepSeek、智谱、Moonshot、本地 Ollama、自建 vLLM——任何 OpenAI 兼容接口都能接，模型不支持工具调用时自动降级，不会整个失效</span><span data-lang="en">DeepSeek, Zhipu, Moonshot, local Ollama, self-hosted vLLM — any OpenAI-compatible endpoint works, with automatic degradation when a model lacks tool calling</span></p>
       </div>
       <div class="hf">
         <span class="tag en">TOKEN EFFICIENT</span>
-        <h3>低 token 多干活</h3>
-        <p>repo map 替掉几十轮搜索，本地索引增量落盘，上下文自动压缩，prompt cache 全程透传——同样的任务，账单少一截</p>
+        <h3><span data-lang="zh">低 token 多干活</span><span data-lang="en">Token-Efficient Output</span></h3>
+        <p><span data-lang="zh">repo map 替掉几十轮搜索，本地索引增量落盘，上下文自动压缩，prompt cache 全程透传——同样的任务，账单少一截</span><span data-lang="en">A repo map replaces dozens of search rounds, local indexes persist incrementally, context auto-compacts, prompt cache passes through — same tasks, smaller bills</span></p>
       </div>
       <div class="hf">
         <span class="tag en">CHECKPOINT</span>
-        <h3>每轮可回滚</h3>
-        <p>涉及写入和执行的轮次，动手前自动快照改砸了一键回滚到任意一轮——这也是敢开全自动模式的前提</p>
+        <h3><span data-lang="zh">每轮可回滚</span><span data-lang="en">Revert Any Turn</span></h3>
+        <p><span data-lang="zh">涉及写入和执行的轮次，动手前自动快照改砸了一键回滚到任意一轮——这也是敢开全自动模式的前提</span><span data-lang="en">Turns that write or execute snapshot automatically first; one click reverts to any turn — the reason full-auto mode is safe to enable</span></p>
       </div>
     </div>
   </div>
@@ -455,7 +403,7 @@
 
     <div class="sec-head rv">
       <div class="sec-no">01 — FEATURES</div>
-      <h2>真实工程级，<br>不止生成代码，更懂干活</h2>
+      <h2><span data-lang="zh">真实工程级，<br>不止生成代码，更懂干活</span><span data-lang="en">Production-grade.<br>More than code generation.</span></h2>
     </div>
 
     <!-- 块 1：工具 -->
@@ -463,22 +411,22 @@
       <div class="fb-grid">
         <div>
           <span class="fb-kicker en">18 BUILT-IN TOOLS</span>
-          <div class="fb-title">十八个内置工具，<br>从 <em>读写执行</em> 到浏览器</div>
-          <p class="fb-desc">Bash、Read、Write、Edit、Git、WebFetch、LSP、语义检索一应俱全，还有<b>能截图给模型看的内置浏览器</b>和并行调研的子代理</p>
+          <div class="fb-title"><span data-lang="zh">十八个内置工具，<br>从 <em>读写执行</em> 到浏览器</span><span data-lang="en">18 built-in tools,<br>from <em>read, write &amp; run</em> to the browser</span></div>
+          <p class="fb-desc"><span data-lang="zh">Bash、Read、Write、Edit、Git、WebFetch、LSP、语义检索一应俱全，还有<b>能截图给模型看的内置浏览器</b>和并行调研的子代理</span><span data-lang="en">Bash, Read, Write, Edit, Git, WebFetch, LSP, semantic search and more — plus a <b>built-in browser that screenshots for the model</b> and parallel research subagents</span></p>
           <ul class="fb-points">
-            <li>结构化任务面板，计划实时可见</li>
-            <li>Subagent 派发并行调研，权限只降不升</li>
-            <li>MCP 服务器接入，与 Claude Desktop 同形</li>
+            <li><span data-lang="zh">结构化任务面板，计划实时可见</span><span data-lang="en">Structured task panel with a live plan view</span></li>
+            <li><span data-lang="zh">Subagent 派发并行调研，权限只降不升</span><span data-lang="en">Parallel research via subagents; permissions only ever tighten</span></li>
+            <li><span data-lang="zh">MCP 服务器接入，与 Claude Desktop 同形</span><span data-lang="en">MCP server support, same shape as Claude Desktop</span></li>
           </ul>
         </div>
         <div class="fb-visual">
           <div class="term">
             <div class="term-bar"><i></i><i></i><i></i><span>cocode — session</span></div>
             <div class="term-body">
-              <div><span class="u">›</span> <span class="c">RepoMap</span> <span class="c">加载仓库符号骨架（省 token）</span></div>
-              <div><span class="u">›</span> <span class="c">Search</span> <span class="c">"权限决策"</span> → <span class="g">agent.js:1204</span></div>
-              <div><span class="u">›</span> <span class="c">Browser</span> <span class="c">打开登录页</span> → <span class="b">screenshot ✓</span></div>
-              <div><span class="u">›</span> <span class="c">Subagent ×3</span> <span class="c">并行调研三个模块</span> <span class="g">✓</span></div>
+              <div><span class="u">›</span> <span class="c">RepoMap</span> <span class="c"><span data-lang="zh">加载仓库符号骨架（省 token）</span><span data-lang="en">load repo symbol skeleton (saves tokens)</span></span></div>
+              <div><span class="u">›</span> <span class="c">Search</span> <span class="c">"<span data-lang="zh">权限决策</span><span data-lang="en">permission decision</span>"</span> → <span class="g">agent.js:1204</span></div>
+              <div><span class="u">›</span> <span class="c">Browser</span> <span class="c"><span data-lang="zh">打开登录页</span><span data-lang="en">open the login page</span></span> → <span class="b">screenshot ✓</span></div>
+              <div><span class="u">›</span> <span class="c">Subagent ×3</span> <span class="c"><span data-lang="zh">并行调研三个模块</span><span data-lang="en">research three modules in parallel</span></span> <span class="g">✓</span></div>
               <div><span class="k">18 tools ready</span> <span class="c">— 0 npm dependencies</span></div>
             </div>
           </div>
@@ -495,22 +443,22 @@
             <div class="term-body">
               <div><span class="c">Bash</span> <span class="o">npm install left-pad</span></div>
               <div><span class="c">┌─────────────────────────────┐</span></div>
-              <div><span class="c">│</span> 允许本次执行 &nbsp;&nbsp;<span class="c">↑↓ 选择</span></div>
-              <div><span class="c">│</span> <span class="b">以后都允许</span> <span class="c">— 写入允许清单</span></div>
-              <div><span class="c">│</span> 拒绝本次</div>
+              <div><span class="c">│</span> <span data-lang="zh">允许本次执行</span><span data-lang="en">Allow this run</span> &nbsp;&nbsp;<span class="c">↑↓ <span data-lang="zh">选择</span><span data-lang="en">select</span></span></div>
+              <div><span class="c">│</span> <span class="b"><span data-lang="zh">以后都允许</span><span data-lang="en">Always allow</span></span> <span class="c">— <span data-lang="zh">写入允许清单</span><span data-lang="en">add to allowlist</span></span></div>
+              <div><span class="c">│</span> <span data-lang="zh">拒绝本次</span><span data-lang="en">Deny this run</span></div>
               <div><span class="c">└─────────────────────────────┘</span></div>
-              <div><span class="g">✓ sandbox:</span> <span class="c">路径沙箱 · 环境净化 · 密钥脱敏</span></div>
+              <div><span class="g">✓ sandbox:</span> <span class="c"><span data-lang="zh">路径沙箱 · 环境净化 · 密钥脱敏</span><span data-lang="en">path sandbox · env sanitization · key redaction</span></span></div>
             </div>
           </div>
         </div>
         <div>
           <span class="fb-kicker en">HUMAN IN THE LOOP</span>
-          <div class="fb-title">五档权限，<br><em>控制权</em>一直在你手里</div>
-          <p class="fb-desc">从「只读契约」到「全自动」逐级放开每次执行前弹确认卡，选一次「以后都允许」，同类操作<b>永久免打扰</b>——不是处处问你，也不是处处瞒你</p>
+          <div class="fb-title"><span data-lang="zh">五档权限，<br><em>控制权</em>一直在你手里</span><span data-lang="en">Five permission levels,<br><em>control</em> always stays with you</span></div>
+          <p class="fb-desc"><span data-lang="zh">从「只读契约」到「全自动」逐级放开每次执行前弹确认卡，选一次「以后都允许」，同类操作<b>永久免打扰</b>——不是处处问你，也不是处处瞒你</span><span data-lang="en">Graduated from "read-only" to "full auto"; a confirm card pops up before every run. Pick "always allow" once and similar actions go <b>quiet for good</b> — not nagging you everywhere, not hiding anything either</span></p>
           <ul class="fb-points">
-            <li>路径沙箱：符号链接越界一律拦下</li>
-            <li>子进程环境净化：API_KEY、TOKEN 一律剥离</li>
-            <li>密钥脱敏：工具输出与日志全量过 redact()</li>
+            <li><span data-lang="zh">路径沙箱：符号链接越界一律拦下</span><span data-lang="en">Path sandbox: symlink escapes are always blocked</span></li>
+            <li><span data-lang="zh">子进程环境净化：API_KEY、TOKEN 一律剥离</span><span data-lang="en">Child-process sanitization: API_KEY, TOKEN always stripped</span></li>
+            <li><span data-lang="zh">密钥脱敏：工具输出与日志全量过 redact()</span><span data-lang="en">Key redaction: all tool output and logs pass redact()</span></li>
           </ul>
         </div>
       </div>
@@ -521,12 +469,12 @@
       <div class="fb-grid">
         <div>
           <span class="fb-kicker en">TRACE &amp; REPLAY</span>
-          <div class="fb-title">跑过就留痕，<br>每个决策<em>可回放</em></div>
-          <p class="fb-desc">每次运行写一份完整时间线：请求、工具调用、权限决策、上下文压缩出问题时你看到的是<b>它为什么这么做</b>，而不是一团黑箱</p>
+          <div class="fb-title"><span data-lang="zh">跑过就留痕，<br>每个决策<em>可回放</em></span><span data-lang="en">Everything is logged,<br>every decision <em>replayable</em></span></div>
+          <p class="fb-desc"><span data-lang="zh">每次运行写一份完整时间线：请求、工具调用、权限决策、上下文压缩出问题时你看到的是<b>它为什么这么做</b>，而不是一团黑箱</span><span data-lang="en">Every run writes a full timeline: requests, tool calls, permission decisions, context compaction. When something breaks you see <b>why it did what it did</b>, not a black box</span></p>
           <ul class="fb-points">
-            <li>「运行记录」面板随时回放任意一次运行</li>
-            <li>检查点内容寻址快照，自动保留最近 10 轮</li>
-            <li>默认不记对话正文，开全文也先过脱敏</li>
+            <li><span data-lang="zh">「运行记录」面板随时回放任意一次运行</span><span data-lang="en">Replay any past run from the Runs panel</span></li>
+            <li><span data-lang="zh">检查点内容寻址快照，自动保留最近 10 轮</span><span data-lang="en">Content-addressed checkpoints, last 10 turns auto-kept</span></li>
+            <li><span data-lang="zh">默认不记对话正文，开全文也先过脱敏</span><span data-lang="en">Conversation text off by default; full text still passes redaction</span></li>
           </ul>
         </div>
         <div class="fb-visual">
@@ -538,7 +486,7 @@
               <div><span class="c">10:24:05</span> <span class="u">Bash</span> npm run build <span class="g">✓ 4.2s</span></div>
               <div><span class="c">10:24:07</span> <span class="o">checkpoint #3</span> <span class="c">→ snapshot 1.8MB</span></div>
               <div><span class="c">10:24:09</span> <span class="b">context compact</span> <span class="c">18.2k → 9.6k tok</span></div>
-              <div><span class="c">10:24:10</span> <span class="g">✓ finished</span> <span class="c">— 可回放 · 可回滚</span></div>
+              <div><span class="c">10:24:10</span> <span class="g">✓ finished</span> <span class="c">— <span data-lang="zh">可回放 · 可回滚</span><span data-lang="en">replayable · revertible</span></span></div>
             </div>
           </div>
         </div>
@@ -553,26 +501,26 @@
   <div class="wrap">
     <div class="sec-head rv">
       <div class="sec-no">02 — SURFACES</div>
-      <h2>CoCode Desktop，<br>Agent 的每一步<em style="font-style:normal;background:var(--grad-blue);-webkit-background-clip:text;background-clip:text;color:transparent">摆在眼前</em></h2>
-      <p class="sec-sub">不必盯终端、不必记命令桌面版把整个 Agent 装进一个清爽的窗口，会话、配置、工具全部开箱即用</p>
+      <h2><span data-lang="zh">CoCode Desktop，<br>Agent 的每一步<em style="font-style:normal;background:var(--grad-blue);-webkit-background-clip:text;background-clip:text;color:transparent">摆在眼前</em></span><span data-lang="en">CoCode Desktop,<br>every Agent step <em style="font-style:normal;background:var(--grad-blue);-webkit-background-clip:text;background-clip:text;color:transparent">in plain sight</em></span></h2>
+      <p class="sec-sub"><span data-lang="zh">不必盯终端、不必记命令桌面版把整个 Agent 装进一个清爽的窗口，会话、配置、工具全部开箱即用</span><span data-lang="en">No terminal-watching, no command memorizing — the desktop app puts the whole Agent in one clean window, with sessions, settings and tools ready out of the box</span></p>
     </div>
     <div class="duo rv">
       <div class="duo-card">
         <div class="ico en" style="font-family:var(--outfit);font-size:15px;font-weight:600">GUI</div>
-        <h3>看得见的工作台</h3>
+        <h3><span data-lang="zh">看得见的工作台</span><span data-lang="en">A workbench you can see</span></h3>
         <div class="dc-en">Everything On Screen</div>
-        <p>聊天即协作：Agent 的每次读写、每条命令都以卡片流式呈现，支持什么、反对什么，一键决定</p>
-        <ul><li>会话侧栏</li><li>工具调用卡片</li><li>权限确认卡</li><li>计划面板</li></ul>
+        <p><span data-lang="zh">聊天即协作：Agent 的每次读写、每条命令都以卡片流式呈现，支持什么、反对什么，一键决定</span><span data-lang="en">Chat is collaboration: every read/write and every command streams in as cards — approve or reject with one click</span></p>
+        <ul><li><span data-lang="zh">会话侧栏</span><span data-lang="en">Session sidebar</span></li><li><span data-lang="zh">工具调用卡片</span><span data-lang="en">Tool-call cards</span></li><li><span data-lang="zh">权限确认卡</span><span data-lang="en">Permission cards</span></li><li><span data-lang="zh">计划面板</span><span data-lang="en">Plan panel</span></li></ul>
       </div>
       <div class="duo-card">
         <div class="ico" style="font-size:14px;font-weight:700">⌘</div>
-        <h3>改了什么，一目了然</h3>
+        <h3><span data-lang="zh">改了什么，一目了然</span><span data-lang="en">See exactly what changed</span></h3>
         <div class="dc-en">Diff · Checkpoint · Trace</div>
-        <p>内置变更预览逐行着色展示未提交改动；每轮自动快照，不满意就地回滚；运行记录随时回放</p>
-        <ul><li>变更预览</li><li>检查点回滚</li><li>运行记录</li><li>内置浏览器</li></ul>
+        <p><span data-lang="zh">内置变更预览逐行着色展示未提交改动；每轮自动快照，不满意就地回滚；运行记录随时回放</span><span data-lang="en">A built-in diff view colors uncommitted changes line by line; every turn auto-snapshots, roll back in place if unhappy; replay runs anytime</span></p>
+        <ul><li><span data-lang="zh">变更预览</span><span data-lang="en">Diff preview</span></li><li><span data-lang="zh">检查点回滚</span><span data-lang="en">Checkpoint rollback</span></li><li><span data-lang="zh">运行记录</span><span data-lang="en">Run history</span></li><li><span data-lang="zh">内置浏览器</span><span data-lang="en">Built-in browser</span></li></ul>
       </div>
     </div>
-    <p class="rv" style="margin-top:28px;font-size:14px;color:var(--faint);text-align:center">也提供 CLI 版本（终端 REPL），供偏好在命令行工作的用户使用</p>
+    <p class="rv" style="margin-top:28px;font-size:14px;color:var(--faint);text-align:center"><span data-lang="zh">也提供 CLI 版本（终端 REPL），供偏好在命令行工作的用户使用</span><span data-lang="en">A CLI edition (terminal REPL) is also available for those who prefer working in the command line</span></p>
   </div>
 </section>
 
@@ -581,13 +529,13 @@
   <div class="wrap">
     <div class="sec-head rv">
       <div class="sec-no">03 — IN NUMBERS</div>
-      <h2>几个实在的数字</h2>
+      <h2><span data-lang="zh">几个实在的数字</span><span data-lang="en">A few honest numbers</span></h2>
     </div>
     <div class="nums rv">
-      <div class="num"><div class="v">0</div><div class="l">核心包 npm 依赖——纯 Node.js + fetch</div></div>
-      <div class="num"><div class="v">18</div><div class="l">内置工具，覆盖读写执行到浏览</div></div>
-      <div class="num"><div class="v">5</div><div class="l">档权限模式，从只读到全自动</div></div>
-      <div class="num"><div class="v">140+</div><div class="l">全链路集成测试用例守住行为</div></div>
+      <div class="num"><div class="v">0</div><div class="l"><span data-lang="zh">核心包 npm 依赖——纯 Node.js + fetch</span><span data-lang="en">npm dependencies in the core — pure Node.js + fetch</span></div></div>
+      <div class="num"><div class="v">18</div><div class="l"><span data-lang="zh">内置工具，覆盖读写执行到浏览</span><span data-lang="en">built-in tools, from read/write/run to browsing</span></div></div>
+      <div class="num"><div class="v">5</div><div class="l"><span data-lang="zh">档权限模式，从只读到全自动</span><span data-lang="en">permission levels, from read-only to full auto</span></div></div>
+      <div class="num"><div class="v">140+</div><div class="l"><span data-lang="zh">全链路集成测试用例守住行为</span><span data-lang="en">end-to-end integration tests guarding behavior</span></div></div>
     </div>
   </div>
 </section>
@@ -597,28 +545,30 @@
   <div class="wrap">
     <div class="sec-head rv">
       <div class="sec-no">04 — DOWNLOAD</div>
-      <h2>下载 CoCode Desktop</h2>
-      <p class="sec-sub">下载 CoCode Desktop，让 AI 接管你的电脑，助你完成工作，与你编辑作品</p>
+      <h2><span data-lang="zh">下载 CoCode Desktop</span><span data-lang="en">Download CoCode Desktop</span></h2>
+      <p class="sec-sub"><span data-lang="zh">下载 CoCode Desktop，让 AI 接管你的电脑，助你完成工作，与你编辑作品</span><span data-lang="en">Download CoCode Desktop — let AI take over your computer, get work done and edit alongside you</span></p>
     </div>
     <div class="dl-grid rv">
       <div class="dl-card">
         <div class="dl-os">macOS</div>
-        <div class="dl-note">Apple Silicon / Intel</div>
-        <div class="dl-soon">敬请期待</div>
+        <div class="dl-note"><span data-lang="zh">v1.0.0 · Apple Silicon 与 Intel 通用</span><span data-lang="en">v1.0.0 · Apple Silicon and Intel</span></div>
+        <div class="dl-links">
+          <a class="dl-link" href="https://github.com/CoCodeAgent/CoCode/releases/download/v1.0.0/CoCode-1.0.0-mac.dmg"><span data-lang="zh">下载通用安装包</span><span data-lang="en">Download universal installer</span><span>macOS 13+</span></a>
+        </div>
       </div>
       <div class="dl-card">
         <div class="dl-os">Windows</div>
         <div class="dl-note">64-bit Installer</div>
-        <div class="dl-soon">敬请期待</div>
+        <div class="dl-soon"><span data-lang="zh">敬请期待</span><span data-lang="en">Coming soon</span></div>
       </div>
       <div class="dl-card">
-        <div class="dl-os">源码构建</div>
+        <div class="dl-os"><span data-lang="zh">源码构建</span><span data-lang="en">Build from source</span></div>
         <div class="dl-note">Node 18+ · Electron</div>
-        <div class="dl-soon">敬请期待</div>
+        <div class="dl-soon"><span data-lang="zh">敬请期待</span><span data-lang="en">Coming soon</span></div>
       </div>
     </div>
     <p class="rv" style="margin-top:26px;font-size:13.5px;color:var(--faint);text-align:center">
-      首次启动后，在设置里填入任意 OpenAI 兼容模型的地址与 Key（DeepSeek、智谱、Moonshot、本地 Ollama…），即可开始使用
+      <span data-lang="zh">首次启动后，在设置里填入任意 OpenAI 兼容模型的地址与 Key（DeepSeek、智谱、Moonshot、本地 Ollama…），即可开始使用</span><span data-lang="en">After first launch, enter any OpenAI-compatible model's URL and key in Settings (DeepSeek, Zhipu, Moonshot, local Ollama…) and you're ready to go</span>
     </p>
   </div>
 </section>
@@ -627,221 +577,11 @@
 <section style="padding-top:0">
   <div class="wrap">
     <div class="about-cta rv">
-      <h2>下次改代码，<br>让 CoCode <span class="grad">动手</span></h2>
-      <p>AGPL-3.0 开源 · 本地运行 · 数据不出你的机器</p>
+      <h2><span data-lang="zh">下次改代码，<br>让 CoCode <span class="grad">动手</span></span><span data-lang="en">Next time you touch code,<br>let CoCode <span class="grad">do it</span></span></h2>
+      <p><span data-lang="zh">AGPL-3.0 开源 · 本地运行 · 数据不出你的机器</span><span data-lang="en">AGPL-3.0 open source · runs locally · your data never leaves your machine</span></p>
       <div class="hero-cta">
-        <a class="btn btn-ink" href="https://github.com/CoCodeAgent/CoCode" target="_blank" rel="noopener">GitHub 仓库</a>
-        <a class="btn btn-ghost" href="#download">下载</a>
-      </div>
-    </div>
-  </div>
-</section>
-</div>
-
-<!-- ============ 定价 ============ -->
-<div id="view-pricing" class="view">
-<!-- ================= HERO ================= -->
-<div class="hero">
-  <div class="wrap">
-    <span class="hero-badge rv"><span class="dot"></span>官方模型订阅 · 月付积分制</span>
-    <h1 class="rv rv-d1">不想管 Key？<br>用<span class="grad">官方模型</span>就好</h1>
-    <p class="hero-sub rv rv-d2">三档月订套餐，每月到账<b>积分</b>——官方模型调用、语音识别都按积分扣，<b>开箱即用，无需自备 API Key</b>。自带 Key 的 BYOK 模式依旧永久免费。</p>
-  </div>
-</div>
-
-<!-- ================= 三档套餐 ================= -->
-<div class="plans">
-  <div class="wrap">
-    <div class="plan-grid">
-
-      <div class="plan plan-lite rv">
-        <div class="plan-name"><span class="plan-tone"></span>Lite</div>
-        <div class="plan-tagline">轻量尝鲜</div>
-        <div class="price"><span class="cur">¥</span><span class="num">39</span><span class="per">/ 月</span></div>
-        <div class="credits">每月 <b>2,000</b> 积分</div>
-        <span class="unit-price">折合 ¥0.0195 / 积分</span>
-        <ul>
-          <li><b>Flash 全系</b>基础档模型</li>
-          <li><b>1 路</b>并发任务</li>
-          <li>语音识别 <b>含</b>（按积分扣）</li>
-          <li>Desktop 与 CLI 全功能</li>
-        </ul>
-        <a class="btn btn-ghost" href="https://ifdian.net/a/zhenxun111" target="_blank" rel="noopener">订阅 Lite</a>
-      </div>
-
-      <div class="plan plan-pro rv rv-d1">
-        <span class="pop-badge">推荐 · 主力之选</span>
-        <div class="plan-name"><span class="plan-tone"></span>Pro</div>
-        <div class="plan-tagline">日常开发的主力档</div>
-        <div class="price"><span class="cur">¥</span><span class="num">99</span><span class="per">/ 月</span></div>
-        <div class="credits">每月 <b>6,000</b> 积分</div>
-        <span class="unit-price">折合 ¥0.0165 / 积分</span>
-        <ul>
-          <li><b>全模型</b>不限档位</li>
-          <li><b>3 路</b>并发任务</li>
-          <li>语音识别 <b>含</b>（按积分扣）</li>
-          <li>Desktop 与 CLI 全功能</li>
-        </ul>
-        <a class="btn" href="https://ifdian.net/a/zhenxun111" target="_blank" rel="noopener">订阅 Pro</a>
-      </div>
-
-      <div class="plan plan-max rv rv-d2">
-        <div class="plan-name"><span class="plan-tone"></span>Max</div>
-        <div class="plan-tagline">重度专业</div>
-        <div class="price"><span class="cur">¥</span><span class="num">299</span><span class="per">/ 月</span></div>
-        <div class="credits">每月 <b>25,000</b> 积分</div>
-        <span class="unit-price">折合 ¥0.012 / 积分</span>
-        <ul>
-          <li><b>全模型</b>不限档位</li>
-          <li><b>10 路</b>并发任务</li>
-          <li>语音识别 <b>含</b>，每月另赠 <b>1,000 积分</b>语音额度</li>
-          <li>Desktop 与 CLI 全功能</li>
-        </ul>
-        <a class="btn btn-ghost" href="https://ifdian.net/a/zhenxun111" target="_blank" rel="noopener">订阅 Max</a>
-      </div>
-
-    </div>
-    <p class="plans-note rv rv-d2">三档均为月订，<b>按月付费、随时可停</b>；积分到账后当月有效，模型调用与语音识别统一按积分扣减</p>
-  </div>
-</div>
-
-<!-- ================= 权益对比 ================= -->
-<section style="padding-top:50px">
-  <div class="wrap">
-    <div class="sec-head rv">
-      <div class="sec-no">COMPARE — 权益明细</div>
-      <h2>三档权益，一表看清</h2>
-      <p class="sec-sub">积分单价随档位递减，重度使用更划算；并发任务指同时运行的 Agent 会话数</p>
-    </div>
-    <div class="table-shell rv rv-d1">
-      <div class="table-scroll">
-        <table>
-          <thead>
-            <tr>
-              <th class="dim">维度</th>
-              <th>Lite</th>
-              <th>Pro<span class="th-tag">推荐</span></th>
-              <th>Max</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th>月价</th>
-              <td><span class="big">¥39</span></td>
-              <td class="hot"><span class="big">¥99</span></td>
-              <td><span class="big">¥299</span></td>
-            </tr>
-            <tr>
-              <th>月积分</th>
-              <td>2,000</td>
-              <td class="hot">6,000</td>
-              <td>25,000</td>
-            </tr>
-            <tr>
-              <th>积分单价</th>
-              <td>¥0.0195</td>
-              <td class="hot">¥0.0165</td>
-              <td>¥0.012</td>
-            </tr>
-            <tr>
-              <th>模型范围</th>
-              <td>基础档（Flash 全系）</td>
-              <td class="hot">全模型</td>
-              <td>全模型</td>
-            </tr>
-            <tr>
-              <th>并发任务</th>
-              <td>1 路</td>
-              <td class="hot">3 路</td>
-              <td>10 路</td>
-            </tr>
-            <tr>
-              <th>语音识别</th>
-              <td>含（扣积分）</td>
-              <td class="hot">含（扣积分）</td>
-              <td>含 + 每月赠 1,000 积分语音额度</td>
-            </tr>
-            <tr>
-              <th>定位</th>
-              <td>轻量尝鲜</td>
-              <td class="hot">主力之选</td>
-              <td>重度专业</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= 三步上手 ================= -->
-<section style="padding-top:0">
-  <div class="wrap">
-    <div class="sec-head rv">
-      <div class="sec-no">HOW IT WORKS</div>
-      <h2>三步开跑</h2>
-    </div>
-    <div class="steps rv rv-d1">
-      <div class="step">
-        <div class="no">1</div>
-        <h3>订阅套餐</h3>
-        <p>在爱发电选择 <b>Lite / Pro / Max</b> 月订档位完成支付</p>
-      </div>
-      <div class="step">
-        <div class="no">2</div>
-        <h3>订单号兑换</h3>
-        <p>打开 CoCode → 设置 → 官方模型，输入订单号一键兑换<b>当月积分</b></p>
-      </div>
-      <div class="step">
-        <div class="no">3</div>
-        <h3>开箱即用</h3>
-        <p>会话里直接选用官方模型，调用与语音识别<b>按积分自动扣减</b></p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= FAQ ================= -->
-<section style="padding-top:0">
-  <div class="wrap">
-    <div class="sec-head rv">
-      <div class="sec-no">FAQ</div>
-      <h2>常见问题</h2>
-    </div>
-    <div class="faq rv rv-d1">
-      <details>
-        <summary>什么是积分？</summary>
-        <p>积分是官方模型订阅的计量单位。<b>模型调用</b>与<b>语音识别</b>都按用量扣减积分，用多少扣多少，月积分用完当月不再扣减。</p>
-      </details>
-      <details>
-        <summary>订阅后怎么兑换积分？</summary>
-        <p>在爱发电完成套餐购买后，复制<b>订单号</b>，打开 CoCode → 设置 → 官方模型 → 输入订单号兑换，积分即时到账。</p>
-      </details>
-      <details>
-        <summary>不用订阅，CoCode 还能用吗？</summary>
-        <p>能。CoCode 本身 <b>AGPL-3.0 开源、本地运行、永久免费</b>，随时填入任意 OpenAI 兼容模型的 Key（DeepSeek、智谱、Moonshot、本地 Ollama…）即可使用。官方模型订阅只是给「不想管理 Key」的用户提供的开箱即用选项。</p>
-      </details>
-      <details>
-        <summary>并发任务是什么意思？</summary>
-        <p>指<b>同时运行的 Agent 会话数</b>。Lite 可同时跑 1 个任务，Pro 3 个，Max 10 个——适合并行调研多个模块或同时推进多个仓库。</p>
-      </details>
-      <details>
-        <summary>Flash 全系和全模型有什么区别？</summary>
-        <p>Lite 档可用<b>基础档（Flash 全系）</b>模型，速度快、适合日常轻量任务；Pro / Max 档解锁<b>全部官方模型</b>，复杂工程任务不受限。</p>
-      </details>
-    </div>
-  </div>
-</section>
-
-<!-- ================= CTA ================= -->
-<section style="padding-top:0">
-  <div class="wrap">
-    <div class="cta-block rv">
-      <h2>选一档套餐，<br>让官方模型马上<span class="grad">开工</span></h2>
-      <p>月付积分制 · 订单号即时兑换 · 也可以永远自带 Key 免费用 CoCode</p>
-      <div class="hero-cta">
-        <a class="btn btn-light" href="https://ifdian.net/a/zhenxun111" target="_blank" rel="noopener">去爱发电订阅</a>
-        <a class="btn btn-dark-g" href="index.html#download">下载 CoCode Desktop</a>
+        <a class="btn btn-ink" href="https://github.com/CoCodeAgent/CoCode" target="_blank" rel="noopener"><span data-lang="zh">GitHub 仓库</span><span data-lang="en">GitHub Repo</span></a>
+        <a class="btn btn-ghost" href="#download"><span data-lang="zh">下载</span><span data-lang="en">Download</span></a>
       </div>
     </div>
   </div>
@@ -854,8 +594,8 @@
   <div class="wrap nav">
     <a href="index.html" class="brand">CoCode</a>
     <div class="lang-switch">
-      <button class="lang-btn active" data-lang="zh">中文</button>
-      <button class="lang-btn" data-lang="en">EN</button>
+      <button class="lang-btn active" data-lng="zh">中文</button>
+      <button class="lang-btn" data-lng="en">EN</button>
     </div>
   </div>
 </header>
@@ -874,8 +614,8 @@
   <!-- 1. 导言 -->
   <h2 data-lang="zh">一、导言</h2>
   <h2 data-lang="en">1. Introduction</h2>
-  <p data-lang="zh">欢迎使用 CoCode。CoCode 是一款由 CoCode 运营团队（以下简称"我们"）开发的 AI 编程代理工具，以桌面应用程序、命令行工具（CLI）、网站及相关服务（以下统称"本服务"）的形式向你提供。CoCode 旨在帮助你更高效地完成编码、调试、重构、文档撰写等软件工程任务，支持你使用自己配置的第三方模型，也提供由我们运营的官方模型订阅服务。</p>
-  <p data-lang="en">Welcome to CoCode. CoCode is an AI programming agent tool developed and operated by the CoCode Team (hereinafter "we", "us", or "our"), provided to you in the form of a desktop application, command-line interface (CLI), website, and related services (collectively, the "Service"). CoCode is designed to help you complete software engineering tasks such as coding, debugging, refactoring, and documentation more efficiently. It supports third-party models configured with your own credentials, as well as an official model subscription service operated by us.</p>
+  <p data-lang="zh">欢迎使用 CoCode。CoCode 是一款由 CoCode 运营团队（以下简称"我们"）开发的 AI 编程代理工具，以桌面应用程序、命令行工具（CLI）、网站及相关服务（以下统称"本服务"）的形式向你提供。CoCode 旨在帮助你更高效地完成编码、调试、重构、文档撰写等软件工程任务，并使用你自行配置的第三方模型。</p>
+  <p data-lang="en">Welcome to CoCode. CoCode is an AI programming agent tool developed and operated by the CoCode Team (hereinafter "we", "us", or "our"), provided to you in the form of a desktop application, command-line interface (CLI), website, and related services (collectively, the "Service"). CoCode is designed to help you complete software engineering tasks such as coding, debugging, refactoring, and documentation more efficiently using third-party models configured with your own credentials.</p>
   <p data-lang="zh">本用户协议（以下简称"本协议"）是你与我们之间就注册、登录、使用本服务所订立的协议，与你勾选确认的《隐私政策》《跨境数据传输协议》共同构成完整的约定。请你在使用本服务前认真阅读并充分理解本协议，特别是以加粗形式提示的免除或减轻我们责任、限制你权利的条款。你勾选"我已阅读并同意用户协议"即表示你已完整阅读并理解本协议。</p>
   <p data-lang="en">These Terms of Service (the "Agreement") constitute an agreement between you and us regarding your registration, login, and use of the Service, and together with the Privacy Policy and the Cross-Border Data Transfer Agreement that you confirm by checking the corresponding boxes, they form a complete set of agreements. Please read this Agreement carefully before using the Service, especially the clauses highlighted in bold that exempt or reduce our liability or limit your rights. By checking "I have read and agree to the Terms of Service", you represent that you have fully read and understood this Agreement.</p>
   <div class="note" data-lang="zh"><strong>如你不同意本协议，请勿注册账号或使用本服务。你注册、登录或使用本服务，即视为你已阅读、理解并同意接受本协议的全部条款。如你是未成年人，请在监护人陪同下阅读本协议，并在取得监护人同意后使用本服务。</strong></div>
@@ -887,16 +627,12 @@
   <p data-lang="zh">为便于理解，本协议中的下列术语含义如下：</p>
   <p data-lang="en">For ease of understanding, the following terms in this Agreement have the meanings set out below:</p>
   <ul>
-    <li data-lang="zh"><strong>"本服务"：</strong>指 CoCode 桌面应用、命令行工具（CLI）、官方网站、官方模型服务及我们提供的其他相关功能与服务；</li>
-    <li data-lang="en"><strong>"Service":</strong> refers to the CoCode desktop application, command-line interface (CLI), official website, official model service, and other related features and services provided by us;</li>
+    <li data-lang="zh"><strong>"本服务"：</strong>指 CoCode 桌面应用、命令行工具（CLI）、官方网站及我们提供的其他相关功能与服务；</li>
+    <li data-lang="en"><strong>"Service":</strong> refers to the CoCode desktop application, command-line interface (CLI), official website, and other related features and services provided by us;</li>
     <li data-lang="zh"><strong>"你"：</strong>指注册、登录或使用本服务的个人或实体；</li>
     <li data-lang="en"><strong>"You":</strong> refers to the individual or entity who registers, logs in to, or uses the Service;</li>
-    <li data-lang="zh"><strong>"官方模型"：</strong>指由我们统一运营、通过积分计费的内置模型服务，你无需自行配置模型服务提供商的凭证即可使用；</li>
-    <li data-lang="en"><strong>"Official models":</strong> refer to built-in model services uniformly operated by us and billed by credits, which you can use without configuring credentials of model service providers yourself;</li>
     <li data-lang="zh"><strong>"自带模型（BYOK）"：</strong>指你使用自己的模型服务凭证接入第三方模型服务的使用方式；</li>
     <li data-lang="en"><strong>"Bring Your Own Key (BYOK)":</strong> refers to the mode in which you connect third-party model services using your own model service credentials;</li>
-    <li data-lang="zh"><strong>"积分"：</strong>指用于计量官方模型调用量的虚拟凭证，不可兑换法定货币，不可转让；</li>
-    <li data-lang="en"><strong>"Credits":</strong> refer to virtual units used to measure the usage of official models; they cannot be exchanged for legal tender and are non-transferable;</li>
     <li data-lang="zh"><strong>"输入"与"输出"：</strong>"输入"指你提交给本服务的内容（如指令、代码、文件）；"输出"指本服务（含模型）响应你的输入而生成的内容。</li>
     <li data-lang="en"><strong>"Input" and "Output":</strong> "Input" refers to the content you submit to the Service (such as instructions, code, and files); "Output" refers to the content generated by the Service (including models) in response to your Input.</li>
   </ul>
@@ -914,16 +650,16 @@
   <h2 data-lang="en">4. Changes to Terms</h2>
   <p data-lang="zh">我们可能根据法律法规变化、业务调整或产品演进的需要，适时修改本协议。协议变更后，我们将在本页面更新"更新日期"，并通过应用内通知、站内公告等方式提示你变更内容。对于重大变更（如收费方式变化、责任条款调整），我们将在变更生效前给予合理的提示期。</p>
   <p data-lang="en">We may modify this Agreement from time to time in light of changes in laws and regulations, business adjustments, or product evolution. When we do, we will update the "Last updated" date on this page and notify you of the changes via in-app notifications and website announcements. For material changes (such as changes to billing methods or adjustments to liability clauses), we will provide reasonable advance notice before the changes take effect.</p>
-  <p data-lang="zh"><strong>变更生效后你继续使用本服务，即视为你接受修改后的协议；如你不接受变更内容，应停止使用本服务。</strong>若变更内容导致你已购买且未消耗的服务权益受到重大不利影响，你可按第九条的约定与我们协商处理。</p>
-  <p data-lang="en"><strong>If you continue to use the Service after the changes take effect, you are deemed to have accepted the revised Agreement; if you do not accept the changes, you should stop using the Service.</strong> If a change materially and adversely affects your purchased and unconsumed service benefits, you may negotiate with us in accordance with Section 9.</p>
+  <p data-lang="zh"><strong>变更生效后你继续使用本服务，即视为你接受修改后的协议；如你不接受变更内容，应停止使用本服务。</strong></p>
+  <p data-lang="en"><strong>If you continue to use the Service after the changes take effect, you are deemed to have accepted the revised Agreement; if you do not accept the changes, you should stop using the Service.</strong></p>
 
   <!-- 5. 账号注册 -->
   <h2 data-lang="zh">五、账号注册与安全</h2>
   <h2 data-lang="en">5. Account Registration and Security</h2>
   <p data-lang="zh"><strong>5.1</strong> 你可通过电子邮箱或我们支持的其他方式注册账号。你应保证注册信息（尤其是电子邮箱地址）真实、准确、合法、有效，并及时更新。因你提供虚假信息或未及时更新信息导致的相关后果，由你自行承担。</p>
   <p data-lang="en"><strong>5.1</strong> You may register an account using your email address or other methods we support. You must ensure that your registration information (especially your email address) is true, accurate, legal, and valid, and keep it up to date. Any consequences arising from false information or failure to update information shall be borne by you.</p>
-  <p data-lang="zh"><strong>5.2</strong> 你应妥善保管账号、密码及验证码，不应将其透露给任何第三方。账号下的所有操作（包括模型调用、积分消耗、配置修改等）均视为你本人的行为。如发现账号被盗用、密码泄露或存在其他安全漏洞，应立即通知我们，我们将协助你采取冻结、重置等措施。</p>
-  <p data-lang="en"><strong>5.2</strong> You are responsible for safeguarding your account, password, and verification codes, and should not disclose them to any third party. All activities under your account (including model calls, credit consumption, and configuration changes) are deemed to be your actions. If you discover unauthorized use, password leakage, or other security breaches, notify us immediately, and we will assist you in taking measures such as freezing and resetting.</p>
+  <p data-lang="zh"><strong>5.2</strong> 你应妥善保管账号、密码及验证码，不应将其透露给任何第三方。账号下的所有操作（包括模型配置修改等）均视为你本人的行为。如发现账号被盗用、密码泄露或存在其他安全漏洞，应立即通知我们，我们将协助你采取冻结、重置等措施。</p>
+  <p data-lang="en"><strong>5.2</strong> You are responsible for safeguarding your account, password, and verification codes, and should not disclose them to any third party. All activities under your account (including model-configuration changes) are deemed to be your actions. If you discover unauthorized use, password leakage, or other security breaches, notify us immediately, and we will assist you in taking measures such as freezing and resetting.</p>
   <p data-lang="zh"><strong>5.3</strong> 为保障账号安全，我们在登录、注册等关键环节部署了人机验证与异常行为检测机制。对于存在异常登录、批量注册、撞库尝试等风险的账号，我们有权采取验证升级、临时锁定等保护性措施，并在核实后解除。</p>
   <p data-lang="en"><strong>5.3</strong> To safeguard account security, we deploy human verification and anomalous behavior detection at critical steps such as login and registration. For accounts with abnormal logins, bulk registration, or credential-stuffing attempts, we may take protective measures such as enhanced verification or temporary locking, and lift them after verification.</p>
 
@@ -932,46 +668,32 @@
   <h2 data-lang="en">6. Account Management and Deletion</h2>
   <p data-lang="zh"><strong>6.1</strong> 未经我们书面同意，你不得将账号赠与、借用、出租、转让或出售给他人。如我们有合理理由认为账号的实际使用者并非注册人，为保护账号及数据安全，有权暂停或终止相应服务。</p>
   <p data-lang="en"><strong>6.1</strong> Without our prior written consent, you may not gift, lend, rent, transfer, or sell your account to others. If we have reasonable grounds to believe the actual user of the account is not the registrant, we may suspend or terminate the Service to protect the account and data security.</p>
-  <p data-lang="zh"><strong>6.2</strong> 你有权注销账号。注销账号后，我们将停止为你提供服务，并按照《隐私政策》的约定删除或匿名化处理你的个人信息（法律法规另有规定的除外）。<strong>请你知悉：注销账号将导致账号内的积分余额、订阅权益及未消费的服务权益全部清零且无法恢复，请你在注销前谨慎确认。</strong></p>
-  <p data-lang="en"><strong>6.2</strong> You have the right to delete your account. Upon account deletion, we will stop providing the Service to you and delete or anonymize your personal information in accordance with the Privacy Policy (except as otherwise provided by law). <strong>Please note that account deletion will clear your credit balance, subscription benefits, and unconsumed service benefits, which cannot be restored. Please confirm carefully before deletion.</strong></p>
+  <p data-lang="zh"><strong>6.2</strong> 你有权注销账号。注销账号后，我们将停止为你提供服务，并按照《隐私政策》的约定删除或匿名化处理你的个人信息（法律法规另有规定的除外）。</p>
+  <p data-lang="en"><strong>6.2</strong> You have the right to delete your account. Upon account deletion, we will stop providing the Service to you and delete or anonymize your personal information in accordance with the Privacy Policy (except as otherwise provided by law).</p>
 
   <!-- 7. 服务说明 -->
   <h2 data-lang="zh">七、服务说明</h2>
   <h2 data-lang="en">7. Service Description</h2>
-  <p data-lang="zh"><strong>7.1 本地优先架构。</strong>CoCode 采用本地优先设计：你的代码库、配置文件及对话数据默认存储在你的本地设备，模型调用的凭证（API Key）也仅保存在本地。除非你主动使用需要联网的功能（如账号登录、官方模型调用、云同步），我们的服务器不会获取你的代码与对话内容。</p>
-  <p data-lang="en"><strong>7.1 Local-first architecture.</strong> CoCode is designed with a local-first approach: your codebase, configuration files, and conversation data are stored on your local device by default, and your model credentials (API keys) are also kept locally. Unless you actively use features that require network access (such as account login, official model calls, or cloud sync), our servers will not obtain your code and conversation content.</p>
+  <p data-lang="zh"><strong>7.1 本地优先架构。</strong>CoCode 采用本地优先设计：你的代码库、配置文件及对话数据默认存储在你的本地设备。除非你主动使用需要联网的功能（如账号登录、模型配置同步或免费语音识别），我们的服务器不会获取你的代码与对话内容。</p>
+  <p data-lang="en"><strong>7.1 Local-first architecture.</strong> CoCode is designed with a local-first approach: your codebase, configuration files, and conversation data are stored on your local device by default. Unless you actively use network features such as account login, model-configuration sync, or free speech recognition, our servers will not obtain your code and conversation content.</p>
   <p data-lang="zh"><strong>7.2 服务形式。</strong>本服务可能以桌面应用、CLI、网页等多种形态提供。不同形态的功能可能存在差异，具体以产品实际呈现为准。我们可能持续迭代产品功能，对部分功能进行优化、调整或下线。</p>
   <p data-lang="en"><strong>7.2 Service forms.</strong> The Service may be provided in various forms such as desktop applications, CLI, and web pages. Features may vary across forms; the actual presentation in the product shall prevail. We may continuously iterate product features, optimize, adjust, or discontinue certain features.</p>
   <p data-lang="zh"><strong>7.3 系统要求。</strong>你需自备接入本服务所必需的设备、操作系统与网络环境，并承担使用本服务产生的相关费用（如上网流量费）。因你的设备或网络原因导致服务无法正常使用的，我们不承担责任。</p>
   <p data-lang="en"><strong>7.3 System requirements.</strong> You need to prepare the devices, operating systems, and network environments necessary for accessing the Service, and bear the related costs (such as Internet traffic fees) of using the Service. We are not liable for the Service being unavailable due to your devices or network conditions.</p>
 
-  <!-- 8. 付费与积分 -->
-  <h2 data-lang="zh">八、付费与积分</h2>
-  <h2 data-lang="en">8. Payment and Credits</h2>
-  <p data-lang="zh">本服务提供两种模型使用方式：</p>
-  <p data-lang="en">The Service offers two ways to use models:</p>
-  <ol>
-    <li data-lang="zh"><strong>自带模型（BYOK）：</strong>你可使用自己的模型服务凭证接入第三方模型。此模式下我们不收取费用，你与第三方模型服务提供商之间的费用结算及约定由你自行负责；</li>
-    <li data-lang="en"><strong>Bring Your Own Key (BYOK):</strong> You may connect third-party models using your own model service credentials. We do not charge fees in this mode; the billing and agreements between you and third-party model service providers are your own responsibility;</li>
-    <li data-lang="zh"><strong>官方模型订阅：</strong>我们提供由我们统一运营的内置官方模型，你可以按月订阅套餐获取积分，并按模型调用量消耗积分。积分按批次发放与消耗，不同批次的积分可能有不同的有效期，具体以购买页面及套餐说明为准。</li>
-    <li data-lang="en"><strong>Official model subscription:</strong> We provide built-in official models uniformly operated by us. You may purchase monthly subscription plans to obtain credits, which are consumed by model usage. Credits are granted and consumed in batches, and different batches may have different validity periods, subject to the purchase page and plan descriptions.</li>
-  </ol>
-  <p data-lang="zh"><strong>8.1 积分性质。</strong>积分仅用于计量官方模型的调用量，是本服务内部使用的虚拟计量单位，<strong>不具有货币属性，不可兑换现金、不可转让、不可交易</strong>，其价值以获得相应服务为限。</p>
-  <p data-lang="en"><strong>8.1 Nature of credits.</strong> Credits are only used to measure the usage of official models and are virtual units for internal use within the Service. <strong>They are not currency, cannot be exchanged for cash, and cannot be transferred or traded;</strong> their value is limited to obtaining the corresponding services.</p>
-  <p data-lang="zh"><strong>8.2 计费规则。</strong>官方模型的调用按实际使用量计量扣减积分。由于上游模型服务计量方式调整、模型版本升级等原因，不同时期、不同模型的积分消耗标准可能不同，我们将在产品界面或套餐说明中公示。</p>
-  <p data-lang="en"><strong>8.2 Billing rules.</strong> Calls to official models are metered and deducted from credits based on actual usage. Due to adjustments in upstream model service metering, model version upgrades, and other factors, the credit consumption standards for different periods and models may vary, which we will publish in the product interface or plan descriptions.</p>
-  <p data-lang="zh"><strong>8.3 支付方式。</strong>付费订单通过第三方支付平台（如爱发电）处理。我们不会直接收集或存储你的银行卡、支付账户等敏感支付信息，相关支付行为受该第三方平台的服务协议约束。</p>
-  <p data-lang="en"><strong>8.3 Payment methods.</strong> Payment orders are processed through third-party payment platforms (e.g., Afdian). We do not directly collect or store your sensitive payment information such as bank cards or payment accounts; such payment activities are governed by the service agreements of those third-party platforms.</p>
-  <p data-lang="zh"><strong>8.4 异常订单处理。</strong>如发现利用漏洞、伪造订单、恶意退款等方式异常获取积分或服务权益的行为，我们有权冻结、扣回相关积分并视情节终止服务。</p>
-  <p data-lang="en"><strong>8.4 Abnormal order handling.</strong> If we discover credits or service benefits obtained abnormally through exploiting vulnerabilities, forging orders, or malicious refunds, we may freeze or claw back the relevant credits and terminate the Service depending on the severity.</p>
+  <!-- 8. 模型与语音 -->
+  <h2 data-lang="zh">八、自定义模型与语音识别</h2>
+  <h2 data-lang="en">8. Custom Models and Speech Recognition</h2>
+  <p data-lang="zh"><strong>8.1 自定义模型。</strong>你可使用自己的模型服务凭证接入第三方模型。你与第三方模型服务提供商之间的费用结算及约定由你自行负责。</p>
+  <p data-lang="en"><strong>8.1 Custom models.</strong> You may connect third-party models using your own credentials. Billing and agreements between you and third-party model providers are your responsibility.</p>
+  <p data-lang="zh"><strong>8.2 免费语音识别。</strong>登录用户可免费使用我们提供的语音识别通道；录音处理规则以《隐私政策》为准。</p>
+  <p data-lang="en"><strong>8.2 Free speech recognition.</strong> Signed-in users may use our speech-recognition channel free of charge; recording handling is governed by the Privacy Policy.</p>
 
-  <!-- 9. 退款与终止 -->
-  <h2 data-lang="zh">九、退款与终止</h2>
-  <h2 data-lang="en">9. Refunds and Termination</h2>
-  <p data-lang="zh"><strong>9.1 退款政策。</strong>因本服务通过第三方支付平台收费，退款主要通过该平台流程办理，并遵循其规则。一般而言，如你购买的套餐存在未被消耗的服务权益且符合平台退款条件的，我们将在合理范围内予以配合处理。已经实际消耗的服务部分，原则上不支持退款。</p>
-  <p data-lang="en"><strong>9.1 Refund policy.</strong> As we charge fees through third-party payment platforms, refunds are mainly processed through those platforms and subject to their rules. Generally, if your purchased plan contains unconsumed service benefits and meets the platform's refund conditions, we will cooperate in handling within a reasonable scope. Consumed portions of the service are, in principle, non-refundable.</p>
-  <p data-lang="zh"><strong>9.2 服务终止后的处理。</strong>如本服务因不可抗力、政策调整或我们经营决策等原因终止，对于你已付费但未消耗的服务权益，我们将通过公告载明的方式为你办理退款或提供替代方案。</p>
-  <p data-lang="en"><strong>9.2 Handling upon service termination.</strong> If the Service is terminated due to force majeure, policy adjustments, or our business decisions, we will process refunds or provide alternatives for your paid but unconsumed service benefits in the manner stated in the announcement.</p>
+  <!-- 9. 服务终止 -->
+  <h2 data-lang="zh">九、服务终止</h2>
+  <h2 data-lang="en">9. Service Termination</h2>
+  <p data-lang="zh">如本服务因不可抗力、政策调整或我们经营决策等原因终止，我们将通过应用内通知或网站公告提前说明。</p>
+  <p data-lang="en">If the Service is terminated due to force majeure, policy changes, or business decisions, we will provide advance notice through the app or website.</p>
 
   <!-- 10. 行为规范 -->
   <h2 data-lang="zh">十、行为规范</h2>
@@ -1092,8 +814,8 @@
   <h3 data-lang="en">20.2 Contact Us</h3>
   <p data-lang="zh">如对本协议有任何疑问、意见或建议，可通过以下方式联系我们：</p>
   <p data-lang="en">If you have any questions, comments, or suggestions regarding this Agreement, you may contact us at:</p>
-  <p data-lang="zh">邮箱：<a href="mailto:2206674900@qq.com">2206674900@qq.com</a></p>
-  <p data-lang="en">Email: <a href="mailto:2206674900@qq.com">2206674900@qq.com</a></p>
+  <p data-lang="zh">邮箱：<a href="mailto:support@ohfun.online">support@ohfun.online</a></p>
+  <p data-lang="en">Email: <a href="mailto:support@ohfun.online">support@ohfun.online</a></p>
   <p data-lang="zh">我们将在收到你的消息后十五个工作日内予以回复。</p>
   <p data-lang="en">We will respond within fifteen (15) business days after receiving your message.</p>
 
@@ -1109,8 +831,8 @@
   <div class="wrap nav">
     <a href="index.html" class="brand">CoCode</a>
     <div class="lang-switch">
-      <button class="lang-btn active" data-lang="zh">中文</button>
-      <button class="lang-btn" data-lang="en">EN</button>
+      <button class="lang-btn active" data-lng="zh">中文</button>
+      <button class="lang-btn" data-lng="en">EN</button>
     </div>
   </div>
 </header>
@@ -1149,17 +871,14 @@
 
   <h3 data-lang="zh">1.3 模型调用与对话数据</h3>
   <h3 data-lang="en">1.3 Model Calls and Conversation Data</h3>
-  <p data-lang="zh">当你使用 AI 功能时，你输入的文本、代码片段、任务指令及上传的文件会被发送至你选择的模型提供商（自带 Key 模式下直接发送至对应第三方；内置官方模型模式下经由我们的服务器转发）以生成响应。</p>
-  <p data-lang="en">When you use AI features, the text, code snippets, task instructions, and files you upload are sent to your selected model provider (in BYOK mode, directly to the corresponding third party; in official model mode, relayed through our servers) to generate responses.</p>
+  <p data-lang="zh">当你使用 AI 功能时，你输入的文本、代码片段、任务指令及上传的文件会从你的设备直接发送至你自行配置的模型提供商，以生成响应。</p>
+  <p data-lang="en">When you use AI features, the text, code snippets, task instructions, and files you upload are sent directly from your device to the model provider you configure, in order to generate responses.</p>
   <p data-lang="zh"><strong>本地优先原则：</strong>你的代码库和对话内容默认存储在你的本地设备上。我们不会主动上传你的代码库文件。仅当你使用云同步、跨端同步等功能时，相关数据才会传输至我们的服务器。</p>
   <p data-lang="en"><strong>Local-first principle:</strong> Your codebase and conversations are stored on your local device by default. We do not proactively upload your codebase files. Data is transmitted to our servers only when you use features such as cloud sync or cross-device sync.</p>
-  <p data-lang="zh">内置官方模型模式下，为提供积分计费服务，我们会记录模型调用的模型名称、调用时间及消耗积分，但不存储你输入的明文内容。<strong>我们不会将你通过内置官方模型提交的输入内容及对应的输出内容用于模型训练。</strong></p>
-  <p data-lang="en">In official model mode, to provide credit-based billing, we record the model name, call time, and credits consumed for each model call, but we do not store the plaintext of your input. <strong>We do not use the inputs you submit through official models, or the corresponding outputs, for model training.</strong></p>
-
-  <h3 data-lang="zh">1.4 付费与积分</h3>
-  <h3 data-lang="en">1.4 Payment and Credits</h3>
-  <p data-lang="zh">当你购买官方模型订阅套餐时，我们会收集你的订单信息（订单号、套餐类型、购买时间、积分余额）。支付信息由第三方支付平台（如爱发电）处理，我们不存储你的银行卡号等支付敏感信息。如你需要开具凭证或处理退款，我们可能会另行收集你的联系方式以便与你确认处理结果。</p>
-  <p data-lang="en">When you purchase an official model subscription plan, we collect your order information (order number, plan type, purchase time, credit balance). Payment information is processed by third-party payment platforms (e.g., Afdian); we do not store sensitive payment information such as your bank card number. If you request a receipt or a refund, we may additionally collect your contact information to confirm the handling result with you.</p>
+  <h3 data-lang="zh">1.4 免费语音识别</h3>
+  <h3 data-lang="en">1.4 Free Speech Recognition</h3>
+  <p data-lang="zh">使用免费语音识别时，录音会经由我们的服务器转发至语音识别服务商以生成文字。该功能免费；我们不会将录音用于模型训练或其他目的。</p>
+  <p data-lang="en">When you use free speech recognition, the recording is relayed through our server to the speech-recognition provider to generate text. This feature is free; we do not use recordings for model training or other purposes.</p>
 
   <h3 data-lang="zh">1.5 客服与反馈</h3>
   <h3 data-lang="en">1.5 Customer Support and Feedback</h3>
@@ -1186,10 +905,10 @@
   <p data-lang="zh">我们可能委托合作伙伴（如云服务提供商、邮件服务提供商）处理你的个人信息。我们会与受托方签署数据处理协议，要求其仅在授权范围内处理信息、采取必要安全措施，并在委托关系终止时按照我们的要求删除或返还其所处理的个人信息。我们会对受托方的数据处理能力进行合理评估，并对其处理活动进行监督。</p>
   <p data-lang="en">We may entrust partners (e.g., cloud service providers, email service providers) to process your personal information. We sign data processing agreements with them, requiring them to process information only within the authorized scope, adopt necessary security measures, and delete or return the personal information they have processed at our request upon termination of the entrustment. We will reasonably assess the data processing capabilities of such processors and supervise their processing activities.</p>
 
-  <h3 data-lang="zh">3.2 内置官方模型</h3>
-  <h3 data-lang="en">3.2 Official Models</h3>
-  <p data-lang="zh">当你使用内置官方模型时，你的输入内容会经由我们的服务器转发至对应模型提供商以生成响应。转发过程中我们仅传输完成该次调用所必需的内容。<strong>我们不会将你的输入内容用于模型训练或其他目的。</strong>如你希望你的输入内容完全不经过我们的服务器，你可以选择自带 API Key（BYOK）模式，由你的设备直接调用对应模型提供商的接口。</p>
-  <p data-lang="en">When you use official models, your input is relayed through our servers to the corresponding model provider to generate responses. During relaying, we only transmit the content necessary for completing that call. <strong>We do not use your input for model training or any other purpose.</strong> If you prefer that your input never passes through our servers, you may choose the BYOK (bring your own API key) mode, where your device calls the model provider's API directly.</p>
+  <h3 data-lang="zh">3.2 免费语音识别</h3>
+  <h3 data-lang="en">3.2 Free Speech Recognition</h3>
+  <p data-lang="zh">使用免费语音识别时，我们仅转发完成当次转写所必需的录音数据，并要求语音识别服务商按照其隐私与安全规则处理。</p>
+  <p data-lang="en">When you use free speech recognition, we relay only the recording data necessary for that transcription and require the speech-recognition provider to process it under its privacy and security terms.</p>
 
   <h3 data-lang="zh">3.3 共享</h3>
   <h3 data-lang="en">3.3 Sharing</h3>
@@ -1221,8 +940,8 @@
 
   <h3 data-lang="zh">4.2 存储期限</h3>
   <h3 data-lang="en">4.2 Retention Period</h3>
-  <p data-lang="zh">我们仅在为提供服务之目的所必需的期间内保留你的个人信息，例如：账号信息在账号存续期间保留；订单及积分记录自交易完成之日起保留不少于法律规定的期限，以便处理对账、退款及可能的争议；操作日志保留期限一般不超过十二个月。超出必要期限后，我们将删除或匿名化处理你的个人信息，法律法规另有规定的除外。当你注销账号后，我们将在合理期限内删除或匿名化你的个人信息，法律要求留存的除外。</p>
-  <p data-lang="en">We retain your personal information only for as long as necessary to provide the Service. For example: account information is retained for the duration of the account; order and credit records are retained for no less than the statutory period from the completion of the transaction, in order to handle reconciliation, refunds, and possible disputes; operation logs are generally retained for no more than twelve months. After the necessary period, we will delete or anonymize your personal information, unless otherwise required by law. After you cancel your account, we will delete or anonymize your personal information within a reasonable period, except where retention is required by law.</p>
+  <p data-lang="zh">我们仅在为提供服务之目的所必需的期间内保留你的个人信息，例如：账号信息在账号存续期间保留；操作日志保留期限一般不超过十二个月。超出必要期限后，我们将删除或匿名化处理你的个人信息，法律法规另有规定的除外。当你注销账号后，我们将在合理期限内删除或匿名化你的个人信息，法律要求留存的除外。</p>
+  <p data-lang="en">We retain your personal information only for as long as necessary to provide the Service. For example, account information is retained for the duration of the account, while operation logs are generally retained for no more than twelve months. After the necessary period, we will delete or anonymize your personal information, unless otherwise required by law. After you cancel your account, we will delete or anonymize your personal information within a reasonable period, except where retention is required by law.</p>
 
   <!-- 五、安全 -->
   <h2 data-lang="zh">五、我们如何保护个人信息安全</h2>
@@ -1301,8 +1020,8 @@
   <h2 data-lang="en">12. How to Contact Us</h2>
   <p data-lang="zh">如对本隐私政策有任何疑问、意见或建议，或需行使个人信息权利、提出投诉举报，请通过以下方式联系我们，我们将在收到你的消息后十五个工作日内回复：</p>
   <p data-lang="en">If you have any questions, comments, or suggestions about this Privacy Policy, or wish to exercise your personal information rights or file a complaint, please contact us at the following. We will reply within fifteen working days after receiving your message:</p>
-  <p data-lang="zh">邮箱：<a href="mailto:2206674900@qq.com">2206674900@qq.com</a></p>
-  <p data-lang="en">Email: <a href="mailto:2206674900@qq.com">2206674900@qq.com</a></p>
+  <p data-lang="zh">邮箱：<a href="mailto:support@ohfun.online">support@ohfun.online</a></p>
+  <p data-lang="en">Email: <a href="mailto:support@ohfun.online">support@ohfun.online</a></p>
   <p data-lang="zh">一般情况下，我们将在十五个工作日内答复。如果你对我们的回复不满意，特别是我们的行为损害了你的合法权益，你还可以向网信、电信、公安及市场监管等政府部门进行投诉、举报。</p>
   <p data-lang="en">Under normal circumstances, we will reply within fifteen working days. If you are not satisfied with our reply, in particular if our conduct infringes upon your legitimate rights and interests, you may also lodge a complaint or report to government authorities such as those in charge of cyberspace administration, telecommunications, public security, and market regulation.</p>
 
@@ -1315,8 +1034,8 @@
   <div class="wrap nav">
     <a href="index.html" class="brand">CoCode</a>
     <div class="lang-switch">
-      <button class="lang-btn active" data-lang="zh">中文</button>
-      <button class="lang-btn" data-lang="en">EN</button>
+      <button class="lang-btn active" data-lng="zh">中文</button>
+      <button class="lang-btn" data-lng="en">EN</button>
     </div>
   </div>
 </header>
@@ -1370,8 +1089,8 @@
   <p data-lang="zh">为向你提供稳定、可靠的本服务，我们会将你的部分个人信息传输至以下境外接收方：</p>
   <p data-lang="en">To provide you with a stable and reliable Service, we transfer some of your personal information to the following overseas recipients:</p>
   <ul>
-    <li data-lang="zh"><strong>Cloudflare, Inc.（美国）：</strong>提供服务器托管、内容分发（CDN）、域名解析与网络基础设施服务。我们的官方网站、身份验证与积分服务接口部分部署于 Cloudflare 全球网络，其数据中心分布在世界各地（包括境外节点），你的部分网络通信数据（如 IP 地址、请求时间、请求头信息）会在传输过程中经由其网络处理；</li>
-    <li data-lang="en"><strong>Cloudflare, Inc. (United States):</strong> Provides server hosting, content delivery (CDN), domain name resolution, and network infrastructure services. Our official website and parts of the interfaces for identity verification and credit services are deployed on Cloudflare's global network, whose data centers are located around the world (including overseas nodes). Some of your network communication data (such as IP address, request time, and request headers) will be processed through its network during transmission;</li>
+    <li data-lang="zh"><strong>Cloudflare, Inc.（美国）：</strong>提供服务器托管、内容分发（CDN）、域名解析与网络基础设施服务。我们的官方网站、身份验证、模型配置同步与免费语音识别接口部署于 Cloudflare 全球网络，你的部分网络通信数据会在传输过程中经由其网络处理；</li>
+    <li data-lang="en"><strong>Cloudflare, Inc. (United States):</strong> Provides server hosting, content delivery, DNS, and network infrastructure. Our website, identity, model-configuration sync, and free speech-recognition interfaces are deployed on Cloudflare's global network, so some network communication data is processed through that network in transit;</li>
     <li data-lang="zh"><strong>你选择的第三方模型服务提供商（如适用）：</strong>当你在自带模型（BYOK）模式下选择调用境外可用的第三方模型服务时，你的请求内容将按照该提供商的服务条款直接传输至该提供商，该传输行为由你自主发起并受你与该提供商之间的协议约束。</li>
     <li data-lang="en"><strong>Third-party model service providers selected by you (if applicable):</strong> When you choose to call an overseas-available third-party model service in Bring Your Own Key (BYOK) mode, your request content will be transmitted directly to that provider in accordance with its terms of service. Such transfer is initiated by you and governed by the agreement between you and that provider.</li>
   </ul>
@@ -1390,10 +1109,10 @@
     <li data-lang="en"><strong>Identity verification and account security:</strong> Supporting account login, identity verification, and session persistence, and defending against security threats such as credential stuffing, brute-force attacks, and DDoS attacks to ensure system and data security;</li>
     <li data-lang="zh"><strong>服务运行与维护：</strong>保障服务的稳定运行、性能优化、故障排查、容灾备份及服务质量监测；</li>
     <li data-lang="en"><strong>Service operation and maintenance:</strong> Ensuring stable service operation, performance optimization, troubleshooting, disaster recovery and backup, and service quality monitoring;</li>
-    <li data-lang="zh"><strong>积分计费管理：</strong>记录模型调用的积分消耗，维护你的积分账户余额，向你出具积分账单记录；</li>
-    <li data-lang="en"><strong>Credit billing management:</strong> Recording credit consumption for model calls, maintaining your credit account balance, and providing you with credit billing records;</li>
-    <li data-lang="zh"><strong>反欺诈与滥用防控：</strong>识别和阻断自动化脚本、恶意注册、积分套利等滥用行为，保护你和平台的合法权益；</li>
-    <li data-lang="en"><strong>Anti-fraud and abuse prevention:</strong> Identifying and blocking abuse such as automated scripts, malicious registration, and credit arbitrage, to protect your legitimate rights and interests and those of the platform;</li>
+    <li data-lang="zh"><strong>免费语音识别：</strong>将用户主动录制的音频转发给语音识别服务商以生成文字，该功能免费；</li>
+    <li data-lang="en"><strong>Free speech recognition:</strong> Relaying recordings initiated by the user to a speech-recognition provider to generate text, free of charge;</li>
+    <li data-lang="zh"><strong>反欺诈与滥用防控：</strong>识别和阻断自动化脚本、恶意注册等滥用行为，保护你和平台的合法权益；</li>
+    <li data-lang="en"><strong>Anti-fraud and abuse prevention:</strong> Identifying and blocking abuse such as automated scripts and malicious registration, to protect you and the platform;</li>
     <li data-lang="zh"><strong>安全审计与合规：</strong>满足法律法规、监管要求及安全审计之需要。</li>
     <li data-lang="en"><strong>Security audit and compliance:</strong> Meeting the needs of laws and regulations, regulatory requirements, and security audits.</li>
   </ol>
@@ -1410,10 +1129,8 @@
     <li data-lang="en"><strong>Account information:</strong> Your account identifier (user ID), email address (transmitted in encrypted form), registration time, and account status;</li>
     <li data-lang="zh"><strong>身份验证信息：</strong>登录凭证（如令牌、会话标识）、验证请求记录；</li>
     <li data-lang="en"><strong>Authentication information:</strong> Login credentials (e.g., tokens, session identifiers) and verification request records;</li>
-    <li data-lang="zh"><strong>调用记录：</strong>模型名称、调用时间、消耗积分、请求状态码（<strong>不含你输入的明文内容</strong>）；</li>
-    <li data-lang="en"><strong>Call records:</strong> Model name, call time, credits consumed, and request status codes (<strong>excluding the plaintext of your input</strong>);</li>
-    <li data-lang="zh"><strong>积分信息：</strong>积分余额、积分变动记录、订单关联信息（不含支付敏感信息）；</li>
-    <li data-lang="en"><strong>Credit information:</strong> Credit balance, credit transaction records, and order-related information (excluding sensitive payment information);</li>
+    <li data-lang="zh"><strong>语音识别数据：</strong>你主动录制并提交用于转写的音频，以及完成请求所需的时间与状态信息；</li>
+    <li data-lang="en"><strong>Speech-recognition data:</strong> Audio you intentionally record and submit for transcription, plus timing and status data required to complete the request;</li>
     <li data-lang="zh"><strong>设备与网络信息：</strong>操作系统类型、设备型号、软件版本号、IP 地址、请求时间（用于安全防护、异常检测与流量调度）；</li>
     <li data-lang="en"><strong>Device and network information:</strong> OS type, device model, software version, IP address, and request time (for security protection, anomaly detection, and traffic scheduling);</li>
     <li data-lang="zh"><strong>BYOK 模式下的调用内容（如适用）：</strong>你在自带模型模式下使用境外第三方模型服务时输入的文本、代码片段、任务指令及上传的文件，此类内容由你自主选择传输至对应提供商。</li>
@@ -1451,8 +1168,8 @@
   <h2 data-lang="en">7. Personal Information Storage and Security</h2>
   <h3 data-lang="zh">7.1 存储地点与期限</h3>
   <h3 data-lang="en">7.1 Storage Location and Retention</h3>
-  <p data-lang="zh">你的账号与积分数据以中华人民共和国境内服务器为主要存储地。经由境外网络（如 CDN、网关节点）处理的传输中数据，仅在实现处理目的所必需的期限内保留，境外接收方不会建立你个人信息的长期存储副本，除非其服务机制要求的最短缓存周期。当个人信息超出保存期限或达到你注销账户的条件时，我们将对个人信息进行删除或匿名化处理，法律另有规定的除外。</p>
-  <p data-lang="en">Your account and credit data are primarily stored on servers located within the People's Republic of China. Data in transit processed through overseas networks (such as CDN or gateway nodes) is retained only for the period necessary to achieve the processing purpose. The overseas recipients will not establish long-term storage copies of your personal information, except for the shortest caching period required by their service mechanisms. When personal information exceeds the retention period or when your account is deleted, we will delete or anonymize the personal information, except as otherwise provided by law.</p>
+  <p data-lang="zh">你的账号数据以中华人民共和国境内服务器为主要存储地。经由境外网络（如 CDN、网关节点）处理的传输中数据，仅在实现处理目的所必需的期限内保留。当个人信息超出保存期限或达到你注销账户的条件时，我们将对个人信息进行删除或匿名化处理，法律另有规定的除外。</p>
+  <p data-lang="en">Your account data is primarily stored on servers located within the People's Republic of China. Data in transit processed through overseas networks is retained only as long as necessary. When personal information exceeds the retention period or your account is deleted, we delete or anonymize it unless law requires otherwise.</p>
   <h3 data-lang="zh">7.2 安全保障措施</h3>
   <h3 data-lang="en">7.2 Security Safeguards</h3>
   <p data-lang="zh">我们采取以下技术与管理措施保障你个人信息在跨境传输中的安全性：</p>
@@ -1551,8 +1268,8 @@
   <h2 data-lang="en">13. Contact Information</h2>
   <p data-lang="zh">如对本跨境数据传输协议有任何疑问、意见或建议，或需行使相关权利，可通过以下方式联系我们：</p>
   <p data-lang="en">If you have any questions, comments, or suggestions about this Cross-Border Data Transfer Agreement, or wish to exercise your rights, you may contact us at:</p>
-  <p data-lang="zh">邮箱：<a href="mailto:2206674900@qq.com">2206674900@qq.com</a></p>
-  <p data-lang="en">Email: <a href="mailto:2206674900@qq.com">2206674900@qq.com</a></p>
+  <p data-lang="zh">邮箱：<a href="mailto:support@ohfun.online">support@ohfun.online</a></p>
+  <p data-lang="en">Email: <a href="mailto:support@ohfun.online">support@ohfun.online</a></p>
   <p data-lang="zh">我们将在收到你的请求后十五个工作日内予以回复。如你对我们的处理结果不满意，你也可以向履行个人信息保护职责的部门投诉、举报。</p>
   <p data-lang="en">We will respond within fifteen (15) business days after receiving your request. If you are not satisfied with our handling, you may also file a complaint or report to the department responsible for personal information protection.</p>
 
@@ -1578,8 +1295,15 @@
 
 <script>
 (function(){
-  var VIEWS = ['home','pricing','terms','privacy','cross-border'];
+  var VIEWS = ['home','terms','privacy','cross-border'];
   var SCROLL_IDS = ['features','versions','download'];
+
+  var burger = document.getElementById('burger');
+  var drawer = document.getElementById('drawer');
+  function closeDrawer(){
+    if(burger){ burger.classList.remove('open'); burger.setAttribute('aria-expanded','false'); }
+    if(drawer){ drawer.classList.remove('open'); }
+  }
 
   function showView(name){
     VIEWS.forEach(function(v){
@@ -1590,6 +1314,7 @@
       a.classList.toggle('active', a.getAttribute('data-route')===name);
     });
     window.scrollTo({top:0,behavior:'instant'});
+    closeDrawer();
   }
 
   function handleRoute(){
@@ -1621,15 +1346,41 @@
     }
   });
 
+  function applyLang(lang){
+    document.documentElement.classList.toggle('en', lang==='en');
+    document.documentElement.lang = lang==='en' ? 'en' : 'zh-CN';
+    document.title = lang==='en' ? 'CoCode — A Coding Agent That Gets Work Done' : 'CoCode — 会干活的编程 Agent';
+    var metaDesc = document.getElementById('meta-desc');
+    if(metaDesc){ metaDesc.setAttribute('content', lang==='en' ? 'CoCode Desktop — a coding Agent with bring-your-own-model support, a zero-dependency core, 18 built-in tools, token-efficient output, and revertible turns.' : 'CoCode Desktop：自接入模型的编程 Agent 桌面端零依赖核心，18 个内置工具，低 token 多干活，每轮可回滚'); }
+    document.querySelectorAll('.lang-btn').forEach(function(b){
+      b.classList.toggle('active', b.getAttribute('data-lng')===lang);
+    });
+  }
   document.querySelectorAll('.lang-btn').forEach(function(btn){
     btn.addEventListener('click', function(){
-      var lang = btn.getAttribute('data-lang');
-      document.documentElement.classList.toggle('en', lang==='en');
-      document.querySelectorAll('.lang-btn').forEach(function(b){
-        b.classList.toggle('active', b===btn);
-      });
+      var lang = btn.getAttribute('data-lng');
+      try{ localStorage.setItem('lang', lang); }catch(err){}
+      applyLang(lang);
     });
   });
+  var savedLang = 'zh';
+  try{ savedLang = localStorage.getItem('lang') || 'zh'; }catch(err){}
+  applyLang(savedLang);
+
+  if(burger && drawer){
+    burger.addEventListener('click', function(){
+      var open = !drawer.classList.contains('open');
+      drawer.classList.toggle('open', open);
+      burger.classList.toggle('open', open);
+      burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    drawer.querySelectorAll('a').forEach(function(a){
+      a.addEventListener('click', closeDrawer);
+    });
+    window.addEventListener('resize', function(){
+      if(window.innerWidth > 820) closeDrawer();
+    });
+  }
 
   // reveal 动画：各源页面的 script 在合并时被剥离，这里统一恢复触发逻辑
   var rvs = document.querySelectorAll('.rv');

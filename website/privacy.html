@@ -45,8 +45,8 @@ html.en [data-lang="en"]{display:block}
   <div class="wrap nav">
     <a href="index.html" class="brand">CoCode</a>
     <div class="lang-switch">
-      <button class="lang-btn active" data-lang="zh">中文</button>
-      <button class="lang-btn" data-lang="en">EN</button>
+      <button class="lang-btn active" data-lng="zh">中文</button>
+      <button class="lang-btn" data-lng="en">EN</button>
     </div>
   </div>
 </header>
@@ -85,17 +85,14 @@ html.en [data-lang="en"]{display:block}
 
   <h3 data-lang="zh">1.3 模型调用与对话数据</h3>
   <h3 data-lang="en">1.3 Model Calls and Conversation Data</h3>
-  <p data-lang="zh">当你使用 AI 功能时，你输入的文本、代码片段、任务指令及上传的文件会被发送至你选择的模型提供商（自带 Key 模式下直接发送至对应第三方；内置官方模型模式下经由我们的服务器转发）以生成响应。</p>
-  <p data-lang="en">When you use AI features, the text, code snippets, task instructions, and files you upload are sent to your selected model provider (in BYOK mode, directly to the corresponding third party; in official model mode, relayed through our servers) to generate responses.</p>
+  <p data-lang="zh">当你使用 AI 功能时，你输入的文本、代码片段、任务指令及上传的文件会从你的设备直接发送至你自行配置的模型提供商，以生成响应。</p>
+  <p data-lang="en">When you use AI features, the text, code snippets, task instructions, and files you upload are sent directly from your device to the model provider you configure, in order to generate responses.</p>
   <p data-lang="zh"><strong>本地优先原则：</strong>你的代码库和对话内容默认存储在你的本地设备上。我们不会主动上传你的代码库文件。仅当你使用云同步、跨端同步等功能时，相关数据才会传输至我们的服务器。</p>
   <p data-lang="en"><strong>Local-first principle:</strong> Your codebase and conversations are stored on your local device by default. We do not proactively upload your codebase files. Data is transmitted to our servers only when you use features such as cloud sync or cross-device sync.</p>
-  <p data-lang="zh">内置官方模型模式下，为提供积分计费服务，我们会记录模型调用的模型名称、调用时间及消耗积分，但不存储你输入的明文内容。<strong>我们不会将你通过内置官方模型提交的输入内容及对应的输出内容用于模型训练。</strong></p>
-  <p data-lang="en">In official model mode, to provide credit-based billing, we record the model name, call time, and credits consumed for each model call, but we do not store the plaintext of your input. <strong>We do not use the inputs you submit through official models, or the corresponding outputs, for model training.</strong></p>
-
-  <h3 data-lang="zh">1.4 付费与积分</h3>
-  <h3 data-lang="en">1.4 Payment and Credits</h3>
-  <p data-lang="zh">当你购买官方模型订阅套餐时，我们会收集你的订单信息（订单号、套餐类型、购买时间、积分余额）。支付信息由第三方支付平台（如爱发电）处理，我们不存储你的银行卡号等支付敏感信息。如你需要开具凭证或处理退款，我们可能会另行收集你的联系方式以便与你确认处理结果。</p>
-  <p data-lang="en">When you purchase an official model subscription plan, we collect your order information (order number, plan type, purchase time, credit balance). Payment information is processed by third-party payment platforms (e.g., Afdian); we do not store sensitive payment information such as your bank card number. If you request a receipt or a refund, we may additionally collect your contact information to confirm the handling result with you.</p>
+  <h3 data-lang="zh">1.4 免费语音识别</h3>
+  <h3 data-lang="en">1.4 Free Speech Recognition</h3>
+  <p data-lang="zh">使用免费语音识别时，录音会经由我们的服务器转发至语音识别服务商以生成文字。该功能免费；我们不会将录音用于模型训练或其他目的。</p>
+  <p data-lang="en">When you use free speech recognition, the recording is relayed through our server to the speech-recognition provider to generate text. This feature is free; we do not use recordings for model training or other purposes.</p>
 
   <h3 data-lang="zh">1.5 客服与反馈</h3>
   <h3 data-lang="en">1.5 Customer Support and Feedback</h3>
@@ -122,10 +119,10 @@ html.en [data-lang="en"]{display:block}
   <p data-lang="zh">我们可能委托合作伙伴（如云服务提供商、邮件服务提供商）处理你的个人信息。我们会与受托方签署数据处理协议，要求其仅在授权范围内处理信息、采取必要安全措施，并在委托关系终止时按照我们的要求删除或返还其所处理的个人信息。我们会对受托方的数据处理能力进行合理评估，并对其处理活动进行监督。</p>
   <p data-lang="en">We may entrust partners (e.g., cloud service providers, email service providers) to process your personal information. We sign data processing agreements with them, requiring them to process information only within the authorized scope, adopt necessary security measures, and delete or return the personal information they have processed at our request upon termination of the entrustment. We will reasonably assess the data processing capabilities of such processors and supervise their processing activities.</p>
 
-  <h3 data-lang="zh">3.2 内置官方模型</h3>
-  <h3 data-lang="en">3.2 Official Models</h3>
-  <p data-lang="zh">当你使用内置官方模型时，你的输入内容会经由我们的服务器转发至对应模型提供商以生成响应。转发过程中我们仅传输完成该次调用所必需的内容。<strong>我们不会将你的输入内容用于模型训练或其他目的。</strong>如你希望你的输入内容完全不经过我们的服务器，你可以选择自带 API Key（BYOK）模式，由你的设备直接调用对应模型提供商的接口。</p>
-  <p data-lang="en">When you use official models, your input is relayed through our servers to the corresponding model provider to generate responses. During relaying, we only transmit the content necessary for completing that call. <strong>We do not use your input for model training or any other purpose.</strong> If you prefer that your input never passes through our servers, you may choose the BYOK (bring your own API key) mode, where your device calls the model provider's API directly.</p>
+  <h3 data-lang="zh">3.2 免费语音识别</h3>
+  <h3 data-lang="en">3.2 Free Speech Recognition</h3>
+  <p data-lang="zh">使用免费语音识别时，我们仅转发完成当次转写所必需的录音数据，并要求语音识别服务商按照其隐私与安全规则处理。</p>
+  <p data-lang="en">When you use free speech recognition, we relay only the recording data necessary for that transcription and require the speech-recognition provider to process it under its privacy and security terms.</p>
 
   <h3 data-lang="zh">3.3 共享</h3>
   <h3 data-lang="en">3.3 Sharing</h3>
@@ -157,8 +154,8 @@ html.en [data-lang="en"]{display:block}
 
   <h3 data-lang="zh">4.2 存储期限</h3>
   <h3 data-lang="en">4.2 Retention Period</h3>
-  <p data-lang="zh">我们仅在为提供服务之目的所必需的期间内保留你的个人信息，例如：账号信息在账号存续期间保留；订单及积分记录自交易完成之日起保留不少于法律规定的期限，以便处理对账、退款及可能的争议；操作日志保留期限一般不超过十二个月。超出必要期限后，我们将删除或匿名化处理你的个人信息，法律法规另有规定的除外。当你注销账号后，我们将在合理期限内删除或匿名化你的个人信息，法律要求留存的除外。</p>
-  <p data-lang="en">We retain your personal information only for as long as necessary to provide the Service. For example: account information is retained for the duration of the account; order and credit records are retained for no less than the statutory period from the completion of the transaction, in order to handle reconciliation, refunds, and possible disputes; operation logs are generally retained for no more than twelve months. After the necessary period, we will delete or anonymize your personal information, unless otherwise required by law. After you cancel your account, we will delete or anonymize your personal information within a reasonable period, except where retention is required by law.</p>
+  <p data-lang="zh">我们仅在为提供服务之目的所必需的期间内保留你的个人信息，例如：账号信息在账号存续期间保留；操作日志保留期限一般不超过十二个月。超出必要期限后，我们将删除或匿名化处理你的个人信息，法律法规另有规定的除外。当你注销账号后，我们将在合理期限内删除或匿名化你的个人信息，法律要求留存的除外。</p>
+  <p data-lang="en">We retain your personal information only for as long as necessary to provide the Service. For example, account information is retained for the duration of the account, while operation logs are generally retained for no more than twelve months. After the necessary period, we will delete or anonymize your personal information, unless otherwise required by law. After you cancel your account, we will delete or anonymize your personal information within a reasonable period, except where retention is required by law.</p>
 
   <!-- 五、安全 -->
   <h2 data-lang="zh">五、我们如何保护个人信息安全</h2>
@@ -237,8 +234,8 @@ html.en [data-lang="en"]{display:block}
   <h2 data-lang="en">12. How to Contact Us</h2>
   <p data-lang="zh">如对本隐私政策有任何疑问、意见或建议，或需行使个人信息权利、提出投诉举报，请通过以下方式联系我们，我们将在收到你的消息后十五个工作日内回复：</p>
   <p data-lang="en">If you have any questions, comments, or suggestions about this Privacy Policy, or wish to exercise your personal information rights or file a complaint, please contact us at the following. We will reply within fifteen working days after receiving your message:</p>
-  <p data-lang="zh">邮箱：<a href="mailto:2206674900@qq.com">2206674900@qq.com</a></p>
-  <p data-lang="en">Email: <a href="mailto:2206674900@qq.com">2206674900@qq.com</a></p>
+  <p data-lang="zh">邮箱：<a href="mailto:support@ohfun.online">support@ohfun.online</a></p>
+  <p data-lang="en">Email: <a href="mailto:support@ohfun.online">support@ohfun.online</a></p>
   <p data-lang="zh">一般情况下，我们将在十五个工作日内答复。如果你对我们的回复不满意，特别是我们的行为损害了你的合法权益，你还可以向网信、电信、公安及市场监管等政府部门进行投诉、举报。</p>
   <p data-lang="en">Under normal circumstances, we will reply within fifteen working days. If you are not satisfied with our reply, in particular if our conduct infringes upon your legitimate rights and interests, you may also lodge a complaint or report to government authorities such as those in charge of cyberspace administration, telecommunications, public security, and market regulation.</p>
 
@@ -260,7 +257,7 @@ html.en [data-lang="en"]{display:block}
   var buttons=document.querySelectorAll('.lang-btn');
   buttons.forEach(function(btn){
     btn.addEventListener('click',function(){
-      var lang=this.getAttribute('data-lang');
+      var lang=this.getAttribute('data-lng');
       document.documentElement.classList.toggle('en',lang==='en');
       buttons.forEach(function(b){b.classList.toggle('active',b===btn);});
     });

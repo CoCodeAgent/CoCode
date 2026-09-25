@@ -45,8 +45,8 @@ html.en [data-lang="en"]{display:block}
   <div class="wrap nav">
     <a href="index.html" class="brand">CoCode</a>
     <div class="lang-switch">
-      <button class="lang-btn active" data-lang="zh">中文</button>
-      <button class="lang-btn" data-lang="en">EN</button>
+      <button class="lang-btn active" data-lng="zh">中文</button>
+      <button class="lang-btn" data-lng="en">EN</button>
     </div>
   </div>
 </header>
@@ -65,8 +65,8 @@ html.en [data-lang="en"]{display:block}
   <!-- 1. 导言 -->
   <h2 data-lang="zh">一、导言</h2>
   <h2 data-lang="en">1. Introduction</h2>
-  <p data-lang="zh">欢迎使用 CoCode。CoCode 是一款由 CoCode 运营团队（以下简称"我们"）开发的 AI 编程代理工具，以桌面应用程序、命令行工具（CLI）、网站及相关服务（以下统称"本服务"）的形式向你提供。CoCode 旨在帮助你更高效地完成编码、调试、重构、文档撰写等软件工程任务，支持你使用自己配置的第三方模型，也提供由我们运营的官方模型订阅服务。</p>
-  <p data-lang="en">Welcome to CoCode. CoCode is an AI programming agent tool developed and operated by the CoCode Team (hereinafter "we", "us", or "our"), provided to you in the form of a desktop application, command-line interface (CLI), website, and related services (collectively, the "Service"). CoCode is designed to help you complete software engineering tasks such as coding, debugging, refactoring, and documentation more efficiently. It supports third-party models configured with your own credentials, as well as an official model subscription service operated by us.</p>
+  <p data-lang="zh">欢迎使用 CoCode。CoCode 是一款由 CoCode 运营团队（以下简称"我们"）开发的 AI 编程代理工具，以桌面应用程序、命令行工具（CLI）、网站及相关服务（以下统称"本服务"）的形式向你提供。CoCode 旨在帮助你更高效地完成编码、调试、重构、文档撰写等软件工程任务，并使用你自行配置的第三方模型。</p>
+  <p data-lang="en">Welcome to CoCode. CoCode is an AI programming agent tool developed and operated by the CoCode Team (hereinafter "we", "us", or "our"), provided to you in the form of a desktop application, command-line interface (CLI), website, and related services (collectively, the "Service"). CoCode is designed to help you complete software engineering tasks such as coding, debugging, refactoring, and documentation more efficiently using third-party models configured with your own credentials.</p>
   <p data-lang="zh">本用户协议（以下简称"本协议"）是你与我们之间就注册、登录、使用本服务所订立的协议，与你勾选确认的《隐私政策》《跨境数据传输协议》共同构成完整的约定。请你在使用本服务前认真阅读并充分理解本协议，特别是以加粗形式提示的免除或减轻我们责任、限制你权利的条款。你勾选"我已阅读并同意用户协议"即表示你已完整阅读并理解本协议。</p>
   <p data-lang="en">These Terms of Service (the "Agreement") constitute an agreement between you and us regarding your registration, login, and use of the Service, and together with the Privacy Policy and the Cross-Border Data Transfer Agreement that you confirm by checking the corresponding boxes, they form a complete set of agreements. Please read this Agreement carefully before using the Service, especially the clauses highlighted in bold that exempt or reduce our liability or limit your rights. By checking "I have read and agree to the Terms of Service", you represent that you have fully read and understood this Agreement.</p>
   <div class="note" data-lang="zh"><strong>如你不同意本协议，请勿注册账号或使用本服务。你注册、登录或使用本服务，即视为你已阅读、理解并同意接受本协议的全部条款。如你是未成年人，请在监护人陪同下阅读本协议，并在取得监护人同意后使用本服务。</strong></div>
@@ -78,16 +78,12 @@ html.en [data-lang="en"]{display:block}
   <p data-lang="zh">为便于理解，本协议中的下列术语含义如下：</p>
   <p data-lang="en">For ease of understanding, the following terms in this Agreement have the meanings set out below:</p>
   <ul>
-    <li data-lang="zh"><strong>"本服务"：</strong>指 CoCode 桌面应用、命令行工具（CLI）、官方网站、官方模型服务及我们提供的其他相关功能与服务；</li>
-    <li data-lang="en"><strong>"Service":</strong> refers to the CoCode desktop application, command-line interface (CLI), official website, official model service, and other related features and services provided by us;</li>
+    <li data-lang="zh"><strong>"本服务"：</strong>指 CoCode 桌面应用、命令行工具（CLI）、官方网站及我们提供的其他相关功能与服务；</li>
+    <li data-lang="en"><strong>"Service":</strong> refers to the CoCode desktop application, command-line interface (CLI), official website, and other related features and services provided by us;</li>
     <li data-lang="zh"><strong>"你"：</strong>指注册、登录或使用本服务的个人或实体；</li>
     <li data-lang="en"><strong>"You":</strong> refers to the individual or entity who registers, logs in to, or uses the Service;</li>
-    <li data-lang="zh"><strong>"官方模型"：</strong>指由我们统一运营、通过积分计费的内置模型服务，你无需自行配置模型服务提供商的凭证即可使用；</li>
-    <li data-lang="en"><strong>"Official models":</strong> refer to built-in model services uniformly operated by us and billed by credits, which you can use without configuring credentials of model service providers yourself;</li>
     <li data-lang="zh"><strong>"自带模型（BYOK）"：</strong>指你使用自己的模型服务凭证接入第三方模型服务的使用方式；</li>
     <li data-lang="en"><strong>"Bring Your Own Key (BYOK)":</strong> refers to the mode in which you connect third-party model services using your own model service credentials;</li>
-    <li data-lang="zh"><strong>"积分"：</strong>指用于计量官方模型调用量的虚拟凭证，不可兑换法定货币，不可转让；</li>
-    <li data-lang="en"><strong>"Credits":</strong> refer to virtual units used to measure the usage of official models; they cannot be exchanged for legal tender and are non-transferable;</li>
     <li data-lang="zh"><strong>"输入"与"输出"：</strong>"输入"指你提交给本服务的内容（如指令、代码、文件）；"输出"指本服务（含模型）响应你的输入而生成的内容。</li>
     <li data-lang="en"><strong>"Input" and "Output":</strong> "Input" refers to the content you submit to the Service (such as instructions, code, and files); "Output" refers to the content generated by the Service (including models) in response to your Input.</li>
   </ul>
@@ -105,16 +101,16 @@ html.en [data-lang="en"]{display:block}
   <h2 data-lang="en">4. Changes to Terms</h2>
   <p data-lang="zh">我们可能根据法律法规变化、业务调整或产品演进的需要，适时修改本协议。协议变更后，我们将在本页面更新"更新日期"，并通过应用内通知、站内公告等方式提示你变更内容。对于重大变更（如收费方式变化、责任条款调整），我们将在变更生效前给予合理的提示期。</p>
   <p data-lang="en">We may modify this Agreement from time to time in light of changes in laws and regulations, business adjustments, or product evolution. When we do, we will update the "Last updated" date on this page and notify you of the changes via in-app notifications and website announcements. For material changes (such as changes to billing methods or adjustments to liability clauses), we will provide reasonable advance notice before the changes take effect.</p>
-  <p data-lang="zh"><strong>变更生效后你继续使用本服务，即视为你接受修改后的协议；如你不接受变更内容，应停止使用本服务。</strong>若变更内容导致你已购买且未消耗的服务权益受到重大不利影响，你可按第九条的约定与我们协商处理。</p>
-  <p data-lang="en"><strong>If you continue to use the Service after the changes take effect, you are deemed to have accepted the revised Agreement; if you do not accept the changes, you should stop using the Service.</strong> If a change materially and adversely affects your purchased and unconsumed service benefits, you may negotiate with us in accordance with Section 9.</p>
+  <p data-lang="zh"><strong>变更生效后你继续使用本服务，即视为你接受修改后的协议；如你不接受变更内容，应停止使用本服务。</strong></p>
+  <p data-lang="en"><strong>If you continue to use the Service after the changes take effect, you are deemed to have accepted the revised Agreement; if you do not accept the changes, you should stop using the Service.</strong></p>
 
   <!-- 5. 账号注册 -->
   <h2 data-lang="zh">五、账号注册与安全</h2>
   <h2 data-lang="en">5. Account Registration and Security</h2>
   <p data-lang="zh"><strong>5.1</strong> 你可通过电子邮箱或我们支持的其他方式注册账号。你应保证注册信息（尤其是电子邮箱地址）真实、准确、合法、有效，并及时更新。因你提供虚假信息或未及时更新信息导致的相关后果，由你自行承担。</p>
   <p data-lang="en"><strong>5.1</strong> You may register an account using your email address or other methods we support. You must ensure that your registration information (especially your email address) is true, accurate, legal, and valid, and keep it up to date. Any consequences arising from false information or failure to update information shall be borne by you.</p>
-  <p data-lang="zh"><strong>5.2</strong> 你应妥善保管账号、密码及验证码，不应将其透露给任何第三方。账号下的所有操作（包括模型调用、积分消耗、配置修改等）均视为你本人的行为。如发现账号被盗用、密码泄露或存在其他安全漏洞，应立即通知我们，我们将协助你采取冻结、重置等措施。</p>
-  <p data-lang="en"><strong>5.2</strong> You are responsible for safeguarding your account, password, and verification codes, and should not disclose them to any third party. All activities under your account (including model calls, credit consumption, and configuration changes) are deemed to be your actions. If you discover unauthorized use, password leakage, or other security breaches, notify us immediately, and we will assist you in taking measures such as freezing and resetting.</p>
+  <p data-lang="zh"><strong>5.2</strong> 你应妥善保管账号、密码及验证码，不应将其透露给任何第三方。账号下的所有操作（包括模型配置修改等）均视为你本人的行为。如发现账号被盗用、密码泄露或存在其他安全漏洞，应立即通知我们，我们将协助你采取冻结、重置等措施。</p>
+  <p data-lang="en"><strong>5.2</strong> You are responsible for safeguarding your account, password, and verification codes, and should not disclose them to any third party. All activities under your account (including model-configuration changes) are deemed to be your actions. If you discover unauthorized use, password leakage, or other security breaches, notify us immediately, and we will assist you in taking measures such as freezing and resetting.</p>
   <p data-lang="zh"><strong>5.3</strong> 为保障账号安全，我们在登录、注册等关键环节部署了人机验证与异常行为检测机制。对于存在异常登录、批量注册、撞库尝试等风险的账号，我们有权采取验证升级、临时锁定等保护性措施，并在核实后解除。</p>
   <p data-lang="en"><strong>5.3</strong> To safeguard account security, we deploy human verification and anomalous behavior detection at critical steps such as login and registration. For accounts with abnormal logins, bulk registration, or credential-stuffing attempts, we may take protective measures such as enhanced verification or temporary locking, and lift them after verification.</p>
 
@@ -123,46 +119,32 @@ html.en [data-lang="en"]{display:block}
   <h2 data-lang="en">6. Account Management and Deletion</h2>
   <p data-lang="zh"><strong>6.1</strong> 未经我们书面同意，你不得将账号赠与、借用、出租、转让或出售给他人。如我们有合理理由认为账号的实际使用者并非注册人，为保护账号及数据安全，有权暂停或终止相应服务。</p>
   <p data-lang="en"><strong>6.1</strong> Without our prior written consent, you may not gift, lend, rent, transfer, or sell your account to others. If we have reasonable grounds to believe the actual user of the account is not the registrant, we may suspend or terminate the Service to protect the account and data security.</p>
-  <p data-lang="zh"><strong>6.2</strong> 你有权注销账号。注销账号后，我们将停止为你提供服务，并按照《隐私政策》的约定删除或匿名化处理你的个人信息（法律法规另有规定的除外）。<strong>请你知悉：注销账号将导致账号内的积分余额、订阅权益及未消费的服务权益全部清零且无法恢复，请你在注销前谨慎确认。</strong></p>
-  <p data-lang="en"><strong>6.2</strong> You have the right to delete your account. Upon account deletion, we will stop providing the Service to you and delete or anonymize your personal information in accordance with the Privacy Policy (except as otherwise provided by law). <strong>Please note that account deletion will clear your credit balance, subscription benefits, and unconsumed service benefits, which cannot be restored. Please confirm carefully before deletion.</strong></p>
+  <p data-lang="zh"><strong>6.2</strong> 你有权注销账号。注销账号后，我们将停止为你提供服务，并按照《隐私政策》的约定删除或匿名化处理你的个人信息（法律法规另有规定的除外）。</p>
+  <p data-lang="en"><strong>6.2</strong> You have the right to delete your account. Upon account deletion, we will stop providing the Service to you and delete or anonymize your personal information in accordance with the Privacy Policy (except as otherwise provided by law).</p>
 
   <!-- 7. 服务说明 -->
   <h2 data-lang="zh">七、服务说明</h2>
   <h2 data-lang="en">7. Service Description</h2>
-  <p data-lang="zh"><strong>7.1 本地优先架构。</strong>CoCode 采用本地优先设计：你的代码库、配置文件及对话数据默认存储在你的本地设备，模型调用的凭证（API Key）也仅保存在本地。除非你主动使用需要联网的功能（如账号登录、官方模型调用、云同步），我们的服务器不会获取你的代码与对话内容。</p>
-  <p data-lang="en"><strong>7.1 Local-first architecture.</strong> CoCode is designed with a local-first approach: your codebase, configuration files, and conversation data are stored on your local device by default, and your model credentials (API keys) are also kept locally. Unless you actively use features that require network access (such as account login, official model calls, or cloud sync), our servers will not obtain your code and conversation content.</p>
+  <p data-lang="zh"><strong>7.1 本地优先架构。</strong>CoCode 采用本地优先设计：你的代码库、配置文件及对话数据默认存储在你的本地设备。除非你主动使用需要联网的功能（如账号登录、模型配置同步或免费语音识别），我们的服务器不会获取你的代码与对话内容。</p>
+  <p data-lang="en"><strong>7.1 Local-first architecture.</strong> CoCode is designed with a local-first approach: your codebase, configuration files, and conversation data are stored on your local device by default. Unless you actively use network features such as account login, model-configuration sync, or free speech recognition, our servers will not obtain your code and conversation content.</p>
   <p data-lang="zh"><strong>7.2 服务形式。</strong>本服务可能以桌面应用、CLI、网页等多种形态提供。不同形态的功能可能存在差异，具体以产品实际呈现为准。我们可能持续迭代产品功能，对部分功能进行优化、调整或下线。</p>
   <p data-lang="en"><strong>7.2 Service forms.</strong> The Service may be provided in various forms such as desktop applications, CLI, and web pages. Features may vary across forms; the actual presentation in the product shall prevail. We may continuously iterate product features, optimize, adjust, or discontinue certain features.</p>
   <p data-lang="zh"><strong>7.3 系统要求。</strong>你需自备接入本服务所必需的设备、操作系统与网络环境，并承担使用本服务产生的相关费用（如上网流量费）。因你的设备或网络原因导致服务无法正常使用的，我们不承担责任。</p>
   <p data-lang="en"><strong>7.3 System requirements.</strong> You need to prepare the devices, operating systems, and network environments necessary for accessing the Service, and bear the related costs (such as Internet traffic fees) of using the Service. We are not liable for the Service being unavailable due to your devices or network conditions.</p>
 
-  <!-- 8. 付费与积分 -->
-  <h2 data-lang="zh">八、付费与积分</h2>
-  <h2 data-lang="en">8. Payment and Credits</h2>
-  <p data-lang="zh">本服务提供两种模型使用方式：</p>
-  <p data-lang="en">The Service offers two ways to use models:</p>
-  <ol>
-    <li data-lang="zh"><strong>自带模型（BYOK）：</strong>你可使用自己的模型服务凭证接入第三方模型。此模式下我们不收取费用，你与第三方模型服务提供商之间的费用结算及约定由你自行负责；</li>
-    <li data-lang="en"><strong>Bring Your Own Key (BYOK):</strong> You may connect third-party models using your own model service credentials. We do not charge fees in this mode; the billing and agreements between you and third-party model service providers are your own responsibility;</li>
-    <li data-lang="zh"><strong>官方模型订阅：</strong>我们提供由我们统一运营的内置官方模型，你可以按月订阅套餐获取积分，并按模型调用量消耗积分。积分按批次发放与消耗，不同批次的积分可能有不同的有效期，具体以购买页面及套餐说明为准。</li>
-    <li data-lang="en"><strong>Official model subscription:</strong> We provide built-in official models uniformly operated by us. You may purchase monthly subscription plans to obtain credits, which are consumed by model usage. Credits are granted and consumed in batches, and different batches may have different validity periods, subject to the purchase page and plan descriptions.</li>
-  </ol>
-  <p data-lang="zh"><strong>8.1 积分性质。</strong>积分仅用于计量官方模型的调用量，是本服务内部使用的虚拟计量单位，<strong>不具有货币属性，不可兑换现金、不可转让、不可交易</strong>，其价值以获得相应服务为限。</p>
-  <p data-lang="en"><strong>8.1 Nature of credits.</strong> Credits are only used to measure the usage of official models and are virtual units for internal use within the Service. <strong>They are not currency, cannot be exchanged for cash, and cannot be transferred or traded;</strong> their value is limited to obtaining the corresponding services.</p>
-  <p data-lang="zh"><strong>8.2 计费规则。</strong>官方模型的调用按实际使用量计量扣减积分。由于上游模型服务计量方式调整、模型版本升级等原因，不同时期、不同模型的积分消耗标准可能不同，我们将在产品界面或套餐说明中公示。</p>
-  <p data-lang="en"><strong>8.2 Billing rules.</strong> Calls to official models are metered and deducted from credits based on actual usage. Due to adjustments in upstream model service metering, model version upgrades, and other factors, the credit consumption standards for different periods and models may vary, which we will publish in the product interface or plan descriptions.</p>
-  <p data-lang="zh"><strong>8.3 支付方式。</strong>付费订单通过第三方支付平台（如爱发电）处理。我们不会直接收集或存储你的银行卡、支付账户等敏感支付信息，相关支付行为受该第三方平台的服务协议约束。</p>
-  <p data-lang="en"><strong>8.3 Payment methods.</strong> Payment orders are processed through third-party payment platforms (e.g., Afdian). We do not directly collect or store your sensitive payment information such as bank cards or payment accounts; such payment activities are governed by the service agreements of those third-party platforms.</p>
-  <p data-lang="zh"><strong>8.4 异常订单处理。</strong>如发现利用漏洞、伪造订单、恶意退款等方式异常获取积分或服务权益的行为，我们有权冻结、扣回相关积分并视情节终止服务。</p>
-  <p data-lang="en"><strong>8.4 Abnormal order handling.</strong> If we discover credits or service benefits obtained abnormally through exploiting vulnerabilities, forging orders, or malicious refunds, we may freeze or claw back the relevant credits and terminate the Service depending on the severity.</p>
+  <!-- 8. 模型与语音 -->
+  <h2 data-lang="zh">八、自定义模型与语音识别</h2>
+  <h2 data-lang="en">8. Custom Models and Speech Recognition</h2>
+  <p data-lang="zh"><strong>8.1 自定义模型。</strong>你可使用自己的模型服务凭证接入第三方模型。你与第三方模型服务提供商之间的费用结算及约定由你自行负责。</p>
+  <p data-lang="en"><strong>8.1 Custom models.</strong> You may connect third-party models using your own credentials. Billing and agreements between you and third-party model providers are your responsibility.</p>
+  <p data-lang="zh"><strong>8.2 免费语音识别。</strong>登录用户可免费使用我们提供的语音识别通道；录音处理规则以《隐私政策》为准。</p>
+  <p data-lang="en"><strong>8.2 Free speech recognition.</strong> Signed-in users may use our speech-recognition channel free of charge; recording handling is governed by the Privacy Policy.</p>
 
-  <!-- 9. 退款与终止 -->
-  <h2 data-lang="zh">九、退款与终止</h2>
-  <h2 data-lang="en">9. Refunds and Termination</h2>
-  <p data-lang="zh"><strong>9.1 退款政策。</strong>因本服务通过第三方支付平台收费，退款主要通过该平台流程办理，并遵循其规则。一般而言，如你购买的套餐存在未被消耗的服务权益且符合平台退款条件的，我们将在合理范围内予以配合处理。已经实际消耗的服务部分，原则上不支持退款。</p>
-  <p data-lang="en"><strong>9.1 Refund policy.</strong> As we charge fees through third-party payment platforms, refunds are mainly processed through those platforms and subject to their rules. Generally, if your purchased plan contains unconsumed service benefits and meets the platform's refund conditions, we will cooperate in handling within a reasonable scope. Consumed portions of the service are, in principle, non-refundable.</p>
-  <p data-lang="zh"><strong>9.2 服务终止后的处理。</strong>如本服务因不可抗力、政策调整或我们经营决策等原因终止，对于你已付费但未消耗的服务权益，我们将通过公告载明的方式为你办理退款或提供替代方案。</p>
-  <p data-lang="en"><strong>9.2 Handling upon service termination.</strong> If the Service is terminated due to force majeure, policy adjustments, or our business decisions, we will process refunds or provide alternatives for your paid but unconsumed service benefits in the manner stated in the announcement.</p>
+  <!-- 9. 服务终止 -->
+  <h2 data-lang="zh">九、服务终止</h2>
+  <h2 data-lang="en">9. Service Termination</h2>
+  <p data-lang="zh">如本服务因不可抗力、政策调整或我们经营决策等原因终止，我们将通过应用内通知或网站公告提前说明。</p>
+  <p data-lang="en">If the Service is terminated due to force majeure, policy changes, or business decisions, we will provide advance notice through the app or website.</p>
 
   <!-- 10. 行为规范 -->
   <h2 data-lang="zh">十、行为规范</h2>
@@ -283,8 +265,8 @@ html.en [data-lang="en"]{display:block}
   <h3 data-lang="en">20.2 Contact Us</h3>
   <p data-lang="zh">如对本协议有任何疑问、意见或建议，可通过以下方式联系我们：</p>
   <p data-lang="en">If you have any questions, comments, or suggestions regarding this Agreement, you may contact us at:</p>
-  <p data-lang="zh">邮箱：<a href="mailto:2206674900@qq.com">2206674900@qq.com</a></p>
-  <p data-lang="en">Email: <a href="mailto:2206674900@qq.com">2206674900@qq.com</a></p>
+  <p data-lang="zh">邮箱：<a href="mailto:support@ohfun.online">support@ohfun.online</a></p>
+  <p data-lang="en">Email: <a href="mailto:support@ohfun.online">support@ohfun.online</a></p>
   <p data-lang="zh">我们将在收到你的消息后十五个工作日内予以回复。</p>
   <p data-lang="en">We will respond within fifteen (15) business days after receiving your message.</p>
 
@@ -309,7 +291,7 @@ html.en [data-lang="en"]{display:block}
   var buttons=document.querySelectorAll('.lang-btn');
   buttons.forEach(function(btn){
     btn.addEventListener('click',function(){
-      var lang=this.getAttribute('data-lang');
+      var lang=this.getAttribute('data-lng');
       document.documentElement.classList.toggle('en',lang==='en');
       buttons.forEach(function(b){b.classList.toggle('active',b===btn);});
     });
