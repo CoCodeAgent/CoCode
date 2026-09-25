@@ -33,7 +33,7 @@ jobs:
           npm sbom --sbom-format cyclonedx --package-lock-only > artifacts/cocode.cdx.json
           node -e "const s=require('./artifacts/cocode.cdx.json'); if (s.bomFormat !== 'CycloneDX' || !Array.isArray(s.components) || !s.components.length) process.exit(1); console.log('SBOM verified:', s.specVersion, s.components.length, 'components')"
       - name: Preserve SBOM for release and security review
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: cocode-sbom-${{ github.sha }}
           path: artifacts/cocode.cdx.json
