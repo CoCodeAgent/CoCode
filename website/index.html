@@ -1,600 +1,275 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
+<!doctype html>
+<html lang="zh-CN" data-language="zh">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>CoCode — 会干活的编程 Agent</title>
-<meta name="description" id="meta-desc" content="CoCode Desktop：自接入模型的编程 Agent 桌面端零依赖核心，18 个内置工具，低 token 多干活，每轮可回滚">
-<link rel="icon" type="image/png" href="logo.PNG">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" id="meta-desc" content="CoCode Desktop：接入自己的模型，在工作区阅读、修改代码并验证结果。">
+  <title>CoCode - 会干活的编程 Agent</title>
+  <link rel="icon" href="logo.PNG" type="image/png">
+  <style>
+    @font-face {
+      font-family: Outfit;
+      src: url("fonts/outfit-latin.woff2") format("woff2");
+      font-style: normal;
+      font-weight: 300 800;
+      font-display: swap;
+    }
+    :root {
+      color-scheme: light;
+      --page: #f1f0f8;
+      --surface: #f9f9fa;
+      --surface-strong: #efedf6;
+      --ink: #202024;
+      --muted: #53535a;
+      --quiet: #66666d;
+      --line: #d9d8df;
+      --accent: #655491;
+      --button: #222225;
+      --button-text: #f8f8f8;
+      --shadow: 0 30px 68px -34px rgba(31, 29, 48, .32);
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        color-scheme: dark;
+        --page: #1d1d22;
+        --surface: #242429;
+        --surface-strong: #2b2933;
+        --ink: #f4f3f5;
+        --muted: #d4d2da;
+        --quiet: #c1bec9;
+        --line: #46434d;
+        --accent: #b8a6eb;
+        --button: #f1f0f3;
+        --button-text: #242328;
+        --shadow: 0 30px 68px -34px rgba(0, 0, 0, .7);
+      }
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { position: relative; isolation: isolate; margin: 0; background: var(--page); color: var(--ink); font-size: 16px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+    body::before { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none; background: url("images/cocode-soft-backdrop.jpg") center top / cover no-repeat; opacity: .82; }
+    @media (prefers-color-scheme: dark) {
+      body::before { background-image: linear-gradient(rgba(23, 22, 29, .76), rgba(23, 22, 29, .76)), url("images/cocode-soft-backdrop.jpg"); opacity: 1; }
+    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+    [data-language="zh"] [data-copy="en"], [data-language="en"] [data-copy="zh"] { display: none; }
+    .container { width: min(100% - 48px, 1280px); margin-inline: auto; }
+    .site-header { min-height: 68px; border-bottom: 1px solid var(--line); }
+    .header-inner { min-height: 68px; display: flex; align-items: center; gap: 34px; }
+    .brand { display: inline-flex; align-items: center; gap: 10px; flex: none; font-family: Outfit, sans-serif; font-size: 20px; font-weight: 600; letter-spacing: -.035em; }
+    .brand img { width: 32px; height: 32px; border-radius: 9px; }
+    .nav { display: flex; align-items: center; gap: clamp(17px, 2.3vw, 32px); flex: 1; font-size: 14px; white-space: nowrap; }
+    .nav a, .github-link { transition: color .18s ease; }
+    .nav a:hover, .github-link:hover { color: var(--accent); }
+    .header-actions { display: flex; align-items: center; gap: 23px; flex: none; }
+    .language { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+    .language button { padding: 4px 0; border: 0; background: transparent; color: var(--quiet); cursor: pointer; }
+    .language button[aria-pressed="true"] { color: var(--ink); font-weight: 650; }
+    .language span { width: 1px; height: 12px; background: var(--line); }
+    .github-link { font-size: 14px; white-space: nowrap; }
+    .top-cta, .download-cta { display: inline-flex; align-items: center; justify-content: center; gap: 14px; min-height: 40px; padding: 9px 17px; border-radius: 999px; background: var(--button); color: var(--button-text); font-size: 14px; font-weight: 600; white-space: nowrap; transition: transform .18s ease, opacity .18s ease; }
+    .top-cta:hover, .download-cta:hover { transform: translateY(-2px); opacity: .88; }
+    .top-cta:active, .download-cta:active { transform: translateY(0) scale(.98); }
+    .menu-button { display: none; border: 0; background: none; color: var(--ink); padding: 7px; cursor: pointer; }
+    .mobile-nav { display: none; }
+    .mobile-nav button { width: fit-content; padding: 10px 0; border: 0; background: none; color: var(--muted); text-align: left; cursor: pointer; }
+    .hero { padding: 76px 0 0; text-align: center; }
+    .hero-mark { width: 78px; height: 78px; display: grid; place-items: center; margin: 0 auto 25px; border: 1px solid var(--line); border-radius: 20px; background: var(--surface); box-shadow: 0 7px 20px -14px rgba(30, 29, 44, .38); }
+    .hero-mark img { width: 57px; height: 57px; border-radius: 12px; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { margin-bottom: 12px; font-family: Outfit, -apple-system, sans-serif; font-size: clamp(54px, 6.1vw, 78px); font-weight: 500; letter-spacing: -.055em; line-height: 1.04; }
+    .hero-lead { max-width: 620px; margin: 0 auto; font-size: clamp(17px, 1.7vw, 21px); color: var(--muted); line-height: 1.6; }
+    .hero-note { margin: 24px auto 0; max-width: 520px; font-size: 13px; color: var(--quiet); }
+    .visual-stage { margin: 65px 0 0; padding: clamp(20px, 4.4vw, 64px) clamp(18px, 5.2vw, 76px) 0; min-height: 370px; border-radius: 28px 28px 0 0; background: color-mix(in srgb, var(--surface-strong) 58%, transparent); overflow: hidden; }
+    .app-window { max-width: 1100px; margin: 0 auto -20px; border: 1px solid rgba(50, 50, 55, .17); border-radius: 13px 13px 0 0; overflow: hidden; background: #f9f9f9; box-shadow: var(--shadow); }
+    .app-window img { width: 100%; height: auto; }
+    .image-caption { margin: 15px 0 0; padding-bottom: 30px; text-align: center; color: var(--quiet); font-size: 12px; }
+    .section { padding: clamp(82px, 11vw, 150px) 0; }
+    .section-header { max-width: 880px; }
+    .section h2 { margin-bottom: 20px; font-size: clamp(34px, 4vw, 58px); font-weight: 540; letter-spacing: -.055em; line-height: 1.16; }
+    .section-intro { max-width: 600px; color: var(--muted); font-size: clamp(17px, 1.7vw, 20px); }
+    .work-flow { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: clamp(48px, 10vw, 170px); align-items: start; }
+    .work-steps { border-top: 1px solid var(--line); }
+    .work-step { display: grid; grid-template-columns: 105px 1fr; gap: 24px; padding: 24px 0 28px; border-bottom: 1px solid var(--line); }
+    .work-step small { display: block; padding-top: 5px; color: var(--quiet); font-size: 13px; }
+    .work-step h3 { margin-bottom: 7px; font-size: 20px; font-weight: 600; letter-spacing: -.025em; }
+    .work-step p { margin: 0; max-width: 42ch; color: var(--muted); font-size: 15px; }
+    .statement { padding: clamp(62px, 9vw, 118px) 0; background: color-mix(in srgb, var(--surface-strong) 78%, transparent); }
+    .statement-inner { display: block; }
+    .statement h2 { max-width: 900px; margin: 0; font-size: clamp(36px, 4.5vw, 67px); font-weight: 520; letter-spacing: -.055em; line-height: 1.17; }
+    .statement p { max-width: 600px; margin: 27px 0 0; color: var(--muted); font-size: 16px; line-height: 1.7; }
+    .versions { border-top: 1px solid var(--line); }
+    .version-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; margin-top: 44px; }
+    .version { min-height: 230px; padding-top: 25px; border-top: 1px solid var(--line); }
+    .version h3 { margin: 0 0 15px; font-size: 29px; font-weight: 560; letter-spacing: -.04em; }
+    .version p { max-width: 48ch; color: var(--muted); }
+    .version .more { display: inline-block; margin-top: 6px; padding-bottom: 3px; border-bottom: 1px solid currentColor; color: var(--ink); font-size: 14px; }
+    .download { padding: clamp(80px, 10vw, 140px) 0; border-top: 1px solid var(--line); }
+    .download-list { display: grid; grid-template-columns: 1fr 1fr; gap: 44px; margin-top: 52px; }
+    .download-item { display: flex; flex-direction: column; align-items: flex-start; padding-top: 24px; border-top: 1px solid var(--line); }
+    .download-item h3 { margin-bottom: 8px; font-size: 26px; font-weight: 580; letter-spacing: -.03em; }
+    .download-item p { color: var(--muted); font-size: 15px; }
+    .download-cta { margin-top: auto; min-height: 46px; padding: 11px 20px; }
+    .coming { margin-top: auto; padding: 11px 0; color: var(--quiet); font-size: 15px; }
+    .site-footer { border-top: 1px solid var(--line); padding: 34px 0 45px; }
+    .footer-inner { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; }
+    .footer-brand { font-family: Outfit, sans-serif; font-size: 18px; font-weight: 600; letter-spacing: -.035em; }
+    .footer-links { display: flex; flex-wrap: wrap; gap: 14px 25px; font-size: 13px; color: var(--muted); }
+    .footer-links a:hover { color: var(--accent); }
+    @media (max-width: 1050px) {
+      .header-inner { gap: 20px; }
+      .nav { gap: 17px; }
+      .header-actions { gap: 15px; }
+    }
+    @media (max-width: 820px) {
+      .container { width: min(100% - 36px, 1280px); }
+      .nav, .github-link { display: none; }
+      .header-inner { gap: 15px; }
+      .header-actions { margin-left: auto; }
+      .top-cta { padding-inline: 13px; }
+      .menu-button { display: block; }
+      .mobile-nav[data-open="true"] { display: grid; gap: 0; padding: 4px 18px 13px; border-top: 1px solid var(--line); }
+      .mobile-nav a { padding: 10px 0; font-size: 15px; }
+      .hero { padding-top: 60px; }
+      .visual-stage { margin-top: 48px; min-height: 0; border-radius: 18px 18px 0 0; }
+      .work-flow { grid-template-columns: 1fr; gap: 45px; }
+      .version-grid, .download-list { gap: 30px; }
+    }
+    @media (max-width: 600px) {
+      .language { display: none; }
+      .top-cta { font-size: 12px; min-height: 37px; }
+      .hero-mark { width: 68px; height: 68px; margin-bottom: 22px; }
+      .hero-mark img { width: 49px; height: 49px; }
+      .hero-note { max-width: 310px; }
+      .visual-stage { padding: 16px 14px 0; }
+      .app-window { min-width: 540px; transform: translateX(calc((100vw - 36px - 540px) / 2)); }
+      .image-caption { padding-bottom: 20px; }
+      .work-step { grid-template-columns: 1fr; gap: 3px; padding: 20px 0; }
+      .work-step small { padding-top: 0; }
+      .version-grid, .download-list { grid-template-columns: 1fr; }
+      .version { min-height: 0; }
+      .statement { padding-block: 72px; }
+      .footer-inner { flex-direction: column; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+    }
+  #view-terms *,#view-privacy *,#view-cross-border *{margin:0;padding:0;box-sizing:border-box}#view-terms .wrap,#view-privacy .wrap,#view-cross-border .wrap{max-width:820px;margin:0 auto;padding:0 24px}#view-terms header,#view-privacy header,#view-cross-border header{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.85);backdrop-filter:saturate(180%) blur(12px);border-bottom:1px solid var(--line)}#view-terms .nav,#view-privacy .nav,#view-cross-border .nav{display:flex;align-items:center;justify-content:space-between;height:60px}#view-terms .brand,#view-privacy .brand,#view-cross-border .brand{font-weight:700;font-size:17px;letter-spacing:-.02em;color:var(--ink);text-decoration:none}#view-terms .lang-switch,#view-privacy .lang-switch,#view-cross-border .lang-switch{display:flex;gap:4px;background:#F3F5F8;border-radius:999px;padding:3px}#view-terms .lang-btn,#view-privacy .lang-btn,#view-cross-border .lang-btn{border:none;background:transparent;padding:5px 14px;border-radius:999px;font-size:12.5px;font-weight:500;cursor:pointer;color:var(--faint);transition:.2s}#view-terms .lang-btn.active,#view-privacy .lang-btn.active,#view-cross-border .lang-btn.active{background:var(--ink);color:#fff}#view-terms .hero,#view-privacy .hero,#view-cross-border .hero{padding:56px 0 40px;border-bottom:1px solid var(--line)}#view-terms .hero h1,#view-privacy .hero h1,#view-cross-border .hero h1{font-size:34px;font-weight:700;letter-spacing:-.03em;line-height:1.2}#view-terms .hero .sub,#view-privacy .hero .sub,#view-cross-border .hero .sub{margin-top:10px;color:var(--faint);font-size:14px}#view-terms .legal,#view-privacy .legal,#view-cross-border .legal{padding:48px 0 80px}#view-terms .legal h2,#view-privacy .legal h2,#view-cross-border .legal h2{font-size:20px;font-weight:600;margin:36px 0 14px;letter-spacing:-.01em}#view-terms .legal h3,#view-privacy .legal h3,#view-cross-border .legal h3{font-size:16px;font-weight:600;margin:22px 0 10px}#view-terms .legal p,#view-privacy .legal p,#view-cross-border .legal p,#view-terms .legal li,#view-privacy .legal li,#view-cross-border .legal li{margin-bottom:12px;color:#3A4250}#view-terms .legal ol,#view-privacy .legal ol,#view-cross-border .legal ol,#view-terms .legal ul,#view-privacy .legal ul,#view-cross-border .legal ul{padding-left:22px;margin-bottom:12px}#view-terms .legal li,#view-privacy .legal li,#view-cross-border .legal li{margin-bottom:8px}#view-terms .legal strong,#view-privacy .legal strong,#view-cross-border .legal strong{font-weight:600;color:var(--ink)}#view-terms .legal .note,#view-privacy .legal .note,#view-cross-border .legal .note{background:#F6F8FB;border-left:3px solid #7A27FF;padding:14px 18px;border-radius:0 8px 8px 0;margin:18px 0;font-size:14px}#view-terms .legal a,#view-privacy .legal a,#view-cross-border .legal a{color:#7A27FF;text-decoration:none}#view-terms .legal a:hover,#view-privacy .legal a:hover,#view-cross-border .legal a:hover{text-decoration:underline}#view-terms footer,#view-privacy footer,#view-cross-border footer{border-top:1px solid var(--line);padding:32px 0;font-size:13px;color:var(--faint)}#view-terms .ft,#view-privacy .ft,#view-cross-border .ft{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}#view-terms .ft a,#view-privacy .ft a,#view-cross-border .ft a{color:var(--faint);text-decoration:none;margin-right:18px}#view-terms .ft a:hover,#view-privacy .ft a:hover,#view-cross-border .ft a:hover{color:var(--ink)}#view-terms [data-lang="en"],#view-privacy [data-lang="en"],#view-cross-border [data-lang="en"]{display:none}@media(max-width:640px){#view-terms .hero h1,#view-privacy .hero h1,#view-cross-border .hero h1{font-size:26px}#view-terms .legal,#view-privacy .legal,#view-cross-border .legal{padding:32px 0 60px}}
 
-:root{
-    --ink:#181E25;
-    --sub:#5c6572;
-    --faint:#86909C;
-    --panel:#F7F8FA;
-    --line:#E4E7EB;
-    --white:#fff;
-    --grad-purple:linear-gradient(100deg,#7A27FF,#A36AFF);
-    --grad-pink:linear-gradient(100deg,#FF276F,#FF7038);
-    --grad-blue:linear-gradient(100deg,#1BA4FF,#38CDFF);
-    --outfit:"Outfit",-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
-    --sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
-    --mono:"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
-    --ease:cubic-bezier(.22,1,.36,1);
-  }
-  *{margin:0;padding:0;box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{
-    background:var(--white);color:var(--ink);
-    font-family:var(--sans);font-size:16px;line-height:1.8;
-    -webkit-font-smoothing:antialiased;overflow-x:hidden;
-  }
-  ::selection{background:#7A27FF;color:#fff}
-  a{color:inherit;text-decoration:none}
-  .wrap{max-width:1200px;margin:0 auto;padding:0 40px}
-  .en{font-family:var(--outfit)}
-  .mono{font-family:var(--mono)}
-
-  /* ---------- reveal ---------- */
-  .rv{opacity:0;transform:translateY(28px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
-  .rv.on{opacity:1;transform:none}
-  .rv-d1{transition-delay:.1s}.rv-d2{transition-delay:.2s}
-  @media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}}
-
-  /* ---------- header ---------- */
-  header{
-    position:fixed;top:0;left:0;right:0;z-index:60;
-    background:rgba(255,255,255,.82);backdrop-filter:blur(18px);
-    border-bottom:1px solid rgba(228,231,235,.6);
-  }
-  .hd{display:flex;align-items:center;justify-content:space-between;height:72px}
-  .brand{display:flex;align-items:center;gap:11px;font-family:var(--outfit);font-size:19px;font-weight:600;letter-spacing:.01em}
-  .brand svg{display:block}
-  nav{display:flex;align-items:center;gap:6px;font-size:15px;color:var(--ink)}
-  .pill{
-    padding:8px 20px;border-radius:32px;transition:background .3s var(--ease);font-weight:400;
-  }
-  .pill:hover{background:var(--panel)}
-  .hd-cta{
-    margin-left:12px;font-family:var(--outfit);font-weight:500;
-    background:var(--ink);color:#fff;font-size:14px;
-    padding:9px 24px;border-radius:32px;transition:all .3s var(--ease);
-  }
-  .hd-cta:hover{background:#2b323b;transform:translateY(-1px)}
-  @media(max-width:820px){nav .pill{display:none}}
-
-  /* ---------- hero ---------- */
-  .hero{padding:210px 0 90px;text-align:center;position:relative;overflow:hidden}
-  .hero::before{
-    content:"";position:absolute;top:-320px;left:50%;transform:translateX(-50%);
-    width:1100px;height:640px;border-radius:50%;
-    background:radial-gradient(closest-side,rgba(122,39,255,.07),rgba(27,164,255,.05) 55%,transparent);
-    pointer-events:none;
-  }
-  .hero-badge{
-    display:inline-flex;align-items:center;gap:8px;
-    font-family:var(--outfit);font-size:13px;font-weight:500;color:var(--sub);
-    background:var(--panel);border:1px solid var(--line);
-    padding:7px 18px;border-radius:32px;margin-bottom:34px;
-  }
-  .hero-badge .dot{width:7px;height:7px;border-radius:50%;background:linear-gradient(100deg,#1BA4FF,#38CDFF)}
-  h1{
-    font-family:var(--outfit);font-weight:600;
-    font-size:clamp(52px,7.8vw,92px);line-height:1.12;letter-spacing:-.015em;
-  }
-  h1 .grad{
-    background:var(--grad-purple);-webkit-background-clip:text;background-clip:text;color:transparent;
-  }
-  .hero-sub{
-    margin:26px auto 0;max-width:36em;font-size:18px;color:var(--sub);font-weight:300;
-  }
-  .hero-sub b{color:var(--ink);font-weight:500}
-  .hero-cta{margin-top:44px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
-  .btn{
-    display:inline-flex;align-items:center;gap:8px;
-    font-family:var(--outfit);font-size:15.5px;font-weight:500;
-    padding:14px 34px;border-radius:32px;transition:all .3s var(--ease);
-  }
-  .btn-ink{background:var(--ink);color:#fff;box-shadow:0 8px 24px -8px rgba(24,30,37,.35)}
-  .btn-ink:hover{transform:translateY(-2px);box-shadow:0 16px 40px -10px rgba(24,30,37,.4)}
-  .btn-ghost{border:1px solid var(--line);color:var(--ink)}
-  .btn-ghost:hover{border-color:var(--ink);transform:translateY(-2px)}
-
-  /* hero 特性点 */
-  .hero-feats{
-    margin-top:84px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px;text-align:left;
-  }
-  .hf{
-    background:var(--white);border:1px solid var(--line);border-radius:24px;
-    padding:30px 32px;transition:all .35s var(--ease);position:relative;overflow:hidden;
-  }
-  .hf:hover{transform:translateY(-4px);box-shadow:0 20px 48px -20px rgba(24,30,37,.14)}
-  .hf::before{content:"";position:absolute;top:0;left:32px;right:32px;height:2px;border-radius:2px;opacity:0;transition:opacity .35s}
-  .hf:nth-child(1)::before{background:var(--grad-purple)}
-  .hf:nth-child(2)::before{background:var(--grad-blue)}
-  .hf:nth-child(3)::before{background:var(--grad-pink)}
-  .hf:hover::before{opacity:1}
-  .hf .tag{
-    display:inline-block;font-family:var(--outfit);font-size:12px;font-weight:600;letter-spacing:.08em;
-    padding:5px 14px;border-radius:20px;margin-bottom:16px;
-  }
-  .hf:nth-child(1) .tag{background:rgba(122,39,255,.08);color:#7A27FF}
-  .hf:nth-child(2) .tag{background:rgba(27,164,255,.09);color:#1183d6}
-  .hf:nth-child(3) .tag{background:rgba(255,39,111,.08);color:#e63360}
-  .hf h3{font-size:17px;font-weight:600;margin-bottom:8px}
-  .hf p{font-size:14px;color:var(--sub);font-weight:300;line-height:1.75}
-  @media(max-width:820px){.hero{padding:150px 0 60px}.hero-feats{grid-template-columns:1fr}}
-
-  /* ---------- section ---------- */
-  section{padding:110px 0}
-  .sec-head{margin-bottom:56px}
-  .sec-no{
-    font-family:var(--outfit);font-size:13px;font-weight:600;letter-spacing:.14em;
-    color:var(--faint);text-transform:uppercase;margin-bottom:14px;
-  }
-  h2{
-    font-family:var(--outfit);font-weight:600;
-    font-size:clamp(30px,4vw,48px);letter-spacing:-.01em;line-height:1.25;
-  }
-  .sec-sub{margin-top:14px;color:var(--sub);font-size:16.5px;max-width:38em;font-weight:300}
-
-  /* ---------- 功能大卡（minimax 式大圆角区块） ---------- */
-  .feature-block{
-    border-radius:60px;background:var(--panel);
-    padding:80px 72px;margin-bottom:32px;position:relative;overflow:hidden;
-  }
-  .feature-block:nth-child(even){background:#fff;border:1px solid var(--line)}
-  .fb-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
-  @media(max-width:960px){.feature-block{border-radius:36px;padding:56px 36px}.fb-grid{grid-template-columns:1fr;gap:36px}}
-  .fb-kicker{
-    display:inline-block;font-family:var(--outfit);font-size:13px;font-weight:600;letter-spacing:.1em;
-    padding:6px 16px;border-radius:20px;margin-bottom:22px;
-  }
-  .fb-purple .fb-kicker{background:rgba(122,39,255,.08);color:#7A27FF}
-  .fb-blue .fb-kicker{background:rgba(27,164,255,.1);color:#1183d6}
-  .fb-pink .fb-kicker{background:rgba(255,39,111,.08);color:#e63360}
-  .fb-title{
-    font-family:var(--outfit);font-weight:600;font-size:clamp(26px,3vw,38px);
-    letter-spacing:-.01em;line-height:1.28;margin-bottom:18px;
-  }
-  .fb-purple .fb-title em{font-style:normal;background:var(--grad-purple);-webkit-background-clip:text;background-clip:text;color:transparent}
-  .fb-blue .fb-title em{font-style:normal;background:var(--grad-blue);-webkit-background-clip:text;background-clip:text;color:transparent}
-  .fb-pink .fb-title em{font-style:normal;background:var(--grad-pink);-webkit-background-clip:text;background-clip:text;color:transparent}
-  .fb-desc{color:var(--sub);font-size:16px;font-weight:300;max-width:32em}
-  .fb-desc b{color:var(--ink);font-weight:500}
-  .fb-points{margin-top:28px;display:flex;flex-direction:column;gap:12px}
-  .fb-points li{
-    list-style:none;display:flex;gap:12px;align-items:baseline;
-    font-size:14.5px;color:var(--sub);
-  }
-  .fb-points li::before{content:"";flex:none;width:6px;height:6px;border-radius:50%;transform:translateY(-2px)}
-  .fb-purple .fb-points li::before{background:#A36AFF}
-  .fb-blue .fb-points li::before{background:#38CDFF}
-  .fb-pink .fb-points li::before{background:#FF7038}
-  /* 视觉侧：终端演示卡 */
-  .fb-visual{position:relative}
-  .term{
-    border-radius:24px;background:#181E25;padding:0;overflow:hidden;
-    box-shadow:0 32px 72px -24px rgba(24,30,37,.35);
-    font-family:var(--mono);font-size:13px;line-height:2.15;color:#c9ced6;
-    transform:rotate(0);transition:transform .5s var(--ease);
-  }
-  .feature-block:hover .term{transform:translateY(-6px)}
-  .term-bar{
-    display:flex;align-items:center;gap:8px;padding:15px 20px;
-    border-bottom:1px solid rgba(255,255,255,.07);
-  }
-  .term-bar i{width:11px;height:11px;border-radius:50%}
-  .term-bar i:nth-child(1){background:#FF5F57}
-  .term-bar i:nth-child(2){background:#FEBC2E}
-  .term-bar i:nth-child(3){background:#28C840}
-  .term-bar span{margin-left:8px;font-size:11.5px;color:#7b828c}
-  .term-body{padding:24px 26px 28px}
-  .term-body .u{color:#A36AFF}
-  .term-body .b{color:#38CDFF}
-  .term-body .k{color:#fff}
-  .term-body .c{color:#7b828c}
-  .term-body .g{color:#4ade80}
-  .term-body .r{color:#FB7185}
-  .term-body .o{color:#FDBA74}
-
-  /* ---------- 双版本 ---------- */
-  .duo{display:grid;grid-template-columns:1fr 1fr;gap:24px}
-  @media(max-width:960px){.duo{grid-template-columns:1fr}}
-  .duo-card{
-    border:1px solid var(--line);border-radius:32px;padding:44px 44px 40px;
-    transition:all .4s var(--ease);position:relative;overflow:hidden;background:#fff;
-  }
-  .duo-card:hover{box-shadow:0 24px 64px -24px rgba(24,30,37,.16);transform:translateY(-4px)}
-  .duo-card .ico{
-    width:52px;height:52px;border-radius:16px;display:flex;align-items:center;justify-content:center;
-    margin-bottom:24px;font-family:var(--mono);font-size:20px;color:#fff;
-  }
-  .duo-card:nth-child(1) .ico{background:var(--grad-purple)}
-  .duo-card:nth-child(2) .ico{background:var(--grad-blue)}
-  .duo-card h3{font-family:var(--outfit);font-size:24px;font-weight:600;margin-bottom:6px}
-  .duo-card .dc-en{font-family:var(--outfit);font-size:12.5px;color:var(--faint);letter-spacing:.14em;margin-bottom:18px;text-transform:uppercase}
-  .duo-card p{font-size:14.5px;color:var(--sub);font-weight:300;margin-bottom:22px}
-  .duo-card ul{display:flex;flex-wrap:wrap;gap:8px}
-  .duo-card ul li{
-    list-style:none;font-family:var(--mono);font-size:12px;color:var(--sub);
-    background:var(--panel);border-radius:20px;padding:5px 14px;
-  }
-
-  /* ---------- 数字 ---------- */
-  .nums{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
-  @media(max-width:820px){.nums{grid-template-columns:1fr 1fr}}
-  .num{
-    background:var(--panel);border-radius:32px;padding:40px 36px;
-    transition:transform .35s var(--ease);
-  }
-  .num:hover{transform:translateY(-4px)}
-  .num .v{
-    font-family:var(--outfit);font-weight:600;font-size:clamp(40px,4.4vw,56px);
-    letter-spacing:-.02em;line-height:1.1;
-  }
-  .num:nth-child(1) .v{background:var(--grad-purple);-webkit-background-clip:text;background-clip:text;color:transparent}
-  .num:nth-child(2) .v{background:var(--grad-blue);-webkit-background-clip:text;background-clip:text;color:transparent}
-  .num:nth-child(3) .v{background:var(--grad-pink);-webkit-background-clip:text;background-clip:text;color:transparent}
-  .num:nth-child(4) .v{color:var(--ink)}
-  .num .l{margin-top:10px;font-size:14px;color:var(--sub);font-weight:300}
-
-  /* ---------- 下载 ---------- */
-  .dl-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
-  @media(max-width:900px){.dl-grid{grid-template-columns:1fr}}
-  .dl-card{
-    border:1px solid var(--line);border-radius:32px;padding:38px 36px;background:#fff;
-    transition:all .35s var(--ease);display:flex;flex-direction:column;gap:4px;
-  }
-  .dl-card:hover{box-shadow:0 20px 56px -24px rgba(24,30,37,.18);transform:translateY(-4px);border-color:rgba(122,39,255,.35)}
-  .dl-os{font-family:var(--outfit);font-size:22px;font-weight:600}
-  .dl-note{font-size:13.5px;color:var(--sub);font-weight:300}
-  .dl-soon{
-    margin-top:24px;align-self:flex-start;font-size:14px;font-weight:500;
-    color:var(--faint);background:var(--panel);padding:10px 26px;border-radius:32px;
-  }
-  .dl-links{margin-top:24px;display:flex;flex-direction:column;gap:10px;align-self:stretch}
-  .dl-link{
-    display:flex;justify-content:space-between;align-items:baseline;gap:12px;text-decoration:none;
-    border:1px solid var(--line);border-radius:18px;padding:12px 18px;
-    font-size:14px;font-weight:500;color:var(--ink);transition:all .25s var(--ease);
-  }
-  .dl-link:hover{border-color:var(--ink);transform:translateY(-2px);box-shadow:0 10px 28px -14px rgba(24,30,37,.25)}
-  .dl-link>span:not([data-lang]){font-size:12px;color:var(--faint);font-weight:300;white-space:nowrap}
-
-  /* ---------- 关于/CTA ---------- */
-  .about-cta{
-    border-radius:60px;background:#181E25;color:#fff;
-    padding:110px 72px;text-align:center;position:relative;overflow:hidden;
-  }
-  .about-cta::before{
-    content:"";position:absolute;bottom:-260px;left:50%;transform:translateX(-50%);
-    width:900px;height:480px;border-radius:50%;
-    background:radial-gradient(closest-side,rgba(122,39,255,.28),rgba(27,164,255,.14) 55%,transparent);
-    pointer-events:none;
-  }
-  .about-cta h2{
-    color:#fff;position:relative;
-    font-size:clamp(30px,4.4vw,52px);max-width:16em;margin:0 auto;
-  }
-  .about-cta h2 .grad{background:linear-gradient(100deg,#A36AFF,#38CDFF);-webkit-background-clip:text;background-clip:text;color:transparent}
-  .about-cta p{margin:20px auto 0;color:rgba(255,255,255,.66);max-width:32em;font-weight:300;position:relative}
-  .about-cta .hero-cta{position:relative}
-  .about-cta .btn-ink{background:#fff;color:var(--ink);box-shadow:0 8px 32px -8px rgba(163,106,255,.5)}
-  .about-cta .btn-ghost{border-color:rgba(255,255,255,.24);color:#fff}
-  .about-cta .btn-ghost:hover{border-color:#fff}
-  @media(max-width:960px){.about-cta{border-radius:36px;padding:80px 36px}}
-
-  footer{padding:48px 0;font-size:13.5px;color:var(--faint)}
-  .ft{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center}
-  .ft .en{letter-spacing:.06em}
-
-/* ===== 协议页样式（已限定作用域） ===== */
-:root{--ink:#181E25;--faint:#8A92A0;--line:#E6E9EE;--paper:#FFFFFF;--grad:linear-gradient(100deg,#7A27FF 0%,#1BA4FF 50%,#EC4899 100%)}*{margin:0;padding:0;box-sizing:border-box}#view-terms .wrap,#view-privacy .wrap,#view-cross-border .wrap{max-width:820px;margin:0 auto;padding:0 24px}#view-terms header,#view-privacy header,#view-cross-border header{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.85);backdrop-filter:saturate(180%) blur(12px);border-bottom:1px solid var(--line)}#view-terms .nav,#view-privacy .nav,#view-cross-border .nav{display:flex;align-items:center;justify-content:space-between;height:60px}#view-terms .brand,#view-privacy .brand,#view-cross-border .brand{font-weight:700;font-size:17px;letter-spacing:-.02em;color:var(--ink);text-decoration:none}#view-terms .lang-switch,#view-privacy .lang-switch,#view-cross-border .lang-switch{display:flex;gap:4px;background:#F3F5F8;border-radius:999px;padding:3px}#view-terms .lang-btn,#view-privacy .lang-btn,#view-cross-border .lang-btn{border:none;background:transparent;padding:5px 14px;border-radius:999px;font-size:12.5px;font-weight:500;cursor:pointer;color:var(--faint);transition:.2s}#view-terms .lang-btn.active,#view-privacy .lang-btn.active,#view-cross-border .lang-btn.active{background:var(--ink);color:#fff}#view-terms .hero,#view-privacy .hero,#view-cross-border .hero{padding:56px 0 40px;border-bottom:1px solid var(--line)}#view-terms .hero h1,#view-privacy .hero h1,#view-cross-border .hero h1{font-size:34px;font-weight:700;letter-spacing:-.03em;line-height:1.2}#view-terms .hero .sub,#view-privacy .hero .sub,#view-cross-border .hero .sub{margin-top:10px;color:var(--faint);font-size:14px}#view-terms .legal,#view-privacy .legal,#view-cross-border .legal{padding:48px 0 80px}#view-terms .legal h2,#view-privacy .legal h2,#view-cross-border .legal h2{font-size:20px;font-weight:600;margin:36px 0 14px;letter-spacing:-.01em}#view-terms .legal h3,#view-privacy .legal h3,#view-cross-border .legal h3{font-size:16px;font-weight:600;margin:22px 0 10px}#view-terms .legal p,#view-privacy .legal p,#view-cross-border .legal p,#view-terms .legal li,#view-privacy .legal li,#view-cross-border .legal li{margin-bottom:12px;color:#3A4250}#view-terms .legal ol,#view-privacy .legal ol,#view-cross-border .legal ol,#view-terms .legal ul,#view-privacy .legal ul,#view-cross-border .legal ul{padding-left:22px;margin-bottom:12px}#view-terms .legal li,#view-privacy .legal li,#view-cross-border .legal li{margin-bottom:8px}#view-terms .legal strong,#view-privacy .legal strong,#view-cross-border .legal strong{font-weight:600;color:var(--ink)}#view-terms .legal .note,#view-privacy .legal .note,#view-cross-border .legal .note{background:#F6F8FB;border-left:3px solid #7A27FF;padding:14px 18px;border-radius:0 8px 8px 0;margin:18px 0;font-size:14px}#view-terms .legal a,#view-privacy .legal a,#view-cross-border .legal a{color:#7A27FF;text-decoration:none}#view-terms .legal a:hover,#view-privacy .legal a:hover,#view-cross-border .legal a:hover{text-decoration:underline}#view-terms footer,#view-privacy footer,#view-cross-border footer{border-top:1px solid var(--line);padding:32px 0;font-size:13px;color:var(--faint)}#view-terms .ft,#view-privacy .ft,#view-cross-border .ft{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}#view-terms .ft a,#view-privacy .ft a,#view-cross-border .ft a{color:var(--faint);text-decoration:none;margin-right:18px}#view-terms .ft a:hover,#view-privacy .ft a:hover,#view-cross-border .ft a:hover{color:var(--ink)}[data-lang="en"]{display:none}html.en [data-lang="zh"]{display:none}html.en [data-lang="en"]{display:block}@media(max-width:640px){#view-terms .hero h1,#view-privacy .hero h1,#view-cross-border .hero h1{font-size:26px}#view-terms .legal,#view-privacy .legal,#view-cross-border .legal{padding:32px 0 60px}}
-
-
-/* ===== 视图切换 ===== */
-.view{display:none}
-.view.active{display:block}
-.pill.active{background:var(--ink);color:#fff}
-.lang-btn{border:none;background:transparent;padding:5px 14px;border-radius:999px;font-size:12.5px;font-weight:500;cursor:pointer;color:var(--faint);transition:.2s}
-.lang-btn.active{background:var(--ink);color:#fff}
-/* 行内双语：避免 data-lang 的块级规则破坏按钮/链接内的布局 */
-html.en span[data-lang="en"],html.en a [data-lang="en"],html.en button [data-lang="en"]{display:inline}
-/* ===== 汉堡菜单（移动端抽屉） ===== */
-.burger{display:none;border:none;background:transparent;cursor:pointer;padding:10px 8px;margin-left:2px}
-.burger span{display:block;width:20px;height:2px;border-radius:2px;background:var(--ink);transition:transform .25s var(--ease),opacity .2s}
-.burger span+span{margin-top:5px}
-.burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
-.burger.open span:nth-child(2){opacity:0}
-.burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
-.drawer{display:none}
-@media(max-width:820px){
-  .burger{display:block}
-  nav .hd-cta{display:none}
-  .drawer{
-    display:block;position:fixed;top:72px;left:0;right:0;z-index:59;
-    background:rgba(255,255,255,.96);backdrop-filter:blur(18px);
-    border-bottom:1px solid var(--line);
-    padding:6px 28px 14px;
-    opacity:0;transform:translateY(-10px);pointer-events:none;
-    transition:opacity .22s var(--ease),transform .22s var(--ease);
-  }
-  .drawer.open{opacity:1;transform:none;pointer-events:auto}
-  .drawer a{
-    display:flex;align-items:center;justify-content:space-between;
-    padding:13px 2px;border-bottom:1px solid var(--line);
-    font-size:15px;color:var(--ink);
-  }
-  .drawer a:last-child{border-bottom:none}
-  .drawer a.active{font-weight:600}
+/* 单页官网保留现有协议入口与中英切换。 */
+.site-view{display:none}
+.site-view.active{display:block}
+.legal-view{padding-top:10px}
+.legal-view{--faint:var(--quiet);--paper:var(--surface)}
+html[data-language="zh"] .legal-view [data-lang="en"],
+html[data-language="en"] .legal-view [data-lang="zh"]{display:none!important}
+html[data-language="zh"] .legal-view [data-lang="zh"],
+html[data-language="en"] .legal-view [data-lang="en"]{display:revert!important}
+@media (prefers-color-scheme:dark){
+  #view-terms .legal p,#view-terms .legal li,#view-privacy .legal p,#view-privacy .legal li,#view-cross-border .legal p,#view-cross-border .legal li{color:var(--muted)}
+  #view-terms .legal strong,#view-privacy .legal strong,#view-cross-border .legal strong{color:var(--ink)}
+  #view-terms .legal .note,#view-privacy .legal .note,#view-cross-border .legal .note{background:var(--surface);border-left-color:var(--accent)}
+  #view-terms .legal a,#view-privacy .legal a,#view-cross-border .legal a{color:var(--accent)}
 }
+
 </style>
 </head>
 <body>
-
-<header>
-  <div class="wrap hd">
-    <a class="brand" href="#home" data-route="home">
-      <img src="logo.PNG" alt="CoCode logo" width="34" height="34"
-        style="display:block;border-radius:9px;object-fit:cover;box-shadow:0 2px 8px -2px rgba(24,30,37,.25)">
-      CoCode
-    </a>
-    <nav>
-      <a class="pill" href="#home" data-route="home"><span data-lang="zh">首页</span><span data-lang="en">Home</span></a>
-      <a class="pill" href="#features" data-scroll="features"><span data-lang="zh">功能</span><span data-lang="en">Features</span></a>
-      <a class="pill" href="#versions" data-scroll="versions"><span data-lang="zh">双版本</span><span data-lang="en">Editions</span></a>
-      <a class="pill" href="#download" data-scroll="download"><span data-lang="zh">下载</span><span data-lang="en">Download</span></a>
-      <button class="lang-btn active" data-lng="zh" type="button">中文</button>
-      <button class="lang-btn" data-lng="en" type="button">EN</button>
-      <a class="hd-cta" href="https://github.com/CoCodeAgent/CoCode" target="_blank" rel="noopener">GitHub</a>
-      <button class="burger" id="burger" type="button" aria-label="菜单" aria-expanded="false" aria-controls="drawer">
-        <span></span><span></span><span></span>
-      </button>
+  <header class="site-header" id="home">
+    <div class="header-inner container">
+      <a class="brand" href="#home" aria-label="CoCode 首页"><img src="logo.PNG" alt="" width="32" height="32">CoCode</a>
+      <nav class="nav" aria-label="主导航">
+        <a href="#home"><span data-copy="zh">首页</span><span data-copy="en">Home</span></a>
+        <a href="#features"><span data-copy="zh">功能</span><span data-copy="en">Features</span></a>
+        <a href="#versions"><span data-copy="zh">双版本</span><span data-copy="en">Versions</span></a>
+        <a href="#download"><span data-copy="zh">下载</span><span data-copy="en">Download</span></a>
+      </nav>
+      <div class="header-actions">
+        <div class="language" aria-label="语言">
+          <button type="button" data-set-language="zh" aria-pressed="true">中文</button><span aria-hidden="true"></span><button type="button" data-set-language="en" aria-pressed="false">EN</button>
+        </div>
+        <a class="github-link" href="https://github.com/CoCodeAgent/CoCode" target="_blank" rel="noopener">GitHub</a>
+        <a class="top-cta" href="#download"><span data-copy="zh">下载 CoCode</span><span data-copy="en">Get CoCode</span><span aria-hidden="true">↗</span></a>
+        <button class="menu-button" type="button" id="menu-button" aria-label="打开导航" aria-controls="mobile-nav" aria-expanded="false"><span data-copy="zh">菜单</span><span data-copy="en">Menu</span></button>
+      </div>
+    </div>
+    <nav class="mobile-nav" id="mobile-nav" data-open="false" aria-label="移动导航">
+      <a href="#home"><span data-copy="zh">首页</span><span data-copy="en">Home</span></a>
+      <a href="#features"><span data-copy="zh">功能</span><span data-copy="en">Features</span></a>
+      <a href="#versions"><span data-copy="zh">双版本</span><span data-copy="en">Versions</span></a>
+      <a href="#download"><span data-copy="zh">下载</span><span data-copy="en">Download</span></a>
+      <a href="https://github.com/CoCodeAgent/CoCode" target="_blank" rel="noopener">GitHub</a>
+      <button type="button" data-set-language="zh">中文</button><button type="button" data-set-language="en">EN</button>
     </nav>
-  </div>
-  <div class="drawer" id="drawer">
-    <a href="#home" data-route="home"><span data-lang="zh">首页</span><span data-lang="en">Home</span></a>
-    <a href="#features" data-scroll="features"><span data-lang="zh">功能</span><span data-lang="en">Features</span></a>
-    <a href="#versions" data-scroll="versions"><span data-lang="zh">双版本</span><span data-lang="en">Editions</span></a>
-    <a href="#download" data-scroll="download"><span data-lang="zh">下载</span><span data-lang="en">Download</span></a>
-    <a href="https://github.com/CoCodeAgent/CoCode" target="_blank" rel="noopener">GitHub</a>
-  </div>
-</header>
+  </header>
 
-<!-- ============ 首页 ============ -->
-<div id="view-home" class="view active">
-<!-- ================= HERO ================= -->
-<div class="hero">
-  <div class="wrap">
-    <h1 class="rv"><span data-lang="zh">会干活的<br>编程 <span class="grad">Agent</span></span><span data-lang="en">A Coding Agent<br>That <span class="grad">Gets Things Done</span></span></h1>
-    <p class="hero-sub rv rv-d1"><span data-lang="zh">CoCode Desktop 替你<b>读代码、改文件、跑命令、开检查点</b>——每一步摆在眼前，每一处改动可回滚</span><span data-lang="en">CoCode Desktop <b>reads code, edits files, runs commands, takes checkpoints</b> for you — every step in plain sight, every change revertible</span></p>
-    <div class="hero-cta rv rv-d2">
-      <a class="btn btn-ink" href="#download"><span data-lang="zh">下载 CoCode Desktop</span><span data-lang="en">Download CoCode Desktop</span></a>
-      <a class="btn btn-ghost" href="#features"><span data-lang="zh">了解功能</span><span data-lang="en">Explore Features</span></a>
-    </div>
-    <div class="hero-feats rv rv-d2">
-      <div class="hf">
-        <span class="tag en">BRING YOUR OWN MODEL</span>
-        <h3><span data-lang="zh">自接入模型</span><span data-lang="en">Bring Your Own Model</span></h3>
-        <p><span data-lang="zh">DeepSeek、智谱、Moonshot、本地 Ollama、自建 vLLM——任何 OpenAI 兼容接口都能接，模型不支持工具调用时自动降级，不会整个失效</span><span data-lang="en">DeepSeek, Zhipu, Moonshot, local Ollama, self-hosted vLLM — any OpenAI-compatible endpoint works, with automatic degradation when a model lacks tool calling</span></p>
+  <main id="view-home" class="site-view active">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="container">
+        <div class="hero-mark"><img src="logo.PNG" alt="CoCode 标志" width="57" height="57"></div>
+        <h1 id="hero-title">CoCode</h1>
+        <p class="hero-lead"><span data-copy="zh">接入自己的模型，在工作区阅读、修改代码并验证结果。</span><span data-copy="en">Bring your own model into the workspace to read, change, and verify code.</span></p>
+        <p class="hero-note"><span data-copy="zh">每一步都能看见，关键操作由你确认。</span><span data-copy="en">See every step. Keep control of important actions.</span></p>
+        <figure class="visual-stage">
+          <div class="app-window"><img src="images/cocode-desktop-demo.png" alt="CoCode 桌面应用的真实输入界面" width="1360" height="850" loading="eager" fetchpriority="high"></div>
+        </figure>
+        <p class="image-caption"><span data-copy="zh">CoCode 桌面界面，截图使用隔离的演示环境。</span><span data-copy="en">The CoCode desktop interface, captured in an isolated demo environment.</span></p>
       </div>
-      <div class="hf">
-        <span class="tag en">TOKEN EFFICIENT</span>
-        <h3><span data-lang="zh">低 token 多干活</span><span data-lang="en">Token-Efficient Output</span></h3>
-        <p><span data-lang="zh">repo map 替掉几十轮搜索，本地索引增量落盘，上下文自动压缩，prompt cache 全程透传——同样的任务，账单少一截</span><span data-lang="en">A repo map replaces dozens of search rounds, local indexes persist incrementally, context auto-compacts, prompt cache passes through — same tasks, smaller bills</span></p>
-      </div>
-      <div class="hf">
-        <span class="tag en">CHECKPOINT</span>
-        <h3><span data-lang="zh">每轮可回滚</span><span data-lang="en">Revert Any Turn</span></h3>
-        <p><span data-lang="zh">涉及写入和执行的轮次，动手前自动快照改砸了一键回滚到任意一轮——这也是敢开全自动模式的前提</span><span data-lang="en">Turns that write or execute snapshot automatically first; one click reverts to any turn — the reason full-auto mode is safe to enable</span></p>
-      </div>
-    </div>
-  </div>
-</div>
+    </section>
 
-<!-- ================= 功能三大块 ================= -->
-<section id="features">
-  <div class="wrap">
-
-    <div class="sec-head rv">
-      <div class="sec-no">01 — FEATURES</div>
-      <h2><span data-lang="zh">真实工程级，<br>不止生成代码，更懂干活</span><span data-lang="en">Production-grade.<br>More than code generation.</span></h2>
-    </div>
-
-    <!-- 块 1：工具 -->
-    <div class="feature-block fb-purple rv">
-      <div class="fb-grid">
-        <div>
-          <span class="fb-kicker en">18 BUILT-IN TOOLS</span>
-          <div class="fb-title"><span data-lang="zh">十八个内置工具，<br>从 <em>读写执行</em> 到浏览器</span><span data-lang="en">18 built-in tools,<br>from <em>read, write &amp; run</em> to the browser</span></div>
-          <p class="fb-desc"><span data-lang="zh">Bash、Read、Write、Edit、Git、WebFetch、LSP、语义检索一应俱全，还有<b>能截图给模型看的内置浏览器</b>和并行调研的子代理</span><span data-lang="en">Bash, Read, Write, Edit, Git, WebFetch, LSP, semantic search and more — plus a <b>built-in browser that screenshots for the model</b> and parallel research subagents</span></p>
-          <ul class="fb-points">
-            <li><span data-lang="zh">结构化任务面板，计划实时可见</span><span data-lang="en">Structured task panel with a live plan view</span></li>
-            <li><span data-lang="zh">Subagent 派发并行调研，权限只降不升</span><span data-lang="en">Parallel research via subagents; permissions only ever tighten</span></li>
-            <li><span data-lang="zh">MCP 服务器接入，与 Claude Desktop 同形</span><span data-lang="en">MCP server support, same shape as Claude Desktop</span></li>
-          </ul>
+    <section class="section" id="features" aria-labelledby="features-title">
+      <div class="container work-flow">
+        <div class="section-header">
+          <h2 id="features-title"><span data-copy="zh">从一句请求，到可以检查的结果。</span><span data-copy="en">From a request to work you can inspect.</span></h2>
+          <p class="section-intro"><span data-copy="zh">CoCode 不只生成答案。它能在项目里读取上下文、执行操作，再把结果和改动交还给你。</span><span data-copy="en">CoCode works inside the project, reads context, takes action, and returns the result with visible changes.</span></p>
         </div>
-        <div class="fb-visual">
-          <div class="term">
-            <div class="term-bar"><i></i><i></i><i></i><span>cocode — session</span></div>
-            <div class="term-body">
-              <div><span class="u">›</span> <span class="c">RepoMap</span> <span class="c"><span data-lang="zh">加载仓库符号骨架（省 token）</span><span data-lang="en">load repo symbol skeleton (saves tokens)</span></span></div>
-              <div><span class="u">›</span> <span class="c">Search</span> <span class="c">"<span data-lang="zh">权限决策</span><span data-lang="en">permission decision</span>"</span> → <span class="g">agent.js:1204</span></div>
-              <div><span class="u">›</span> <span class="c">Browser</span> <span class="c"><span data-lang="zh">打开登录页</span><span data-lang="en">open the login page</span></span> → <span class="b">screenshot ✓</span></div>
-              <div><span class="u">›</span> <span class="c">Subagent ×3</span> <span class="c"><span data-lang="zh">并行调研三个模块</span><span data-lang="en">research three modules in parallel</span></span> <span class="g">✓</span></div>
-              <div><span class="k">18 tools ready</span> <span class="c">— 0 npm dependencies</span></div>
-            </div>
-          </div>
+        <div class="work-steps">
+          <div class="work-step"><small><span data-copy="zh">理解</span><span data-copy="en">Understand</span></small><div><h3><span data-copy="zh">从项目开始</span><span data-copy="en">Start with the project</span></h3><p><span data-copy="zh">选择工作区，让 Agent 在真实文件与上下文中寻找答案。</span><span data-copy="en">Choose a workspace so the agent can work from real files and context.</span></p></div></div>
+          <div class="work-step"><small><span data-copy="zh">执行</span><span data-copy="en">Act</span></small><div><h3><span data-copy="zh">把修改过程摆在眼前</span><span data-copy="en">Watch the work happen</span></h3><p><span data-copy="zh">读写文件、运行命令、打开浏览器。需要授权时，由你决定。</span><span data-copy="en">Read and edit files, run commands, open the browser, and approve sensitive actions.</span></p></div></div>
+          <div class="work-step"><small><span data-copy="zh">验证</span><span data-copy="en">Verify</span></small><div><h3><span data-copy="zh">看得见改动，也能回退</span><span data-copy="en">Review and roll back</span></h3><p><span data-copy="zh">用变更预览与检查点审视结果，不满意就退回之前的状态。</span><span data-copy="en">Inspect changes and checkpoints, then return to an earlier state when needed.</span></p></div></div>
         </div>
       </div>
-    </div>
+    </section>
 
-    <!-- 块 2：权限 -->
-    <div class="feature-block fb-blue rv">
-      <div class="fb-grid">
-        <div class="fb-visual">
-          <div class="term">
-            <div class="term-bar"><i></i><i></i><i></i><span>permission — confirm</span></div>
-            <div class="term-body">
-              <div><span class="c">Bash</span> <span class="o">npm install left-pad</span></div>
-              <div><span class="c">┌─────────────────────────────┐</span></div>
-              <div><span class="c">│</span> <span data-lang="zh">允许本次执行</span><span data-lang="en">Allow this run</span> &nbsp;&nbsp;<span class="c">↑↓ <span data-lang="zh">选择</span><span data-lang="en">select</span></span></div>
-              <div><span class="c">│</span> <span class="b"><span data-lang="zh">以后都允许</span><span data-lang="en">Always allow</span></span> <span class="c">— <span data-lang="zh">写入允许清单</span><span data-lang="en">add to allowlist</span></span></div>
-              <div><span class="c">│</span> <span data-lang="zh">拒绝本次</span><span data-lang="en">Deny this run</span></div>
-              <div><span class="c">└─────────────────────────────┘</span></div>
-              <div><span class="g">✓ sandbox:</span> <span class="c"><span data-lang="zh">路径沙箱 · 环境净化 · 密钥脱敏</span><span data-lang="en">path sandbox · env sanitization · key redaction</span></span></div>
-            </div>
-          </div>
+    <section class="statement" aria-label="产品定位">
+      <div class="container statement-inner">
+        <h2><span data-copy="zh">让 Agent 处理繁琐的工程步骤，让判断始终留在你手里。</span><span data-copy="en">Let the agent handle the steps. Keep the decisions in your hands.</span></h2>
+        <p><span data-copy="zh">权限确认、任务记录、变更预览和检查点共同构成一个可追溯的工作过程。</span><span data-copy="en">Approvals, task history, change previews, and checkpoints keep the workflow traceable.</span></p>
+      </div>
+    </section>
+
+    <section class="section versions" id="versions" aria-labelledby="versions-title">
+      <div class="container">
+        <div class="section-header">
+          <h2 id="versions-title"><span data-copy="zh">选择适合你的工作方式。</span><span data-copy="en">Work the way that suits you.</span></h2>
+          <p class="section-intro"><span data-copy="zh">桌面工作台与命令行入口，连接同一套 Agent 能力。</span><span data-copy="en">A desktop workspace and a terminal entry point for the same agent capabilities.</span></p>
         </div>
-        <div>
-          <span class="fb-kicker en">HUMAN IN THE LOOP</span>
-          <div class="fb-title"><span data-lang="zh">五档权限，<br><em>控制权</em>一直在你手里</span><span data-lang="en">Five permission levels,<br><em>control</em> always stays with you</span></div>
-          <p class="fb-desc"><span data-lang="zh">从「只读契约」到「全自动」逐级放开每次执行前弹确认卡，选一次「以后都允许」，同类操作<b>永久免打扰</b>——不是处处问你，也不是处处瞒你</span><span data-lang="en">Graduated from "read-only" to "full auto"; a confirm card pops up before every run. Pick "always allow" once and similar actions go <b>quiet for good</b> — not nagging you everywhere, not hiding anything either</span></p>
-          <ul class="fb-points">
-            <li><span data-lang="zh">路径沙箱：符号链接越界一律拦下</span><span data-lang="en">Path sandbox: symlink escapes are always blocked</span></li>
-            <li><span data-lang="zh">子进程环境净化：API_KEY、TOKEN 一律剥离</span><span data-lang="en">Child-process sanitization: API_KEY, TOKEN always stripped</span></li>
-            <li><span data-lang="zh">密钥脱敏：工具输出与日志全量过 redact()</span><span data-lang="en">Key redaction: all tool output and logs pass redact()</span></li>
-          </ul>
+        <div class="version-grid">
+          <div class="version"><h3>CoCode Desktop</h3><p><span data-copy="zh">在一个窗口里查看会话、工具调用、权限请求和代码改动。适合需要完整上下文的日常工作。</span><span data-copy="en">See sessions, tool calls, approvals, and code changes in one window for everyday project work.</span></p><a class="more" href="#download"><span data-copy="zh">查看下载方式</span><span data-copy="en">See download options</span></a></div>
+          <div class="version"><h3>CoCode CLI</h3><p><span data-copy="zh">偏好终端时，直接从命令行与 Agent 协作，继续使用熟悉的开发环境。</span><span data-copy="en">Collaborate with the agent from your terminal while staying in the development environment you know.</span></p><a class="more" href="https://github.com/CoCodeAgent/CoCode" target="_blank" rel="noopener"><span data-copy="zh">查看开源仓库</span><span data-copy="en">Explore the repository</span></a></div>
         </div>
       </div>
-    </div>
+    </section>
 
-    <!-- 块 3：可观测 -->
-    <div class="feature-block fb-pink rv">
-      <div class="fb-grid">
-        <div>
-          <span class="fb-kicker en">TRACE &amp; REPLAY</span>
-          <div class="fb-title"><span data-lang="zh">跑过就留痕，<br>每个决策<em>可回放</em></span><span data-lang="en">Everything is logged,<br>every decision <em>replayable</em></span></div>
-          <p class="fb-desc"><span data-lang="zh">每次运行写一份完整时间线：请求、工具调用、权限决策、上下文压缩出问题时你看到的是<b>它为什么这么做</b>，而不是一团黑箱</span><span data-lang="en">Every run writes a full timeline: requests, tool calls, permission decisions, context compaction. When something breaks you see <b>why it did what it did</b>, not a black box</span></p>
-          <ul class="fb-points">
-            <li><span data-lang="zh">「运行记录」面板随时回放任意一次运行</span><span data-lang="en">Replay any past run from the Runs panel</span></li>
-            <li><span data-lang="zh">检查点内容寻址快照，自动保留最近 10 轮</span><span data-lang="en">Content-addressed checkpoints, last 10 turns auto-kept</span></li>
-            <li><span data-lang="zh">默认不记对话正文，开全文也先过脱敏</span><span data-lang="en">Conversation text off by default; full text still passes redaction</span></li>
-          </ul>
+    <section class="download" id="download" aria-labelledby="download-title">
+      <div class="container">
+        <div class="section-header">
+          <h2 id="download-title"><span data-copy="zh">下载 CoCode Desktop。</span><span data-copy="en">Get CoCode Desktop.</span></h2>
+          <p class="section-intro"><span data-copy="zh">安装后接入你的模型，从一个项目开始。</span><span data-copy="en">Connect your model after installation, then start with a project.</span></p>
         </div>
-        <div class="fb-visual">
-          <div class="term">
-            <div class="term-bar"><i></i><i></i><i></i><span>trace — timeline</span></div>
-            <div class="term-body">
-              <div><span class="c">10:24:01</span> <span class="k">POST /chat</span> <span class="c">glm-4.7</span></div>
-              <div><span class="c">10:24:03</span> <span class="u">Edit</span> login.tsx <span class="g">+12</span> <span class="r">−3</span></div>
-              <div><span class="c">10:24:05</span> <span class="u">Bash</span> npm run build <span class="g">✓ 4.2s</span></div>
-              <div><span class="c">10:24:07</span> <span class="o">checkpoint #3</span> <span class="c">→ snapshot 1.8MB</span></div>
-              <div><span class="c">10:24:09</span> <span class="b">context compact</span> <span class="c">18.2k → 9.6k tok</span></div>
-              <div><span class="c">10:24:10</span> <span class="g">✓ finished</span> <span class="c">— <span data-lang="zh">可回放 · 可回滚</span><span data-lang="en">replayable · revertible</span></span></div>
-            </div>
-          </div>
+        <div class="download-list">
+          <div class="download-item"><h3>macOS</h3><p><span data-copy="zh">适用于 macOS 13 及以上。通用安装包支持 Apple 芯片与 Intel 芯片。</span><span data-copy="en">For macOS 13 and later. One universal installer for Apple silicon and Intel.</span></p><a class="download-cta" href="https://github.com/CoCodeAgent/CoCode/releases/download/v1.0.0/CoCode-1.0.0-mac.dmg"><span data-copy="zh">下载通用安装包</span><span data-copy="en">Download universal installer</span><span aria-hidden="true">↗</span></a></div>
+          <div class="download-item"><h3>Windows</h3><p><span data-copy="zh">Windows 安装包仍在准备中。</span><span data-copy="en">The Windows installer is still being prepared.</span></p><span class="coming"><span data-copy="zh">敬请期待</span><span data-copy="en">Coming soon</span></span></div>
         </div>
       </div>
-    </div>
-
-  </div>
-</section>
-
-<!-- ================= CoCode Desktop ================= -->
-<section id="versions" style="padding-top:0">
-  <div class="wrap">
-    <div class="sec-head rv">
-      <div class="sec-no">02 — SURFACES</div>
-      <h2><span data-lang="zh">CoCode Desktop，<br>Agent 的每一步<em style="font-style:normal;background:var(--grad-blue);-webkit-background-clip:text;background-clip:text;color:transparent">摆在眼前</em></span><span data-lang="en">CoCode Desktop,<br>every Agent step <em style="font-style:normal;background:var(--grad-blue);-webkit-background-clip:text;background-clip:text;color:transparent">in plain sight</em></span></h2>
-      <p class="sec-sub"><span data-lang="zh">不必盯终端、不必记命令桌面版把整个 Agent 装进一个清爽的窗口，会话、配置、工具全部开箱即用</span><span data-lang="en">No terminal-watching, no command memorizing — the desktop app puts the whole Agent in one clean window, with sessions, settings and tools ready out of the box</span></p>
-    </div>
-    <div class="duo rv">
-      <div class="duo-card">
-        <div class="ico en" style="font-family:var(--outfit);font-size:15px;font-weight:600">GUI</div>
-        <h3><span data-lang="zh">看得见的工作台</span><span data-lang="en">A workbench you can see</span></h3>
-        <div class="dc-en">Everything On Screen</div>
-        <p><span data-lang="zh">聊天即协作：Agent 的每次读写、每条命令都以卡片流式呈现，支持什么、反对什么，一键决定</span><span data-lang="en">Chat is collaboration: every read/write and every command streams in as cards — approve or reject with one click</span></p>
-        <ul><li><span data-lang="zh">会话侧栏</span><span data-lang="en">Session sidebar</span></li><li><span data-lang="zh">工具调用卡片</span><span data-lang="en">Tool-call cards</span></li><li><span data-lang="zh">权限确认卡</span><span data-lang="en">Permission cards</span></li><li><span data-lang="zh">计划面板</span><span data-lang="en">Plan panel</span></li></ul>
-      </div>
-      <div class="duo-card">
-        <div class="ico" style="font-size:14px;font-weight:700">⌘</div>
-        <h3><span data-lang="zh">改了什么，一目了然</span><span data-lang="en">See exactly what changed</span></h3>
-        <div class="dc-en">Diff · Checkpoint · Trace</div>
-        <p><span data-lang="zh">内置变更预览逐行着色展示未提交改动；每轮自动快照，不满意就地回滚；运行记录随时回放</span><span data-lang="en">A built-in diff view colors uncommitted changes line by line; every turn auto-snapshots, roll back in place if unhappy; replay runs anytime</span></p>
-        <ul><li><span data-lang="zh">变更预览</span><span data-lang="en">Diff preview</span></li><li><span data-lang="zh">检查点回滚</span><span data-lang="en">Checkpoint rollback</span></li><li><span data-lang="zh">运行记录</span><span data-lang="en">Run history</span></li><li><span data-lang="zh">内置浏览器</span><span data-lang="en">Built-in browser</span></li></ul>
-      </div>
-    </div>
-    <p class="rv" style="margin-top:28px;font-size:14px;color:var(--faint);text-align:center"><span data-lang="zh">也提供 CLI 版本（终端 REPL），供偏好在命令行工作的用户使用</span><span data-lang="en">A CLI edition (terminal REPL) is also available for those who prefer working in the command line</span></p>
-  </div>
-</section>
-
-<!-- ================= 数字 ================= -->
-<section style="padding-top:0">
-  <div class="wrap">
-    <div class="sec-head rv">
-      <div class="sec-no">03 — IN NUMBERS</div>
-      <h2><span data-lang="zh">几个实在的数字</span><span data-lang="en">A few honest numbers</span></h2>
-    </div>
-    <div class="nums rv">
-      <div class="num"><div class="v">0</div><div class="l"><span data-lang="zh">核心包 npm 依赖——纯 Node.js + fetch</span><span data-lang="en">npm dependencies in the core — pure Node.js + fetch</span></div></div>
-      <div class="num"><div class="v">18</div><div class="l"><span data-lang="zh">内置工具，覆盖读写执行到浏览</span><span data-lang="en">built-in tools, from read/write/run to browsing</span></div></div>
-      <div class="num"><div class="v">5</div><div class="l"><span data-lang="zh">档权限模式，从只读到全自动</span><span data-lang="en">permission levels, from read-only to full auto</span></div></div>
-      <div class="num"><div class="v">140+</div><div class="l"><span data-lang="zh">全链路集成测试用例守住行为</span><span data-lang="en">end-to-end integration tests guarding behavior</span></div></div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= 下载 ================= -->
-<section id="download" style="padding-top:0">
-  <div class="wrap">
-    <div class="sec-head rv">
-      <div class="sec-no">04 — DOWNLOAD</div>
-      <h2><span data-lang="zh">下载 CoCode Desktop</span><span data-lang="en">Download CoCode Desktop</span></h2>
-      <p class="sec-sub"><span data-lang="zh">下载 CoCode Desktop，让 AI 接管你的电脑，助你完成工作，与你编辑作品</span><span data-lang="en">Download CoCode Desktop — let AI take over your computer, get work done and edit alongside you</span></p>
-    </div>
-    <div class="dl-grid rv">
-      <div class="dl-card">
-        <div class="dl-os">macOS</div>
-        <div class="dl-note"><span data-lang="zh">v1.0.0 · Apple Silicon 与 Intel 通用</span><span data-lang="en">v1.0.0 · Apple Silicon and Intel</span></div>
-        <div class="dl-links">
-          <a class="dl-link" href="https://github.com/CoCodeAgent/CoCode/releases/download/v1.0.0/CoCode-1.0.0-mac.dmg"><span data-lang="zh">下载通用安装包</span><span data-lang="en">Download universal installer</span><span>macOS 13+</span></a>
-        </div>
-      </div>
-      <div class="dl-card">
-        <div class="dl-os">Windows</div>
-        <div class="dl-note">64-bit Installer</div>
-        <div class="dl-soon"><span data-lang="zh">敬请期待</span><span data-lang="en">Coming soon</span></div>
-      </div>
-    </div>
-    <p class="rv" style="margin-top:26px;font-size:13.5px;color:var(--faint);text-align:center">
-      <span data-lang="zh">首次启动后，在设置里填入任意 OpenAI 兼容模型的地址与 Key（DeepSeek、智谱、Moonshot、本地 Ollama…），即可开始使用</span><span data-lang="en">After first launch, enter any OpenAI-compatible model's URL and key in Settings (DeepSeek, Zhipu, Moonshot, local Ollama…) and you're ready to go</span>
-    </p>
-  </div>
-</section>
-
-<!-- ================= CTA ================= -->
-<section style="padding-top:0">
-  <div class="wrap">
-    <div class="about-cta rv">
-      <h2><span data-lang="zh">下次改代码，<br>让 CoCode <span class="grad">动手</span></span><span data-lang="en">Next time you touch code,<br>let CoCode <span class="grad">do it</span></span></h2>
-      <p><span data-lang="zh">AGPL-3.0 开源 · 本地运行 · 数据不出你的机器</span><span data-lang="en">AGPL-3.0 open source · runs locally · your data never leaves your machine</span></p>
-      <div class="hero-cta">
-        <a class="btn btn-ink" href="https://github.com/CoCodeAgent/CoCode" target="_blank" rel="noopener"><span data-lang="zh">GitHub 仓库</span><span data-lang="en">GitHub Repo</span></a>
-        <a class="btn btn-ghost" href="#download"><span data-lang="zh">下载</span><span data-lang="en">Download</span></a>
-      </div>
-    </div>
-  </div>
-</section>
-</div>
-
-<!-- ============ 用户协议 ============ -->
-<div id="view-terms" class="view">
-<header>
-  <div class="wrap nav">
-    <a href="index.html" class="brand">CoCode</a>
-    <div class="lang-switch">
-      <button class="lang-btn active" data-lng="zh">中文</button>
-      <button class="lang-btn" data-lng="en">EN</button>
-    </div>
-  </div>
-</header>
-
+    </section>
+  </main>
+<div id="view-terms" class="site-view legal-view">
 <section class="hero">
   <div class="wrap">
     <h1 data-lang="zh">用户协议</h1>
@@ -820,18 +495,7 @@ html.en span[data-lang="en"],html.en a [data-lang="en"],html.en button [data-lan
 </section>
 </div>
 
-<!-- ============ 隐私政策 ============ -->
-<div id="view-privacy" class="view">
-<header>
-  <div class="wrap nav">
-    <a href="index.html" class="brand">CoCode</a>
-    <div class="lang-switch">
-      <button class="lang-btn active" data-lng="zh">中文</button>
-      <button class="lang-btn" data-lng="en">EN</button>
-    </div>
-  </div>
-</header>
-
+<div id="view-privacy" class="site-view legal-view">
 <section class="hero">
   <div class="wrap">
     <h1 data-lang="zh">隐私政策</h1>
@@ -1023,18 +687,7 @@ html.en span[data-lang="en"],html.en a [data-lang="en"],html.en button [data-lan
 </section>
 </div>
 
-<!-- ============ 跨境传输 ============ -->
-<div id="view-cross-border" class="view">
-<header>
-  <div class="wrap nav">
-    <a href="index.html" class="brand">CoCode</a>
-    <div class="lang-switch">
-      <button class="lang-btn active" data-lng="zh">中文</button>
-      <button class="lang-btn" data-lng="en">EN</button>
-    </div>
-  </div>
-</header>
-
+<div id="view-cross-border" class="site-view legal-view">
 <section class="hero">
   <div class="wrap">
     <h1 data-lang="zh">跨境数据传输协议</h1>
@@ -1274,126 +927,90 @@ html.en span[data-lang="en"],html.en a [data-lang="en"],html.en button [data-lan
 </section>
 </div>
 
-<footer>
-  <div class="wrap ft">
-    <div style="display:flex;flex-direction:column;gap:6px">
-      <span class="en" style="font-weight:600;color:var(--ink)">CoCode</span>
-      <span class="en">AGPL-3.0 LICENSED · RUNS LOCALLY · DATA NEVER LEAVES YOUR MACHINE</span>
+  <footer class="site-footer">
+    <div class="footer-inner container">
+      <span class="footer-brand">CoCode</span>
+      <div class="footer-links"><a href="https://github.com/CoCodeAgent/CoCode" target="_blank" rel="noopener">GitHub</a><a href="#terms"><span data-copy="zh">用户协议</span><span data-copy="en">Terms</span></a><a href="#privacy"><span data-copy="zh">隐私政策</span><span data-copy="en">Privacy</span></a><a href="#cross-border"><span data-copy="zh">跨境传输</span><span data-copy="en">Cross-Border</span></a></div>
     </div>
-    <div style="display:flex;gap:18px;flex-wrap:wrap">
-      <a class="en" href="#terms" data-route="terms" style="color:var(--faint);text-decoration:none">用户协议 / Terms</a>
-      <a class="en" href="#privacy" data-route="privacy" style="color:var(--faint);text-decoration:none">隐私政策 / Privacy</a>
-      <a class="en" href="#cross-border" data-route="cross-border" style="color:var(--faint);text-decoration:none">跨境传输 / Cross-Border</a>
-    </div>
-  </div>
-</footer>
+  </footer>
 
+  <script>
+    const languageButtons = document.querySelectorAll('[data-set-language]');
+    function applyLanguage(language) {
+      document.documentElement.dataset.language = language;
+      document.documentElement.lang = language === 'zh' ? 'zh-CN' : 'en';
+      document.documentElement.classList.toggle('en', language === 'en');
+      document.title = language === 'zh' ? 'CoCode - 会干活的编程 Agent' : 'CoCode - A Coding Agent That Gets Work Done';
+      document.getElementById('meta-desc')?.setAttribute('content', language === 'zh'
+        ? 'CoCode Desktop：接入自己的模型，在工作区阅读、修改代码并验证结果。'
+        : 'CoCode Desktop: bring your own model into the workspace to read, change, and verify code.');
+      languageButtons.forEach(item => item.setAttribute('aria-pressed', String(item.dataset.setLanguage === language)));
+      window.dispatchEvent(new Event('cocode:language-change'));
+    }
+    languageButtons.forEach(button => button.addEventListener('click', () => {
+      const language = button.dataset.setLanguage;
+      try { localStorage.setItem('lang', language); } catch {}
+      applyLanguage(language);
+    }));
+    let savedLanguage = 'zh';
+    try { savedLanguage = localStorage.getItem('lang') || 'zh'; } catch {}
+    applyLanguage(savedLanguage);
+    const menuButton = document.getElementById('menu-button');
+    const mobileNav = document.getElementById('mobile-nav');
+    menuButton.addEventListener('click', () => {
+      const open = mobileNav.dataset.open !== 'true';
+      mobileNav.dataset.open = String(open);
+      menuButton.setAttribute('aria-expanded', String(open));
+    });
+    mobileNav.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+      mobileNav.dataset.open = 'false';
+      menuButton.setAttribute('aria-expanded', 'false');
+    }));
+  </script>
 <script>
-(function(){
-  var VIEWS = ['home','terms','privacy','cross-border'];
-  var SCROLL_IDS = ['features','versions','download'];
+(() => {
+  const legalNames = ['terms', 'privacy', 'cross-border'];
+  const sectionNames = ['features', 'versions', 'download'];
+  const views = ['home', ...legalNames];
 
-  var burger = document.getElementById('burger');
-  var drawer = document.getElementById('drawer');
-  function closeDrawer(){
-    if(burger){ burger.classList.remove('open'); burger.setAttribute('aria-expanded','false'); }
-    if(drawer){ drawer.classList.remove('open'); }
+  function updateTitle(name) {
+    const en = document.documentElement.dataset.language === 'en';
+    const titles = {
+      home: en ? 'CoCode - A Coding Agent That Gets Work Done' : 'CoCode - 会干活的编程 Agent',
+      terms: en ? 'Terms of Service - CoCode' : '用户协议 - CoCode',
+      privacy: en ? 'Privacy Policy - CoCode' : '隐私政策 - CoCode',
+      'cross-border': en ? 'Cross-Border Data Transfer - CoCode' : '跨境传输 - CoCode',
+    };
+    document.title = titles[name] || titles.home;
   }
 
-  function showView(name){
-    VIEWS.forEach(function(v){
-      var el = document.getElementById('view-'+v);
-      if(el) el.classList.toggle('active', v===name);
-    });
-    document.querySelectorAll('[data-route]').forEach(function(a){
-      a.classList.toggle('active', a.getAttribute('data-route')===name);
-    });
-    window.scrollTo({top:0,behavior:'instant'});
-    closeDrawer();
+  function show(name, scrollTarget) {
+    views.forEach(view => document.getElementById('view-' + view)?.classList.toggle('active', view === name));
+    if (name === 'home' && scrollTarget) {
+      requestAnimationFrame(() => document.getElementById(scrollTarget)?.scrollIntoView({
+        behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth',
+      }));
+    } else window.scrollTo(0, 0);
+    updateTitle(name);
+    const menu = document.getElementById('mobile-nav');
+    const button = document.getElementById('menu-button');
+    if (menu) menu.dataset.open = 'false';
+    button?.setAttribute('aria-expanded', 'false');
   }
 
-  function handleRoute(){
-    // 同时支持 pathname（/terms）和 hash（#terms）
-    var pathPart = location.pathname.replace(/\/+$/,'').replace(/\.html$/,'').slice(1);
-    var hashPart = location.hash.replace(/^#/,'');
-    var name = VIEWS.indexOf(pathPart)>=0 ? pathPart : (hashPart || 'home');
-    if(VIEWS.indexOf(name)>=0){
-      showView(name);
-    } else if(SCROLL_IDS.indexOf(name)>=0){
-      showView('home');
-      setTimeout(function(){
-        var el = document.getElementById(name);
-        if(el) el.scrollIntoView({behavior:'smooth'});
-      },50);
-    } else {
-      showView('home');
-    }
+  function route() {
+    const hash = decodeURIComponent(location.hash.slice(1));
+    const pathName = location.pathname.replace(/\/+$/, '').replace(/\.html$/, '').split('/').pop();
+    const target = hash || (legalNames.includes(pathName) ? pathName : 'home');
+    if (legalNames.includes(target)) show(target);
+    else if (sectionNames.includes(target)) show('home', target);
+    else show('home');
   }
 
-  document.addEventListener('click', function(e){
-    var a = e.target.closest('a[href^="#"]');
-    if(!a) return;
-    var target = a.getAttribute('href').slice(1);
-    if(!target) return;
-    if(VIEWS.indexOf(target)>=0 || SCROLL_IDS.indexOf(target)>=0){
-      e.preventDefault();
-      location.hash = target;
-    }
-  });
-
-  function applyLang(lang){
-    document.documentElement.classList.toggle('en', lang==='en');
-    document.documentElement.lang = lang==='en' ? 'en' : 'zh-CN';
-    document.title = lang==='en' ? 'CoCode — A Coding Agent That Gets Work Done' : 'CoCode — 会干活的编程 Agent';
-    var metaDesc = document.getElementById('meta-desc');
-    if(metaDesc){ metaDesc.setAttribute('content', lang==='en' ? 'CoCode Desktop — a coding Agent with bring-your-own-model support, a zero-dependency core, 18 built-in tools, token-efficient output, and revertible turns.' : 'CoCode Desktop：自接入模型的编程 Agent 桌面端零依赖核心，18 个内置工具，低 token 多干活，每轮可回滚'); }
-    document.querySelectorAll('.lang-btn').forEach(function(b){
-      b.classList.toggle('active', b.getAttribute('data-lng')===lang);
-    });
-  }
-  document.querySelectorAll('.lang-btn').forEach(function(btn){
-    btn.addEventListener('click', function(){
-      var lang = btn.getAttribute('data-lng');
-      try{ localStorage.setItem('lang', lang); }catch(err){}
-      applyLang(lang);
-    });
-  });
-  var savedLang = 'zh';
-  try{ savedLang = localStorage.getItem('lang') || 'zh'; }catch(err){}
-  applyLang(savedLang);
-
-  if(burger && drawer){
-    burger.addEventListener('click', function(){
-      var open = !drawer.classList.contains('open');
-      drawer.classList.toggle('open', open);
-      burger.classList.toggle('open', open);
-      burger.setAttribute('aria-expanded', open ? 'true' : 'false');
-    });
-    drawer.querySelectorAll('a').forEach(function(a){
-      a.addEventListener('click', closeDrawer);
-    });
-    window.addEventListener('resize', function(){
-      if(window.innerWidth > 820) closeDrawer();
-    });
-  }
-
-  // reveal 动画：各源页面的 script 在合并时被剥离，这里统一恢复触发逻辑
-  var rvs = document.querySelectorAll('.rv');
-  if('IntersectionObserver' in window){
-    var io = new IntersectionObserver(function(entries){
-      entries.forEach(function(en){
-        if(en.isIntersecting){en.target.classList.add('on');io.unobserve(en.target);}
-      });
-    },{threshold:.1,rootMargin:'0px 0px -50px 0px'});
-    rvs.forEach(function(e){io.observe(e);});
-  } else {
-    rvs.forEach(function(e){e.classList.add('on');});
-  }
-
-  window.addEventListener('hashchange', handleRoute);
-  handleRoute();
+  addEventListener('hashchange', route);
+  addEventListener('cocode:language-change', route);
+  route();
 })();
 </script>
-
 </body>
 </html>
